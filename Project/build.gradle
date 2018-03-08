@@ -4,11 +4,14 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        google()
+        maven { url "https://maven.google.com"}
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        compile 'com.google.android.gms:play-services-games:11.8.0'
         
 
     }
@@ -17,11 +20,13 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
+    apply plugin: "com.android.application"
 
     version = '1.0'
     ext {
         appName = "Project-TDT4240"
         gdxVersion = '1.9.8'
+        gamesvcsVersion = '0.2.2'
         roboVMVersion = '2.3.3'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
