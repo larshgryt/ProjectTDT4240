@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
@@ -20,6 +21,7 @@ public class Button extends Component {
     private BitmapFont font;
     private float borderWidth;
     private ArrayList<ActionListener> listeners;
+    private GlyphLayout glyphLayout;
 
     public Button(float width, float height){
         super();
@@ -57,6 +59,7 @@ public class Button extends Component {
     }
     public void setFontColor(Color color){
         font.setColor(color);
+        glyphLayout.setText(font, text);
     }
 
     public void setBorderWidth(float width){
@@ -65,6 +68,7 @@ public class Button extends Component {
 
     public void setText(String text){
         this.text = text;
+        glyphLayout.setText(font, text);
     }
     public String getText(){
         return text;
@@ -104,6 +108,8 @@ public class Button extends Component {
         pixmap.setColor(Color.GRAY);
         pixmap.fill();
         borderTexture = new Texture(pixmap);
+        glyphLayout = new GlyphLayout();
+        glyphLayout.setText(font, text);
     }
 
     @Override
@@ -113,11 +119,13 @@ public class Button extends Component {
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(borderTexture, position.x, position.y, width + (2*borderWidth),
-                height + (2*borderWidth));
+        sb.draw(borderTexture, position.x, position.y, width + borderWidth,
+                height + borderWidth);
         sb.draw(backgroundTexture, position.x + borderWidth, position.y + borderWidth,
                 width - borderWidth, height - borderWidth);
-        font.draw(sb, text, position.x + (width/2), position.y + (height/2));
+        font.draw(sb, glyphLayout, position.x + (width - glyphLayout.width)/2 ,
+                position.y + (height + glyphLayout.height)/2);
+
     }
 
     @Override
