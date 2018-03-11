@@ -7,8 +7,8 @@ import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
 
 public class GdxGame extends ApplicationAdapter {
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 480;
+	public static final int WIDTH = 640;
+	public static final int HEIGHT = 360;
 
 	SpriteBatch batch;
 	Texture img;

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
 
 import java.awt.event.ActionEvent;
@@ -73,29 +72,6 @@ public class Button extends Component {
     public String getText(){
         return text;
     }
-
-    public void setPosition(float x, float y){
-        position = new Vector3(x, y, 0);
-    }
-    public Vector3 getPosition(){
-        return position;
-    }
-
-    public void setWidth(float width){
-        this.width = width;
-    }
-    public float getWidth(){
-        return width;
-    }
-    public void setHeight(float height){
-        this.height = height;
-    }
-    public float getHeight(){
-        return height;
-    }
-
-
-
 
     private void init(){
         font = new BitmapFont();
