@@ -3,8 +3,8 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MenuState extends State {
-    public MenuState(GameStateManager gsm) {
-        super(gsm);
+    public MenuState() {
+        super();
     }
 
     @Override
