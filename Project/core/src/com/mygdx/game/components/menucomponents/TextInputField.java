@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 
 public class TextInputField extends Component implements Input.TextInputListener {
@@ -108,19 +109,16 @@ public class TextInputField extends Component implements Input.TextInputListener
 
     @Override
     public void canceled() {
-        setText("Canceled");
     }
 
     @Override
     public void update(float dt) {
-        if(Gdx.input.isTouched()){
+        if(Gdx.input.justTouched()){
             float x = Gdx.input.getX();
-            float y = Gdx.input.getY();
-            System.out.println("x: "+x+"\ty: "+y);
+            float y = GdxGame.HEIGHT - Gdx.input.getY();
             if(x > position.x && x < position.x + width && y > position.y && y < position.y + height){
                 Gdx.input.getTextInput(this, title, defaultText, hint);
             }
-            Gdx.app.log("Text", text);
         }
 
     }

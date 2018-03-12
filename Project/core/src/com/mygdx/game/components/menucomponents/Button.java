@@ -1,11 +1,13 @@
 package com.mygdx.game.components.menucomponents;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 
 import java.awt.event.ActionEvent;
@@ -37,6 +39,7 @@ public class Button extends Component {
     }
 
     public void click(){
+        System.out.println("Button clicked!");
         for(ActionListener l: listeners){
             l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Button clicked"));
         }
@@ -90,7 +93,13 @@ public class Button extends Component {
 
     @Override
     public void update(float dt) {
-
+        if(Gdx.input.justTouched()){
+            float x = Gdx.input.getX();
+            float y = GdxGame.HEIGHT - Gdx.input.getY();
+            if(x > position.x && x < position.x + width && y > position.y && y < position.y + height){
+                click();
+            }
+        }
     }
 
     @Override
