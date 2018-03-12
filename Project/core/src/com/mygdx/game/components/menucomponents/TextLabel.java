@@ -12,18 +12,23 @@ public class TextLabel extends Component {
     private String text;
     private GlyphLayout glyphLayout;
     private BitmapFont font;
-    private Color color;
 
-    public TextLabel(){
-        text = "";
+    public TextLabel(String string){
+        super();
         glyphLayout = new GlyphLayout();
         font = new BitmapFont();
-        color = Color.BLACK;
-        position.x = 0;
-        position.y = 0;
-        width = 0;
-        height = 0;
+        font.setColor(Color.BLACK);
+        setText(string);
+    }
 
+    public void setColor(Color color){
+        font.setColor(color);
+        glyphLayout.setText(font, text);
+    }
+
+    public void setText(String text){
+        this.text = text;
+        glyphLayout.setText(font, text);
     }
 
     @Override
@@ -33,7 +38,8 @@ public class TextLabel extends Component {
 
     @Override
     public void render(SpriteBatch sb) {
-
+        font.draw(sb, glyphLayout, position.x + (width - glyphLayout.width)/2 ,
+                position.y + (height + glyphLayout.height)/2);
     }
 
     @Override

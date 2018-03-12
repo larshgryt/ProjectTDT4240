@@ -6,6 +6,7 @@ import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.menucomponents.Button;
 import com.mygdx.game.components.menucomponents.ImageComponent;
 import com.mygdx.game.components.menucomponents.TextInputField;
+import com.mygdx.game.components.menucomponents.TextLabel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 public class MenuState extends State {
 
     private String username;
+    private TextLabel errorMessage;
 
     public MenuState() {
         super();
@@ -36,11 +38,20 @@ public class MenuState extends State {
         playButton.setBorderColor(Color.BLUE);
         playButton.addActionListener(new ButtonListener());
 
+        errorMessage = new TextLabel("");
+        errorMessage.setPosition((GdxGame.WIDTH - errorMessage.getWidth())/2, (GdxGame.HEIGHT - errorMessage.getHeight())*1/12 );
+        errorMessage.setColor(Color.RED);
+
         addComponent(logo);
         addComponent(playButton);
         addComponent(input);
+        addComponent(errorMessage);
 
         username = "Guest";
+    }
+
+    private boolean isValid(String username){
+        return(username.length() >= 3 && username.length() < 32);
     }
 
     @Override
@@ -57,8 +68,14 @@ public class MenuState extends State {
     private class ButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            System.out.println("Username " + username + " entered.");
+            if(isValid(username)){
+                errorMessage.setText("");
+                System.out.println("Username " + username + " entered.");
+            }
+            else{
+                errorMessage.setText("Invalid username was entered.");
+            }
+
         }
     }
-
 }
