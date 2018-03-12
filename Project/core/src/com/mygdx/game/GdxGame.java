@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.states.GameStateManager;
@@ -26,13 +28,16 @@ public class GdxGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 	    batch.begin();
-		gsm.render(batch);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        gsm.update(Gdx.graphics.getDeltaTime());
+        gsm.render(batch);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
+		gsm.dispose();
 		img.dispose();
 	}
 }
