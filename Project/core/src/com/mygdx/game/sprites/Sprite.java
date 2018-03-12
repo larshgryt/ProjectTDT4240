@@ -1,4 +1,11 @@
 package com.mygdx.game.sprites;
 
-public abstract class Sprite {
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+public interface Sprite {
+
+    void update(float dt);
+    void render(SpriteBatch sb);
+    void dispose();
+
 }
