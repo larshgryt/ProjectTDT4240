@@ -147,6 +147,8 @@ public class TextInputField extends Component implements Input.TextInputListener
 
     @Override
     public void dispose() {
-
+        backgroundTexture.dispose();
+        borderTexture.dispose();
+        font.dispose();
     }
 }

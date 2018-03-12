@@ -44,6 +44,6 @@ public class TextLabel extends Component {
 
     @Override
     public void dispose() {
-
+        font.dispose();
     }
 }
