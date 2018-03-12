@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class TextInputField extends Component implements Input.TextInputListener {
 
     private String text;
@@ -25,6 +28,8 @@ public class TextInputField extends Component implements Input.TextInputListener
     private BitmapFont font;
     private GlyphLayout glyphLayout;
 
+    private ActionListener listener;
+
     public TextInputField(String title, String defaultText, String hint){
         super();
         this.title = title;
@@ -33,6 +38,10 @@ public class TextInputField extends Component implements Input.TextInputListener
         this.hint = hint;
         this.borderWidth = 0;
         init();
+    }
+
+    public void setActionListener(ActionListener listener){
+        this.listener = listener;
     }
 
     public void setBackgroundColor(Color color){
@@ -105,6 +114,9 @@ public class TextInputField extends Component implements Input.TextInputListener
     @Override
     public void input(String text) {
         setText(text);
+        if(listener != null){
+            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, text));
+        }
     }
 
     @Override

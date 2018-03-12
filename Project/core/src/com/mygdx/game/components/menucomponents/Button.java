@@ -39,7 +39,6 @@ public class Button extends Component {
     }
 
     public void click(){
-        System.out.println("Button clicked!");
         for(ActionListener l: listeners){
             l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Button clicked"));
         }

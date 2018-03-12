@@ -7,9 +7,12 @@ import com.mygdx.game.components.menucomponents.Button;
 import com.mygdx.game.components.menucomponents.ImageComponent;
 import com.mygdx.game.components.menucomponents.TextInputField;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class MenuState extends State {
 
-    private Texture logoImg;
+    private String username;
 
     public MenuState() {
         super();
@@ -22,6 +25,7 @@ public class MenuState extends State {
         input.setWidth(200);
         input.setHeight(40);
         input.setPosition((GdxGame.WIDTH - input.getWidth())/2, (GdxGame.HEIGHT - input.getHeight())*1/3 );
+        input.setActionListener(new TextFieldListener());
 
         Button playButton = new Button(200, 40);
         playButton.setText("Play game");
@@ -30,14 +34,31 @@ public class MenuState extends State {
         playButton.setFontColor(Color.WHITE);
         playButton.setBackgroundColor(Color.NAVY);
         playButton.setBorderColor(Color.BLUE);
+        playButton.addActionListener(new ButtonListener());
 
         addComponent(logo);
         addComponent(playButton);
         addComponent(input);
+
+        username = "Guest";
     }
 
     @Override
     public void handleInput() {
 
     }
+
+    private class TextFieldListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            username = actionEvent.getActionCommand();
+        }
+    }
+    private class ButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            System.out.println("Username " + username + " entered.");
+        }
+    }
+
 }
