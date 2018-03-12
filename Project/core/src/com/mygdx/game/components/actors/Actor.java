@@ -13,6 +13,9 @@ public abstract class Actor extends Component {
     private Sprite sprite;
     private CollisionBox collisionBox;
 
+
+    private boolean rotatesOnMovement;
+
     public Actor(){
         super();
         velocity = new Vector3(0, 0, 0);
@@ -20,6 +23,11 @@ public abstract class Actor extends Component {
         sprite = null;
         collisionBox = new CollisionBox(CollisionBox.CollisionMode.NEVER,
                 CollisionBox.CollisionShape.RECTANGULAR, 0, 0);
+        rotatesOnMovement = false;
+    }
+
+    public void setRotatesOnMovement(boolean r){
+        this.rotatesOnMovement = r;
     }
 
     public Vector3 getVelocity() {

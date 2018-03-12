@@ -7,10 +7,18 @@ public abstract class Component {
     protected Vector3 position;
     protected float width;
     protected float height;
+    protected float angle;
     public Component(){
         position = new Vector3(0, 0, 0);
         width = 0;
         height = 0;
+        angle = 0;
+    }
+    public void setAngle(float angle){
+        this.angle = angle % 360;
+    }
+    public float getAngle(){
+        return angle;
     }
     public void setWidth(float width){
         this.width = width;

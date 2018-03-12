@@ -17,6 +17,7 @@ public class CollisionBox {
 
     float width;
     float height;
+    float angle;
     CollisionShape collisionShape;
     CollisionMode collisionMode;
 
