@@ -1,34 +1,47 @@
-package com.mygdx.game.components.menucomponents;
+package com.mygdx.game.handlers.collision;
 
 import com.mygdx.game.components.Component;
+
 import java.util.Arrays;
 import java.util.Collections;
 
 public class BoundingBox {
 
-    float startX;
-    float startY;
-    float endX;
-    float endY;
-    Component component;
+    protected float startX;
+    protected float startY;
+    protected float endX;
+    protected float endY;
+    private Component component;
 
     public BoundingBox(Component component){
         this.component = component;
-    }
-
-    public BoundingBox get(){
         update();
-        return this;
     }
 
-    private void update(){
+    public boolean overlaps(BoundingBox other){
+        float d1x = other.startX - endX;
+        float d1y = other.startY - endY;
+        float d2x = startX - other.endX;
+        float d2y = startY - other.endY;
+        if (d1x > 0.0f || d1y > 0.0f){
+            return false;
+        }
+        else if (d2x > 0.0f || d2y > 0.0f){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+    public void update(){
         float x1 = component.getPosition().x;
         float y1 = component.getPosition().y;
         float x2 = component.getPosition().x + component.getWidth();
         float y2 = component.getPosition().y + component.getHeight();
         float xc = component.getPosition().x + component.getWidth()/2;
         float yc = component.getPosition().y + component.getHeight()/2;
-        float theta = component.getAngle();
+        float theta = (float) Math.toRadians(component.getAngle());
 
         Float[] x = new Float[4];
         Float[] y = new Float[4];
@@ -55,8 +68,8 @@ public class BoundingBox {
         tempY = y1 - yc;
         rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
         rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
-        x[4] = rotatedX + xc;
-        y[4] = rotatedY + yc;
+        x[3] = rotatedX + xc;
+        y[3] = rotatedY + yc;
 
         this.startX = Collections.min(Arrays.asList(x));
         this.startY = Collections.min(Arrays.asList(y));

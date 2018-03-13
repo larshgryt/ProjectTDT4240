@@ -2,11 +2,12 @@ package com.mygdx.game.components.actors;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.components.CollisionBox;
+import com.mygdx.game.handlers.collision.Collidable;
+import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.sprites.Sprite;
 
-public abstract class Actor extends Component {
+public abstract class Actor extends Component implements Collidable{
 
     private Vector3 velocity;
     private Vector3 acceleration;
@@ -21,8 +22,7 @@ public abstract class Actor extends Component {
         velocity = new Vector3(0, 0, 0);
         acceleration = new Vector3(0, 0,0);
         sprite = null;
-        collisionBox = new CollisionBox(CollisionBox.CollisionMode.NEVER,
-                CollisionBox.CollisionShape.RECTANGULAR, 0, 0);
+        collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
         rotatesOnMovement = false;
     }
 
