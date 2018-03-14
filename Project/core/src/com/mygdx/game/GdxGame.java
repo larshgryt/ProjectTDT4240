@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
 
@@ -15,14 +16,17 @@ public class GdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	GameStateManager gsm = GameStateManager.getInstance();
+	AudioService audioService = new AudioService();
 
 
-	
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		gsm.push(new MenuState());
+		audioService.create();
 	}
 
 	@Override

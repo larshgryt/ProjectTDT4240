@@ -2,16 +2,22 @@ package com.mygdx.game.audio;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 
 public class AudioService extends ApplicationAdapter{
 
-    Sound bgMusic;
+    private Music bgMusic;
 
     @Override
     public void create() {
-        bgMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
-        long id = bgMusic.loop();
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
+        bgMusic.play();
+        bgMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                bgMusic.play();
+            }
+        });
     }
 
     @Override
