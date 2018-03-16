@@ -13,7 +13,7 @@ public class Animation implements Sprite{
     private int frame;                  // The index of the current frame.
     private boolean horizontalFlip;     // Whether the animation should flip horizontally when rendered.
     private boolean verticalFlip;       // Whether the animation should flip vertically when rendered.
-    
+
     /* Creates a new animation using the given array of frames. */
     public Animation(Array<Texture> frames, float maxFrameTime){
         this.frames = frames;
