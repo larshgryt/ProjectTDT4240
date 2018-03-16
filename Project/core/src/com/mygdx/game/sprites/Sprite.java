@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public interface Sprite {
 
     void update(float dt);
-    void render(SpriteBatch sb);
+    void render(SpriteBatch sb, float x, float y, float width, float height);
     void dispose();
 
 }
