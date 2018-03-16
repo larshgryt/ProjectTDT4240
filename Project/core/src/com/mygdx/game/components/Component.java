@@ -47,8 +47,9 @@ public abstract class Component {
     public Vector3 getPosition(){
         return position;
     }
-
-
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
+    }
     public void update(float dt){
         boundingBox.update();
     }

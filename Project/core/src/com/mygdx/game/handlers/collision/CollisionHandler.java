@@ -75,6 +75,7 @@ public class CollisionHandler extends Handler {
             this.collidable = collidable;
             this.x = x;
             this.start = start;
+            collidable.getBoundingBox().update();
             if(start && x){
                 value = collidable.getBoundingBox().startX;
             }

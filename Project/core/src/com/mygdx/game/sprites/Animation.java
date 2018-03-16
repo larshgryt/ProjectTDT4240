@@ -64,10 +64,10 @@ public class Animation implements Sprite{
     dimensions.
      */
     @Override
-    public void render(SpriteBatch sb, float x, float y, float width, float height) {
-        sb.draw(getFrame(), x, y, width, height,
-                0, 0, getFrame().getWidth(), getFrame().getHeight(),
-                horizontalFlip, verticalFlip);
+    public void render(SpriteBatch sb, float x, float y, float width, float height, float angle) {
+        sb.draw(getFrame(), x, y, 0, 0, width, height, 1, 1,
+                (float) Math.toRadians(angle),0, 0, getFrame().getWidth(),
+                getFrame().getHeight(), horizontalFlip, verticalFlip);
     }
 
     @Override
@@ -89,6 +89,12 @@ public class Animation implements Sprite{
         for(Texture t: frames){
             t.dispose();
         }
+    }
+
+    @Override
+    public void reset(){
+        frame = 0;
+        currentFrameTime = 0;
     }
 }
 
