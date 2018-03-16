@@ -7,6 +7,8 @@ import java.util.Collections;
 
 public class BoundingBox {
 
+    /* Provides a non-rotated rectangle that contains the entire component */
+
     protected float startX;
     protected float startY;
     protected float endX;
@@ -34,6 +36,7 @@ public class BoundingBox {
         }
     }
 
+    // Updates the bounding box values from the values of the component.
     public void update(){
         float x1 = component.getPosition().x;
         float y1 = component.getPosition().y;

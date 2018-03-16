@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.handlers.collision.BoundingBox;
 
 public abstract class Component {
+
+    /* Standard class for containing the logic of items that will be rendered on screen.*/
+
     protected Vector3 position;
     protected float width;
     protected float height;

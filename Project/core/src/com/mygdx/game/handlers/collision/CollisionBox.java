@@ -4,6 +4,12 @@ import com.badlogic.gdx.math.Vector3;
 
 public class CollisionBox {
 
+    /* Collision boxes only have a collision mode. The position and size is retrieved from the
+    collidable which implements it.
+    The CollisionBox class was created to provide a standard logic for handling collision.
+    Collidables may however choose to implement their own.
+     */
+
     public enum CollisionMode{
         NEVER,      // Never collides with anything.
         ACTIVE,     // Collides with everything. Will yield to fixed and passive.
@@ -20,10 +26,10 @@ public class CollisionBox {
         this.collisionMode = mode;
     }
 
-    public boolean collidesWith(CollisionBox other){
-        return false;
-    }
-    public Vector3 collisionPoint(CollisionBox other){
+    /* Should return the impact point of collision for accurate collision handling and impulse
+    response. May be implemented later. */
+    public Vector3 impactPoint(CollisionBox other){
+        // CALCULATE IMPACT POINT HERE
         return new Vector3(0, 0,0);
     }
 
@@ -34,6 +40,8 @@ public class CollisionBox {
     public void setCollisionMode(CollisionMode collisionMode) {
         this.collisionMode = collisionMode;
     }
+
+    /* Checks whether two collision boxes may cause a collision response.*/
     public boolean isCollidable(Collidable other){
         CollisionMode otherMode = other.getCollisionBox().getCollisionMode();
         return(collisionMode != CollisionMode.NEVER && otherMode != CollisionMode.NEVER &&

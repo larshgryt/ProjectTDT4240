@@ -9,6 +9,10 @@ import com.mygdx.game.sprites.Sprite;
 
 public abstract class Actor extends Component implements Collidable{
 
+    /* Extends component, but in addition to a position it also has velocity, acceleration, a
+    sprite and a collisionBox.
+     */
+
     private Vector3 velocity;
     private Vector3 acceleration;
     private Sprite sprite;
@@ -26,6 +30,7 @@ public abstract class Actor extends Component implements Collidable{
         rotatesOnMovement = false;
     }
 
+    /* Whether the actor rotates in direction of the velocity. */
     public void setRotatesOnMovement(boolean r){
         this.rotatesOnMovement = r;
     }
