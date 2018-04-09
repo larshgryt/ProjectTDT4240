@@ -16,8 +16,6 @@ public class GdxGame extends ApplicationAdapter {
 	Texture img;
 	GameStateManager gsm = GameStateManager.getInstance();
 
-
-	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();

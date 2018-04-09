@@ -3,7 +3,7 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GdxGame;
-import com.mygdx.game.components.gamecomponents.Weapon;
+import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.components.menucomponents.Button;
 import com.mygdx.game.components.menucomponents.ImageComponent;
 import com.mygdx.game.components.menucomponents.TextInputField;
@@ -17,6 +17,7 @@ public class MenuState extends State {
 
     private String username;
     private TextLabel errorMessage;
+    AudioService audioService = new AudioService();
 
     public MenuState() {
         super();
@@ -50,6 +51,8 @@ public class MenuState extends State {
         addComponent(errorMessage);
 
         username = "Guest";
+
+        audioService.create();
     }
 
     private boolean isValid(String username){
