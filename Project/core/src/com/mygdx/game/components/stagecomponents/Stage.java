@@ -30,6 +30,13 @@ public abstract class Stage {
         this.backgroundTexture = texture;
     }
 
+    public void addStageComponent(StageComponent sc){
+        stageComponents.add(sc);
+    }
+    public void removeStageComponent(StageComponent sc){
+        stageComponents.remove(sc);
+    }
+
     public void update(float dt){
         for(StageComponent sc: stageComponents){
             sc.update(dt);
