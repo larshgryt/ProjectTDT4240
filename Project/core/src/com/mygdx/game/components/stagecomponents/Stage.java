@@ -13,6 +13,7 @@ public abstract class Stage {
     private Texture backgroundTexture;
     private float width;
     private float height;
+    private float gravity;
 
     public Stage(float width, float height){
         stageComponents = new ArrayList<StageComponent>();
@@ -24,6 +25,14 @@ public abstract class Stage {
         pixmap.dispose();
         this.width = width;
         this.height = height;
+        this.gravity = 1;
+    }
+
+    public void setGravity(float gravity){
+        this.gravity = gravity;
+    }
+    public float getGravity(){
+        return gravity;
     }
 
     public void setBackgroundTexture(Texture texture){
