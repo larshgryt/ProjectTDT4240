@@ -26,6 +26,8 @@ public class StageComponent extends Component implements Collidable {
         width = texture.getWidth();
         height = texture.getHeight();
     }
+
+    // Sets whether the component is collidable (fixed) or just decorative.
     public void setCollidable(boolean collidable){
         if(collidable){
             collisionBox.setCollisionMode(CollisionBox.CollisionMode.FIXED);
