@@ -6,6 +6,8 @@ import com.mygdx.game.components.Component;
 
 public class ImageComponent extends Component {
 
+    /* A component that shows an image on the screen. */
+
     Texture texture;
 
     public ImageComponent(Texture texture){

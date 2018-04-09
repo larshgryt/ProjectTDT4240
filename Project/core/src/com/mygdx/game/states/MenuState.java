@@ -8,6 +8,7 @@ import com.mygdx.game.components.menucomponents.Button;
 import com.mygdx.game.components.menucomponents.ImageComponent;
 import com.mygdx.game.components.menucomponents.TextInputField;
 import com.mygdx.game.components.menucomponents.TextLabel;
+import com.mygdx.game.components.actors.PlayerActor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
