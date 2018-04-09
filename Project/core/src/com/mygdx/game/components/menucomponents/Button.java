@@ -25,6 +25,9 @@ public class Button extends Component {
     private GlyphLayout glyphLayout;
 
     public Button(float width, float height){
+
+        /* A standard button component with click functionality */
+
         super();
         listeners = new ArrayList<ActionListener>();
         this.width = width;
@@ -38,9 +41,11 @@ public class Button extends Component {
         listeners.add(listener);
     }
 
+    /* Notifies all listeners that the button has been clicked */
     public void click(){
         for(ActionListener l: listeners){
-            l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Button clicked"));
+            l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+                    "Button clicked"));
         }
     }
 
@@ -75,6 +80,8 @@ public class Button extends Component {
         return text;
     }
 
+    /* Initiates the font, textures and glyphlayouts used for this class. They may be edited
+        later. */
     private void init(){
         font = new BitmapFont();
         font.setColor(Color.BLACK);
@@ -92,6 +99,7 @@ public class Button extends Component {
 
     @Override
     public void update(float dt) {
+        /* If input was a touch in the button area of the screen, call click method. */
         if(Gdx.input.justTouched()){
             float x = Gdx.input.getX();
             float y = GdxGame.HEIGHT - Gdx.input.getY();
@@ -103,10 +111,13 @@ public class Button extends Component {
 
     @Override
     public void render(SpriteBatch sb) {
+        // Render border
         sb.draw(borderTexture, position.x, position.y, width + borderWidth,
                 height + borderWidth);
+        // Background
         sb.draw(backgroundTexture, position.x + borderWidth, position.y + borderWidth,
                 width - borderWidth, height - borderWidth);
+        // Text
         font.draw(sb, glyphLayout, position.x + (width - glyphLayout.width)/2 ,
                 position.y + (height + glyphLayout.height)/2);
 

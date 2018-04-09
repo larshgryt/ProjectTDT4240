@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 
 public class TextInputField extends Component implements Input.TextInputListener {
 
+    /* A component that takes input to a text field. */
+
     private String text;
 
     private String title;
@@ -96,6 +98,7 @@ public class TextInputField extends Component implements Input.TextInputListener
         return hint;
     }
 
+    /* Initiates fonts, glyphlayout and textures used, so that they may be edited later. */
     private void init(){
         font = new BitmapFont();
         font.setColor(Color.BLACK);
@@ -113,6 +116,7 @@ public class TextInputField extends Component implements Input.TextInputListener
 
     @Override
     public void input(String text) {
+        /* Called whenever the input is changed. */
         setText(text);
         if(listener != null){
             listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, text));

@@ -52,6 +52,7 @@ public abstract class State {
     abstract void handleInput();
 
     public void update(float dt){
+        handleInput();
         for(Component component: components){
             component.update(dt);
         }

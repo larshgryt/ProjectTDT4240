@@ -9,6 +9,8 @@ import com.mygdx.game.components.Component;
 
 public class TextLabel extends Component {
 
+    /* A component that shows a text label on the sreen. */
+
     private String text;
     private GlyphLayout glyphLayout;
     private BitmapFont font;
