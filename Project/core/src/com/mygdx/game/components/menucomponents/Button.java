@@ -95,6 +95,7 @@ public class Button extends Component {
         borderTexture = new Texture(pixmap);
         glyphLayout = new GlyphLayout();
         glyphLayout.setText(font, text);
+        pixmap.dispose();
     }
 
     @Override
