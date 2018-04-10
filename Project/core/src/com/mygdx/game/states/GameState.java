@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.menucomponents.Button;
 import com.mygdx.game.components.menucomponents.Grid;
+import com.mygdx.game.components.menucomponents.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,27 +16,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameState extends State {
-    List<Texture> weaponTextures = new ArrayList<Texture>();
+    List<ImageButton> weaponTextures = new ArrayList<ImageButton>();
     Grid weaponGrid;
-    Button weaponButton;
+    ImageButton weaponButton;
     public GameState() {
 
         super();
 
-        Texture bazooka = new Texture("bazooka_temporary.png");
-        weaponTextures.add(bazooka);
+        ImageButton bazookaButton = new ImageButton(new Texture("bazooka_temporary.png"),"bazooka");
+        weaponTextures.add(bazookaButton);
 
         weaponGrid = new Grid(weaponTextures);
         weaponGrid.setPosition(-weaponGrid.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
 
-        weaponButton = new Button(30, 30);
-        weaponButton.setText("Bazooka");
+        weaponButton = new ImageButton(new Texture("bazooka.temporary.png"), "bazooka");
         weaponButton.setPosition(5, (GdxGame.HEIGHT - weaponButton.getHeight()));
-        weaponButton.setBorderWidth(2);
-        weaponButton.setFontColor(Color.WHITE);
-        weaponButton.setBackgroundColor(Color.BLACK);
-        weaponButton.setBorderColor(Color.BLACK);
+
         weaponButton.addActionListener(new WeaponButtonListener());
+        bazookaButton.addActionListener(new BazookaButtonListener());
+
+        addComponent(weaponButton);
+        addComponent(weaponGrid);
 
     }
 
@@ -81,6 +82,14 @@ public class GameState extends State {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             showOrHideWeaponGrid();
+        }
+
+    }
+    private class BazookaButtonListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            weaponButton.setTexture(new Texture("bazooka_temporary.png"));
+            //change weapon logic here
         }
 
     }
