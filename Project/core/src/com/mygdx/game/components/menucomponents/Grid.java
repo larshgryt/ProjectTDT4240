@@ -3,11 +3,13 @@ package com.mygdx.game.components.menucomponents;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.Component;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Grid extends Component{
 
-    private List<Texture> squares;
+    private ArrayList<Texture> squares;
     private float squareHeight;
     private float squareWidth;
     private int rowCount;
@@ -15,7 +17,11 @@ public class Grid extends Component{
 
 
     public Grid(List<Texture> textures){
-        squares = textures;
+        super();
+        squares = new ArrayList<Texture>();
+        for (Texture t : textures){
+            squares.add(t);
+        }
         squareWidth = squares.get(0).getWidth();
         squareHeight = squares.get(0).getHeight();
         int rest = squares.size()%4;
@@ -48,6 +54,10 @@ public class Grid extends Component{
         return squareWidth;
     }
 
+    public Texture getSquare(int pos){
+        return squares.get(pos);
+    }
+
     @Override
     public void render(SpriteBatch sb) {
         float gridX = position.x;
@@ -66,7 +76,7 @@ public class Grid extends Component{
     @Override
     public void dispose() {
         for (Texture t : squares){
-            dispose();
+            t.dispose();
         }
     }
 }
