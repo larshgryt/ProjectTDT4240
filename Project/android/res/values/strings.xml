@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">Project-TDT4240</string>
+    <string name="app_id" translatable="false">545059584311</string>
+    <string name="package_name" translatable="false">com.mygdx.game</string>
 
 </resources>
