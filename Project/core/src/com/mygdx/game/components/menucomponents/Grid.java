@@ -1,25 +1,30 @@
 package com.mygdx.game.components.menucomponents;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Grid extends Component{
 
-    private ArrayList<Texture> squares;
+    private ArrayList<ImageButton> squares;
     private float squareHeight;
     private float squareWidth;
     private int rowCount;
     private int columnCount;
 
 
-    public Grid(List<Texture> textures){
+    private ArrayList<ActionListener> listeners;
+
+    public Grid(List<ImageButton> buttons){
         super();
-        squares = new ArrayList<Texture>();
-        for (Texture t : textures){
+        squares = new ArrayList<ImageButton>();
+        for (ImageButton t : buttons){
             squares.add(t);
         }
         squareWidth = squares.get(0).getWidth();
@@ -38,14 +43,13 @@ public class Grid extends Component{
 
         }
         if(squares.size()<4){
-            width = textures.size()*squareWidth;
-            columnCount = textures.size();
+            width = buttons.size()*squareWidth;
+            columnCount = buttons.size();
             height = squareHeight;
         }
 
 
     }
-
     public float getSquareHeight() {
         return squareHeight;
     }
@@ -54,8 +58,19 @@ public class Grid extends Component{
         return squareWidth;
     }
 
-    public Texture getSquare(int pos){
+    public ImageButton getSquare(int pos){
         return squares.get(pos);
+    }
+
+    public void update(){
+        if(Gdx.input.justTouched()){
+            float posX = Gdx.input.getX();
+            float posY = GdxGame.HEIGHT - Gdx.input.getY();
+
+            if(posX > position.x && posX < position.x + width && posY > position.y && posY < position.y + height){
+
+            }
+        }
     }
 
     @Override
@@ -67,7 +82,7 @@ public class Grid extends Component{
                gridY =- squareHeight;
                gridX = position.x;
            }
-           sb.draw(squares.get(i),gridX,gridY,squareWidth,squareHeight);
+           sb.draw(squares.get(i).getTexture(),gridX,gridY,squareWidth,squareHeight);
            gridX =+ squareWidth;
         }
 
@@ -75,7 +90,7 @@ public class Grid extends Component{
 
     @Override
     public void dispose() {
-        for (Texture t : squares){
+        for (ImageButton t : squares){
             t.dispose();
         }
     }
