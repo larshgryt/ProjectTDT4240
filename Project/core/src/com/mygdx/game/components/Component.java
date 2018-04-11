@@ -13,13 +13,34 @@ public abstract class Component {
     protected float height;
     protected float angle;
     protected BoundingBox boundingBox;
+    protected boolean verticalFlip;
+    protected boolean horizontalFlip;
     public Component(){
         position = new Vector3(0, 0, 0);
         width = 0;
         height = 0;
         angle = 0;
         boundingBox = new BoundingBox(this);
+        verticalFlip = false;
+        horizontalFlip = false;
     }
+
+    public boolean isVerticalFlip() {
+        return verticalFlip;
+    }
+
+    public void setVerticalFlip(boolean verticalFlip) {
+        this.verticalFlip = verticalFlip;
+    }
+
+    public boolean isHorizontalFlip() {
+        return horizontalFlip;
+    }
+
+    public void setHorizontalFlip(boolean horizontalFlip) {
+        this.horizontalFlip = horizontalFlip;
+    }
+
     public void setAngle(float angle){
         this.angle = angle % 360;
     }
@@ -42,7 +63,7 @@ public abstract class Component {
         this.position = position;
     }
     public void setPosition(float x, float y){
-        this.position = new Vector3(x, y, 0);
+        position.set(x, y, 0);
     }
     public Vector3 getPosition(){
         return position;

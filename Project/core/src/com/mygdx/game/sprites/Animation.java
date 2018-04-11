@@ -34,6 +34,13 @@ public class Animation implements Sprite{
         verticalFlip = false;
     }
 
+    public float getWidth(){
+        return getFrame().getWidth();
+    }
+    public float getHeight(){
+        return getFrame().getHeight();
+    }
+
     public void setHorizontalFlip(boolean flip){
         horizontalFlip = flip;
     }
