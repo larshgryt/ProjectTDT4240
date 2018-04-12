@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;
@@ -19,12 +20,15 @@ public class StageComponent extends Component implements Collidable {
     private CollisionBox collisionBox;
 
     public StageComponent(int width, int height){
+        super();
         //Create a white background texture
         Pixmap pixmap = new Pixmap(width,height, Pixmap.Format.RGB888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         setTexture(new Texture(pixmap));
         pixmap.dispose();
+        this.width = width;
+        this.height = height;
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
     }
 
@@ -76,5 +80,35 @@ public class StageComponent extends Component implements Collidable {
     @Override
     public CollisionBox getCollisionBox() {
         return collisionBox;
+    }
+
+    @Override
+    public void setVelocity(Vector3 velocity) {
+        // StageComponent can not have velocity. May be added at a later point.
+    }
+
+    @Override
+    public void setVelocity(float x, float y) {
+
+    }
+
+    @Override
+    public void setAcceleration(float x, float y) {
+
+    }
+
+    @Override
+    public void setAcceleration(Vector3 acceleration) {
+
+    }
+
+    @Override
+    public Vector3 getAcceleration() {
+        return new Vector3(0,0,0);
+    }
+
+    @Override
+    public Vector3 getVelocity() {
+        return new Vector3(0, 0, 0);
     }
 }

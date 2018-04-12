@@ -1,5 +1,7 @@
 package com.mygdx.game.handlers.collision;
 
+import com.mygdx.game.components.Component;
+import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.handlers.Handler;
 
 import java.util.ArrayList;
@@ -54,11 +56,23 @@ public class CollisionHandler extends Handler {
 
     }
 
+    public void checkForCollisions(ArrayList<Component> components, Stage stage){
+        ArrayList<Collidable> collidables = new ArrayList<Collidable>(stage.getStageComponents());
+        for(Component c: components){
+            if(c instanceof Collidable){
+                collidables.add((Collidable)c);
+            }
+        }
+        checkForCollisions(collidables);
+    }
+
     // Narrow phase of collision detection between two collidables.
     private void handleCollision(Collidable c1, Collidable c2){
-        //Check whether the two collidables actually collide using their collision boxes.
-        if(c1.collidesWith(c2)){
-            // ADD COLLISION RESPONSE HERE
+        if(c1.getCollisionBox().isCollidable(c2)){
+            //Check whether the two collidables actually collide using their narrow collision boxes.
+            if(c1.collidesWith(c2)){
+                System.out.println("Collision");
+            }
         }
     }
 

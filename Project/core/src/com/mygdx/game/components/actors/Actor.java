@@ -54,8 +54,8 @@ public abstract class Actor extends Component implements Collidable{
         this.velocity = velocity;
     }
 
-    public void setVelocity(float x, float y, float z){
-        velocity.set(x, y, z);
+    public void setVelocity(float x, float y){
+        velocity.set(x, y, 0);
     }
 
     public Vector3 getAcceleration() {
@@ -66,8 +66,8 @@ public abstract class Actor extends Component implements Collidable{
         this.acceleration = acceleration;
     }
 
-    public void setAcceleration(float x, float y, float z){
-        acceleration.set(x, y, z);
+    public void setAcceleration(float x, float y){
+        acceleration.set(x, y, 0);
     }
 
     public Sprite getCurrentSprite() {

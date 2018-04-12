@@ -46,6 +46,9 @@ public abstract class Stage {
     public void removeStageComponent(StageComponent sc){
         stageComponents.remove(sc);
     }
+    public ArrayList<StageComponent> getStageComponents(){
+        return stageComponents;
+    }
 
     public void update(float dt){
         for(StageComponent sc: stageComponents){

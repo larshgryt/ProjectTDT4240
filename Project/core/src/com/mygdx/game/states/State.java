@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public abstract class State {
 
-    private ArrayList<Component> components;
+    protected ArrayList<Component> components;
 
     public State(){
         components = new ArrayList<Component>();

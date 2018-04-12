@@ -21,6 +21,10 @@ public class BoundingBox {
     }
 
     public boolean overlaps(BoundingBox other){
+        if(this == other){
+            return false;
+        }
+        update();
         float d1x = other.startX - endX;
         float d1y = other.startY - endY;
         float d2x = startX - other.endX;
@@ -32,6 +36,7 @@ public class BoundingBox {
             return false;
         }
         else{
+            System.out.println("Bounding box" + this.toString() + "overlaps with " + other.toString());
             return true;
         }
     }
@@ -77,7 +82,7 @@ public class BoundingBox {
         this.startX = Collections.min(Arrays.asList(x));
         this.startY = Collections.min(Arrays.asList(y));
         this.endX = Collections.max(Arrays.asList(x));
-        this.endY = Collections.max(Arrays.asList(x));
+        this.endY = Collections.max(Arrays.asList(y));
     }
 
 }
