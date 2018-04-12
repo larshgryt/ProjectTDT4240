@@ -11,13 +11,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ImageButton extends Component {
-    private ImageComponent image;
+    private Texture image;
     private String name;
     private ArrayList<ActionListener> listeners;
 
     public ImageButton(Texture texture, String name){
         super();
-        image = new ImageComponent(texture);
+        image = texture;
         this.name = name;
         listeners = new ArrayList<ActionListener>();
         width = image.getWidth();
@@ -49,11 +49,11 @@ public class ImageButton extends Component {
     }
 
     public Texture getTexture(){
-        return image.getTexture();
+        return image;
     }
 
     public void setTexture(Texture texture){
-        image.setTexture(texture);
+        image = texture;
     }
 
     public String getName() {
@@ -71,6 +71,6 @@ public class ImageButton extends Component {
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(image.getTexture(), image.getPosition().x, image.getPosition().y, width, height );
+        sb.draw(image, position.x, position.y, width, height );
     }
 }
