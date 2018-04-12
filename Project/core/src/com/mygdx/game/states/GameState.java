@@ -27,14 +27,20 @@ public class GameState extends State {
         weaponTextures.add(bazookaButton);
 
         weaponGrid = new Grid(weaponTextures);
-        weaponGrid.setPosition(-weaponGrid.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
+        weaponGrid.setPosition(weaponGrid.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
+        weaponGrid.positionGrid(false);
 
         weaponButton = new ImageButton(new Texture("bazooka.temporary.png"), "bazooka");
         weaponButton.setPosition(5, (GdxGame.HEIGHT - weaponButton.getHeight()));
 
+        ImageButton menuButton = new ImageButton(new Texture("menuButton.png"), "menuButton");
+        menuButton.setPosition(GdxGame.WIDTH-menuButton.getWidth()-5,GdxGame.HEIGHT-5);
+
         weaponButton.addActionListener(new WeaponButtonListener());
         bazookaButton.addActionListener(new BazookaButtonListener());
+        menuButton.addActionListener(new MenuButtonListener());
 
+        addComponent(menuButton);
         addComponent(weaponButton);
         addComponent(weaponGrid);
 
@@ -74,9 +80,6 @@ public class GameState extends State {
 
     }
 
-    public void dispose(){
-
-    }
     private class WeaponButtonListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -92,5 +95,12 @@ public class GameState extends State {
             //change weapon logic here
         }
 
+    }
+
+    private class MenuButtonListener implements  ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+
+        }
     }
 }
