@@ -47,8 +47,6 @@ public class Grid extends Component{
             columnCount = buttons.size();
             height = squareHeight;
         }
-
-
     }
     public float getSquareHeight() {
         return squareHeight;
@@ -61,6 +59,22 @@ public class Grid extends Component{
     public ImageButton getSquare(int pos){
         return squares.get(pos);
     }
+
+    public void positionGrid(boolean positive){
+        float c;
+        if(positive){c=1;}
+        else{c=-(2*width);}
+        float gridX = c*position.x;
+        float gridY= c*position.y;
+       for (int i = 0; i<squares.size(); i++){
+            if (i!=0 && i%4==0){
+                gridY =- squareHeight;
+                gridX = position.x;
+            }
+            squares.get(i).setPosition(gridX,gridY);
+            gridX =+ squareWidth;
+        }
+        }
 
     public void update(){
         if(Gdx.input.justTouched()){
@@ -78,11 +92,14 @@ public class Grid extends Component{
         float gridX = position.x;
         float gridY=position.y;
        for (int i = 0; i<squares.size(); i++){
+
            if (i!=0 && i%4==0){
                gridY =- squareHeight;
                gridX = position.x;
            }
-           sb.draw(squares.get(i).getTexture(),gridX,gridY,squareWidth,squareHeight);
+
+           squares.get(i).setPosition(gridX,gridY);
+           sb.draw(squares.get(i).getTexture(),squares.get(i).getPosition().x,squares.get(i).getPosition().y,squareWidth,squareHeight);
            gridX =+ squareWidth;
         }
 
