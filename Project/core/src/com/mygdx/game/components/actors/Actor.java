@@ -15,24 +15,27 @@ public abstract class Actor extends Component implements Collidable{
     sprite and a collisionBox.
      */
 
-    private Vector3 velocity;
-    private Vector3 acceleration;
-    private CollisionBox collisionBox;
+    protected Vector3 velocity;
+    protected Vector3 acceleration;
+    protected CollisionBox collisionBox;
 
-    // Enables an actor to keep several animations.
-    private ArrayList<Sprite> sprites;
+    // Enables an actor to keep several sprites.
+    protected ArrayList<Sprite> sprites;
 
-    // Contains the index of the active animation.
-    private int currentSprite;
+    // Contains the index of the active sprite.
+    protected int currentSprite;
 
-
-    private boolean rotatesOnMovement;
+    // Whether the angle is static (false) or given by the velocity direction (true).
+    protected boolean rotatesOnMovement;
 
     public Actor(){
         super();
         velocity = new Vector3(0, 0, 0);
         acceleration = new Vector3(0, 0,0);
+
+        // Sets collision mode to uncollidable by default.
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
+
         rotatesOnMovement = false;
         sprites = new ArrayList<Sprite>();
         currentSprite = 0;
@@ -51,12 +54,20 @@ public abstract class Actor extends Component implements Collidable{
         this.velocity = velocity;
     }
 
+    public void setVelocity(float x, float y, float z){
+        velocity.set(x, y, z);
+    }
+
     public Vector3 getAcceleration() {
         return acceleration;
     }
 
     public void setAcceleration(Vector3 acceleration) {
         this.acceleration = acceleration;
+    }
+
+    public void setAcceleration(float x, float y, float z){
+        acceleration.set(x, y, z);
     }
 
     public Sprite getCurrentSprite() {
@@ -97,8 +108,11 @@ public abstract class Actor extends Component implements Collidable{
             setAngle((float) Math.toDegrees((Math.acos(velocity.x/velocity.len()))));
         }
         if(getCurrentSprite() != null){
+            getCurrentSprite().setVerticalFlip(verticalFlip);
+            getCurrentSprite().setHorizontalFlip(horizontalFlip);
             getCurrentSprite().update(dt);
         }
+        boundingBox.update();
     }
 
     @Override

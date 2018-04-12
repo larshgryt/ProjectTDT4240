@@ -8,5 +8,9 @@ public interface Sprite {
     void render(SpriteBatch sb, float x, float y, float width, float height, float angle);
     void dispose();
     void reset();
+    float getWidth();
+    float getHeight();
+    void setHorizontalFlip(boolean flip);
+    void setVerticalFlip(boolean flip);
 
 }
