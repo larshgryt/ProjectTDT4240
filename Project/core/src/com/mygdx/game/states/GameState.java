@@ -42,10 +42,12 @@ public class GameState extends State {
 
     public void showOrHideWeaponGrid(){
         if (isVisible()){
-            weaponGrid.setPosition(-weaponGrid.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
+            weaponGrid.setPosition(weaponGrid.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
+            weaponGrid.positionGrid(false);
         }
         else {
             weaponGrid.setPosition(weaponButton.getPosition().x + weaponButton.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
+            weaponGrid.positionGrid(true);
         }
     }
 
@@ -60,9 +62,6 @@ public class GameState extends State {
     public void handleInput() {
         int posX = Gdx.input.getX();
         int posY = -Gdx.input.getY() + GdxGame.HEIGHT;
-
-
-
     }
 
     @Override
@@ -89,6 +88,7 @@ public class GameState extends State {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             weaponButton.setTexture(new Texture("bazooka_temporary.png"));
+            showOrHideWeaponGrid();
             //change weapon logic here
         }
 
