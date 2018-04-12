@@ -57,5 +57,20 @@ public class GameHandler extends Handler {
         else players.get(number).setHealth(pHealth - damage);
     }
 
+    // Sets velocity on active player actor. Direction= true is right movement. False is left movement.
+    // Call on movement button touch
+    public void playerMove(boolean direction){
+        int velocity;
+        if (direction) velocity = 5;
+        else velocity = -5;
+
+        this.activePlayer.setVelocity(velocity,0,0);
+    }
+
+    // Stops player movement. Call on touch stop
+    public void stopMove(){
+        this.activePlayer.setVelocity(0,0,0);
+    }
+
 
 }
