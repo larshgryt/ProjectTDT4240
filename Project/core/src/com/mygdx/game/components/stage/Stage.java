@@ -1,9 +1,10 @@
-package com.mygdx.game.components.stagecomponents;
+package com.mygdx.game.components.stage;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 
 import java.util.ArrayList;
 
@@ -11,8 +12,8 @@ public abstract class Stage {
 
     private ArrayList<StageComponent> stageComponents;
     private Texture backgroundTexture;
-    private float width;
-    private float height;
+    protected float width;
+    protected float height;
     private float gravity;
 
     public Stage(float width, float height){

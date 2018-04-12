@@ -1,5 +1,7 @@
-package com.mygdx.game.components.stagecomponents;
+package com.mygdx.game.components.stage.stagecomponents;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.Component;
@@ -15,6 +17,16 @@ public class StageComponent extends Component implements Collidable {
 
     private Texture texture;
     private CollisionBox collisionBox;
+
+    public StageComponent(int width, int height){
+        //Create a white background texture
+        Pixmap pixmap = new Pixmap(width,height, Pixmap.Format.RGB888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        setTexture(new Texture(pixmap));
+        pixmap.dispose();
+        collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
+    }
 
     public StageComponent(Texture texture){
         setTexture(texture);
