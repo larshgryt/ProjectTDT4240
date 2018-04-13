@@ -76,6 +76,7 @@ public class MenuState extends State {
             if(isValid(username)){
                 errorMessage.setText("");
                 System.out.println("Username " + username + " entered.");
+                GameStateManager.getInstance().set(new GameState());
             }
             else{
                 errorMessage.setText("Invalid username was entered.");

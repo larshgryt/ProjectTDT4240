@@ -42,10 +42,10 @@ public abstract class Component {
     }
 
     public void setAngle(float angle){
-        this.angle = angle % 360;
+        this.angle = (float) Math.toRadians(angle);
     }
     public float getAngle(){
-        return angle;
+        return (float)Math.toDegrees(angle);
     }
     public void setWidth(float width){
         this.width = width;

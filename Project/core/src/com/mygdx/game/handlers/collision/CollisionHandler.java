@@ -1,12 +1,14 @@
 package com.mygdx.game.handlers.collision;
 
+import com.mygdx.game.components.Component;
+import com.mygdx.game.components.stage.Stage;
+import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.Handler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class CollisionHandler extends Handler {
-
 
     /* Uses sort and sweep algorithm to traverse through component array and check for possible
     collision. This is the broad phrase of collision detection. */
@@ -54,12 +56,143 @@ public class CollisionHandler extends Handler {
 
     }
 
+    public void checkForCollisions(ArrayList<Component> components, Stage stage){
+        ArrayList<Collidable> collidables = new ArrayList<Collidable>(stage.getStageComponents());
+        for(Component c: components){
+            if(c instanceof Collidable){
+                collidables.add((Collidable) c);
+            }
+        }
+        checkForCollisions(collidables);
+    }
+
     // Narrow phase of collision detection between two collidables.
     private void handleCollision(Collidable c1, Collidable c2){
-        //Check whether the two collidables actually collide using their collision boxes.
-        if(c1.collidesWith(c2)){
-            // ADD COLLISION RESPONSE HERE
+        if(c1.getCollisionBox().isCollidable(c2)){
+            //Check whether the two collidables actually collide using their narrow collision boxes.
+            if(c1.collidesWith(c2)){
+                if(c1.getCollisionBox().yieldsTo(c2) || c2.getCollisionBox().yieldsTo(c1)){
+                    collide(c1, c1.getCollisionBox().yieldsTo(c2), c2, c2.getCollisionBox().yieldsTo(c1));
+                }
+            }
         }
+    }
+
+    // Separates the two collidables so that they no longer touch
+    public void collide(Collidable c1, boolean yields1, Collidable c2, boolean yields2){
+
+        if(!yields1 && !yields2){
+            return;
+        }
+
+        // Check how many pixels the two collidables penetrate on each axis
+        float xPenetration = Math.abs(Math.max(c1.getPosition().x, c2.getPosition().x)
+                - Math.min(c1.getPosition().x+c1.getWidth(), c2.getPosition().x+c2.getWidth()));
+        float yPenetration = Math.abs(Math.max(c1.getPosition().y, c2.getPosition().y)
+                - Math.min(c1.getPosition().y+c1.getHeight(), c2.getPosition().y+c2.getHeight()));
+
+        // Each collidables step value for backing off
+        float x1 = 0;
+        float y1 = 0;
+        float x2 = 0;
+        float y2 = 0;
+
+        // Checks whether the collision is horizontal or vertical
+        if(xPenetration < yPenetration){
+            // Horizontal collision
+            if(c1.getPosition().x < c2.getPosition().x){
+                // c1 on the left, c2 on the right
+                if(yields1){
+                    x1 = -1;
+                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                        c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
+                    }
+                    else{
+                        c1.setVelocity(0, c1.getVelocity().y);
+                    }
+                }
+                if(yields2){
+                    x2 = 1;
+                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                        c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
+                    }
+                    else{
+                        c2.setVelocity(0, c2.getVelocity().y);
+                    }
+                }
+            }
+            else{
+                // c2 on the left, c1 on the right
+                if(yields1){
+                    x1 = 1;
+                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                        c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
+                    }
+                    else{
+                        c1.setVelocity(0, c1.getVelocity().y);
+                    }
+                }
+                if(yields2){
+                    x2 = -1;
+                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                        c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
+                    }
+                    else{
+                        c2.setVelocity(0, c2.getVelocity().y);
+                    }
+                }
+            }
+        }
+        else{
+            // Vertical collision
+            if(c1.getPosition().y < c2.getPosition().y){
+                // c1 on the bottom, c2 on the top
+                if(yields1){
+                    y1 = -1;
+                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                        c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
+                    }
+                    else{
+                        c1.setVelocity(c1.getVelocity().x, 0);
+                    }
+                }
+                if(yields2){
+                    y2 = 1;
+                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                        c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
+                    }
+                    else{
+                        c2.setVelocity(c2.getVelocity().x, 0);
+                    }
+                }
+            }
+            else{
+                // c2 on the bottom, c1 on the top
+                if(yields1){
+                    y1 = 1;
+                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                        c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
+                    }
+                    else{
+                        c1.setVelocity(c1.getVelocity().x, 0);
+                    }
+                }
+                if(yields2){
+                    y2 = -1;
+                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                        c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
+                    }
+                    else{
+                        c2.setVelocity(c2.getVelocity().x, 0);
+                    }
+                }
+            }
+        }
+        while(c1.getBoundingBox().overlaps(c2.getBoundingBox())){
+            c1.setPosition(c1.getPosition().x + x1, c1.getPosition().y + y1);
+            c2.setPosition(c2.getPosition().x + x2, c2.getPosition().y + y2);
+        }
+
     }
 
 

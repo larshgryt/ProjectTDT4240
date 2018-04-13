@@ -1,18 +1,24 @@
-package com.mygdx.game.components.stagecomponents;
+package com.mygdx.game.components.stage;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.components.actors.Actor;
+import com.mygdx.game.components.stage.stagecomponents.StageComponent;
+import com.mygdx.game.handlers.collision.CollisionBox;
 
 import java.util.ArrayList;
 
 public abstract class Stage {
 
+    // A class containing a background and a set of rigid, non-moving objects.
+
+    public static float DEFAULT_GRAVITY = -981;
     private ArrayList<StageComponent> stageComponents;
     private Texture backgroundTexture;
-    private float width;
-    private float height;
+    protected float width;
+    protected float height;
     private float gravity;
 
     public Stage(float width, float height){
@@ -25,7 +31,25 @@ public abstract class Stage {
         pixmap.dispose();
         this.width = width;
         this.height = height;
-        this.gravity = 1;
+        this.gravity = DEFAULT_GRAVITY;
+    }
+
+    // Applies gravity to an actor unless it's standing on top of a solid stage component.
+    public void applyGravityToActor(Actor actor){
+        for(StageComponent sc: stageComponents){
+            if(sc.getCollisionBox().getCollisionMode() != CollisionBox.CollisionMode.NEVER &&
+                    actor.getPosition().y < sc.getPosition().y + sc.getHeight() + 2 &&
+                    actor.getPosition().y > sc.getPosition().y + sc.getHeight() &&
+                    actor.getPosition().x > sc.getPosition().x &&
+                    actor.getPosition().x < sc.getPosition().x + sc.getWidth() &&
+                    (!actor.bounces() ||
+                            Math.abs(actor.getVelocity().y) < actor.getBounceThreshold().y)){
+                actor.setAcceleration(actor.getAcceleration().x, 0);
+                actor.setVelocity(actor.getVelocity().x * sc.getFriction(), 0);
+                return;
+            }
+        }
+        actor.setAcceleration(actor.getAcceleration().x, getGravity());
     }
 
     public void setGravity(float gravity){
@@ -44,6 +68,9 @@ public abstract class Stage {
     }
     public void removeStageComponent(StageComponent sc){
         stageComponents.remove(sc);
+    }
+    public ArrayList<StageComponent> getStageComponents(){
+        return stageComponents;
     }
 
     public void update(float dt){

@@ -1,6 +1,7 @@
 package com.mygdx.game.components.actors;
 
 import com.mygdx.game.components.gamecomponents.Weapon;
+import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.PenguinAnimation;
 
 public class PlayerActor extends Actor {
@@ -18,10 +19,24 @@ public class PlayerActor extends Actor {
         this.health = maxHealth;
         this.weapon = initialWeapon;
         this.penguin = penguin;
+        collisionBox.setCollisionMode(CollisionBox.CollisionMode.ACTIVE);
         if(penguin){
-            setWidth(64);
-            setHeight(80);
+            setWidth(32);
+            setHeight(40);
             addSprite(new PenguinAnimation(100));
+        }
+        setRotatesOnMovement(false);
+        bounces = true;
+    }
+
+    @Override
+    public void setVelocity(float x, float y){
+        super.setVelocity(x, y);
+        if(x < 0){
+            setHorizontalFlip(true);
+        }
+        else{
+            setHorizontalFlip(false);
         }
     }
 

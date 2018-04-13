@@ -11,8 +11,8 @@ public class CollisionBox {
      */
 
     public enum CollisionMode{
-        NEVER,      // Never collides with anything.
-        ACTIVE,     // Collides with everything. Will yield to fixed and passive.
+        NEVER,      // Never collides with anything. Yields to nothing.
+        ACTIVE,     // Collides with everything. Will yield to fixed, passive and active.
         PASSIVE,    // Collides with everything but other passives. Will yield to fixed and active.
         LITE,       // Collides with everything. Yields to everything.
         FIXED       // Collides with everything. Yields to nothing.
@@ -45,11 +45,15 @@ public class CollisionBox {
     public boolean isCollidable(Collidable other){
         CollisionMode otherMode = other.getCollisionBox().getCollisionMode();
         return(collisionMode != CollisionMode.NEVER && otherMode != CollisionMode.NEVER &&
-                !(collisionMode == CollisionMode.PASSIVE && otherMode == CollisionMode.PASSIVE));
+                !(collisionMode == CollisionMode.PASSIVE && otherMode == CollisionMode.PASSIVE) &&
+            collidable != other);
     }
 
     // Checks for collision using the separating axis theorem
     public boolean collidesWith(Collidable other){
+        if(collidable == other){
+            return false;
+        }
         Vector3 pA = new Vector3(collidable.getPosition().x + collidable.getWidth()/2,
                 collidable.getPosition().y + collidable.getHeight()/2, 0);
         Vector3 xA = new Vector3(1, 0, 0).rotate(collidable.getAngle(), 1, 0, 0);
@@ -79,5 +83,23 @@ public class CollisionBox {
             }
         }
         return true;
+    }
+    public boolean yieldsTo(Collidable other){
+        if(isCollidable(other) && collisionMode != CollisionMode.FIXED){
+            if(collisionMode == other.getCollisionBox().collisionMode ||
+                    collisionMode == CollisionMode.LITE ||
+                    other.getCollisionBox().collisionMode == CollisionMode.FIXED){
+                return true;
+            }
+            else if(other.getCollisionBox().collisionMode != CollisionMode.LITE){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
     }
 }
