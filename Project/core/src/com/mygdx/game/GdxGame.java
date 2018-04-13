@@ -21,7 +21,7 @@ public class GdxGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		gsm.push(new GameState());
+		gsm.push(new MenuState());
 	}
 
 	@Override
