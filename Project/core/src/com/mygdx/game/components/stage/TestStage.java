@@ -5,6 +5,8 @@ import com.mygdx.game.components.stage.stagecomponents.Snow;
 
 public class TestStage extends Stage {
 
+    // A stage made for testing and demonstrating collision and gravity.
+
     public TestStage(){
         super(1000, 400);
         setBackgroundTexture(new Texture("sky.jpg"));

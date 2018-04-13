@@ -6,11 +6,10 @@ import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.actors.PlayerActor;
 import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.components.stage.TestStage;
-import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionHandler;
 
-import java.util.ArrayList;
 
+// In-game state. Requires a stage and a collision handler.
 public class GameState extends State {
 
     private Stage stage;

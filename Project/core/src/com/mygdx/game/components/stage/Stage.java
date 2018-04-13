@@ -6,12 +6,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.stage.stagecomponents.StageComponent;
-import com.mygdx.game.handlers.collision.Collidable;
+import com.mygdx.game.handlers.collision.CollisionBox;
 
 import java.util.ArrayList;
 
 public abstract class Stage {
 
+    // A class containing a background and a set of rigid, non-moving objects.
+
+    public static float DEFAULT_GRAVITY = -981;
     private ArrayList<StageComponent> stageComponents;
     private Texture backgroundTexture;
     protected float width;
@@ -28,12 +31,14 @@ public abstract class Stage {
         pixmap.dispose();
         this.width = width;
         this.height = height;
-        this.gravity = -981;
+        this.gravity = DEFAULT_GRAVITY;
     }
 
+    // Applies gravity to an actor unless it's standing on top of a solid stage component.
     public void applyGravityToActor(Actor actor){
         for(StageComponent sc: stageComponents){
-            if(actor.getPosition().y < sc.getPosition().y + sc.getHeight() + 2 &&
+            if(sc.getCollisionBox().getCollisionMode() != CollisionBox.CollisionMode.NEVER &&
+                    actor.getPosition().y < sc.getPosition().y + sc.getHeight() + 2 &&
                     actor.getPosition().y > sc.getPosition().y + sc.getHeight() &&
                     actor.getPosition().x > sc.getPosition().x &&
                     actor.getPosition().x < sc.getPosition().x + sc.getWidth() &&
