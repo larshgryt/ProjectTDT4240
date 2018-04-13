@@ -64,12 +64,12 @@ public class GameHandler extends Handler {
         if (direction) velocity = 5;
         else velocity = -5;
 
-        this.activePlayer.setVelocity(velocity,0,0);
+        this.activePlayer.setVelocity(velocity,0);
     }
 
     // Stops player movement. Call on touch stop
     public void stopMove(){
-        this.activePlayer.setVelocity(0,0,0);
+        this.activePlayer.setVelocity(0,0);
     }
 
 
