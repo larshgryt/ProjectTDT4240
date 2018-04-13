@@ -2,15 +2,13 @@ package com.mygdx.game.handlers.collision;
 
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.stage.Stage;
+import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.Handler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class CollisionHandler extends Handler {
-
-    private static float BOUNCE_THRESHOLD = 98.1f;
-
 
     /* Uses sort and sweep algorithm to traverse through component array and check for possible
     collision. This is the broad phrase of collision detection. */
@@ -62,7 +60,7 @@ public class CollisionHandler extends Handler {
         ArrayList<Collidable> collidables = new ArrayList<Collidable>(stage.getStageComponents());
         for(Component c: components){
             if(c instanceof Collidable){
-                collidables.add((Collidable)c);
+                collidables.add((Collidable) c);
             }
         }
         checkForCollisions(collidables);

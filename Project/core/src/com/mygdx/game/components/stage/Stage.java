@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.stage.stagecomponents.StageComponent;
+import com.mygdx.game.handlers.collision.Collidable;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,22 @@ public abstract class Stage {
         this.width = width;
         this.height = height;
         this.gravity = -981;
+    }
+
+    public void applyGravityToActor(Actor actor){
+        for(StageComponent sc: stageComponents){
+            if(actor.getPosition().y < sc.getPosition().y + sc.getHeight() + 2 &&
+                    actor.getPosition().y > sc.getPosition().y + sc.getHeight() &&
+                    actor.getPosition().x > sc.getPosition().x &&
+                    actor.getPosition().x < sc.getPosition().x + sc.getWidth() &&
+                    (!actor.bounces() ||
+                            Math.abs(actor.getVelocity().y) < actor.getBounceThreshold().y)){
+                actor.setAcceleration(actor.getAcceleration().x, 0);
+                actor.setVelocity(actor.getVelocity().x * sc.getFriction(), 0);
+                return;
+            }
+        }
+        actor.setAcceleration(actor.getAcceleration().x, getGravity());
     }
 
     public void setGravity(float gravity){

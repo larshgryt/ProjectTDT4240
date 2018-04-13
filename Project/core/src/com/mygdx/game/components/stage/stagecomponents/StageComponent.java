@@ -18,6 +18,7 @@ public class StageComponent extends Component implements Collidable {
 
     private Texture texture;
     private CollisionBox collisionBox;
+    protected float friction;       // A sliding actors velocity is multiplied by the friction
 
     public StageComponent(int width, int height){
         super();
@@ -30,6 +31,7 @@ public class StageComponent extends Component implements Collidable {
         this.width = width;
         this.height = height;
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
+        friction = 0.95f;
     }
 
     public StageComponent(Texture texture){
@@ -124,5 +126,11 @@ public class StageComponent extends Component implements Collidable {
     @Override
     public Vector3 getBounceThreshold() {
         return new Vector3(1000, 1000, 1000);
+    }
+    public float getFriction(){
+        return friction;
+    }
+    public void setFriction(float friction){
+        this.friction = friction;
     }
 }
