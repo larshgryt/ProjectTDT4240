@@ -1,5 +1,8 @@
 package com.mygdx.game.components.actors;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.components.gamecomponents.TestBazooka;
 import com.mygdx.game.components.gamecomponents.Weapon;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.PenguinAnimation;
@@ -10,6 +13,7 @@ public class PlayerActor extends Actor {
     private float maxHealth;
     private float health;
     private Weapon weapon;
+    private Vector3 holdingPoint;   // Holding point relative to the player's coordinates.
     private boolean penguin;
 
     public PlayerActor(String username, float maxHealth, Weapon initialWeapon, boolean penguin){
@@ -27,6 +31,8 @@ public class PlayerActor extends Actor {
         }
         setRotatesOnMovement(false);
         bounces = true;
+        holdingPoint = new Vector3(position.x + width/2, position.y + height/2, 0);
+        setWeapon(new TestBazooka());
     }
 
     @Override
@@ -78,5 +84,38 @@ public class PlayerActor extends Actor {
 
     public void setPenguin(boolean penguin) {
         this.penguin = penguin;
+    }
+
+    @Override
+    public void setAngle(float angle){
+        double theta = Math.toRadians(angle) - getAngle();
+        double newX = holdingPoint.x * Math.cos(theta) - holdingPoint.y * Math.sin(theta);
+        double newY = holdingPoint.x * Math.sin(theta) + holdingPoint.y * Math.cos(theta);
+        holdingPoint.set((float)newX, (float)newY, 0);
+        super.setAngle(angle);
+        weapon.setAngle(angle);
+    }
+
+    @Override
+    public void render(SpriteBatch sb){
+        super.render(sb);
+        if(weapon != null){
+            weapon.render(sb);
+        }
+    }
+
+    @Override
+    public void update(float dt){
+
+        weapon.setPosition(position.x + holdingPoint.x, position.y + holdingPoint.y);
+        weapon.setHorizontalFlip(horizontalFlip);
+        weapon.setVerticalFlip(verticalFlip);
+        if(horizontalFlip){
+            weapon.setPosition(weapon.getPosition().x - weapon.getWidth(), weapon.getPosition().y);
+        }
+        if(verticalFlip){
+            weapon.setPosition(weapon.getPosition().x, weapon.getPosition().y - weapon.getHeight());
+        }
+        super.update(dt);
     }
 }
