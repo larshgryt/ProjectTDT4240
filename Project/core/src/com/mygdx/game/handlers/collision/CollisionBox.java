@@ -82,8 +82,6 @@ public class CollisionBox {
                 return false;
             }
         }
-        System.out.println("Collision box " + this.toString() + " collides with " +
-        other.getCollisionBox().toString());
         return true;
     }
     public boolean yieldsTo(Collidable other){

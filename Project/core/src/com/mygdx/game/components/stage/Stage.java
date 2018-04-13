@@ -26,7 +26,7 @@ public abstract class Stage {
         pixmap.dispose();
         this.width = width;
         this.height = height;
-        this.gravity = 1;
+        this.gravity = -981;
     }
 
     public void setGravity(float gravity){

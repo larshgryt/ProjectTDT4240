@@ -21,11 +21,12 @@ public class PlayerActor extends Actor {
         this.penguin = penguin;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.ACTIVE);
         if(penguin){
-            setWidth(64);
-            setHeight(80);
+            setWidth(32);
+            setHeight(40);
             addSprite(new PenguinAnimation(100));
         }
         setRotatesOnMovement(false);
+        bounces = true;
     }
 
     @Override

@@ -18,6 +18,9 @@ public abstract class Actor extends Component implements Collidable{
     protected Vector3 velocity;
     protected Vector3 acceleration;
     protected CollisionBox collisionBox;
+    protected boolean bounces;          // Whether the actor bounces on collision
+    protected Vector3 elasticity;       // Velocity is multiplied by elasticity on collision bounce
+    protected Vector3 bounceThreshold; // Minimum velocity required to bounce insted of stopping on collision
 
     // Enables an actor to keep several sprites.
     protected ArrayList<Sprite> sprites;
@@ -39,6 +42,9 @@ public abstract class Actor extends Component implements Collidable{
         rotatesOnMovement = false;
         sprites = new ArrayList<Sprite>();
         currentSprite = 0;
+        bounces = false;
+        elasticity = new Vector3(0.8f, 0.5f, 0);
+        bounceThreshold = new Vector3(30, 30,0);
     }
 
     /* Whether the actor rotates in direction of the velocity. */
@@ -105,7 +111,7 @@ public abstract class Actor extends Component implements Collidable{
         position.add(velocity.x*dt, velocity.y*dt, velocity.z*dt);
         velocity.add(acceleration.x*dt, acceleration.y*dt, acceleration.z*dt);
         if(rotatesOnMovement){
-            setAngle((float) Math.toDegrees((Math.acos(velocity.x/velocity.len()))));
+            setAngle((float) Math.acos(velocity.x/velocity.len()));
         }
         if(getCurrentSprite() != null){
             getCurrentSprite().setVerticalFlip(verticalFlip);
@@ -122,12 +128,6 @@ public abstract class Actor extends Component implements Collidable{
         }
     }
 
-    public void render(SpriteBatch sb, float width, float height, float angle){
-        if(getCurrentSprite() != null){
-            getCurrentSprite().render(sb, position.x, position.y, width, height, angle);
-        }
-    }
-
     @Override
     public void dispose() {
         for(Sprite sprite: sprites){
@@ -138,5 +138,24 @@ public abstract class Actor extends Component implements Collidable{
     @Override
     public boolean collidesWith(Collidable other) {
         return getCollisionBox().collidesWith(other);
+    }
+
+    @Override
+    public boolean bounces(){
+        return bounces;
+    }
+    public void setElasticity(float x, float y){
+        elasticity.set(x, y, 0);
+    }
+    @Override
+    public Vector3 getElasticity(){
+        return elasticity;
+    }
+    public void setBounceThreshold(float x, float y){
+        bounceThreshold.set(x, y, 0);
+    }
+    @Override
+    public Vector3 getBounceThreshold(){
+        return bounceThreshold;
     }
 }

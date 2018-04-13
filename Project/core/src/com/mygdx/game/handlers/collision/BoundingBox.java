@@ -36,7 +36,6 @@ public class BoundingBox {
             return false;
         }
         else{
-            System.out.println("Bounding box" + this.toString() + "overlaps with " + other.toString());
             return true;
         }
     }

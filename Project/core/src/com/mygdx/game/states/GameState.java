@@ -18,14 +18,13 @@ public class GameState extends State {
         PlayerActor player = new PlayerActor("username", 100, null, true );
         player.setPosition(200, 200);
         player.setVelocity(10, 10);
-        player.setAcceleration(0, -10);
-        player.setAngle((float) (Math.PI / 2));
+        player.setAcceleration(0, stage.getGravity());
         addComponent(player);
 
         PlayerActor otherplayer = new PlayerActor("username", 100, null, true );
         otherplayer.setPosition(350, 400);
         otherplayer.setVelocity(-20, 10);
-        otherplayer.setAcceleration(0, -10);
+        otherplayer.setAcceleration(0, stage.getGravity());
         addComponent(otherplayer);
     }
 

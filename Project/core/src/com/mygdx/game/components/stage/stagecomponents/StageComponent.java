@@ -111,4 +111,18 @@ public class StageComponent extends Component implements Collidable {
     public Vector3 getVelocity() {
         return new Vector3(0, 0, 0);
     }
+
+    @Override
+    public boolean bounces() {
+        return false;
+    }
+
+    @Override
+    public Vector3 getElasticity() {
+        return new Vector3(0, 0, 0);
+    }
+    @Override
+    public Vector3 getBounceThreshold() {
+        return new Vector3(1000, 1000, 1000);
+    }
 }
