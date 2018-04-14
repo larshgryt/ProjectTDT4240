@@ -34,7 +34,6 @@ public abstract class Projectile extends Actor {
         projectile.setPosition(x, y);
         double theta = Math.toRadians(angle);
         projectile.setVelocity(velocity * (float)Math.cos(theta), velocity * (float) Math.sin(theta));
-        System.out.println(angle);
         return projectile;
     }
 
