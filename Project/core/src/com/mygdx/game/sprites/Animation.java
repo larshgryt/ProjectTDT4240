@@ -72,8 +72,15 @@ public class Animation implements Sprite{
      */
     @Override
     public void render(SpriteBatch sb, float x, float y, float width, float height, float angle) {
-        sb.draw(getFrame(), x, y, 0, 0, width, height, 1, 1,
-                angle,0, 0, getFrame().getWidth(),
+        sb.draw(getFrame(), x, y, width/2, height/2, width, height, 1, 1,
+                (float)Math.toDegrees(angle),0, 0, getFrame().getWidth(),
+                getFrame().getHeight(), horizontalFlip, verticalFlip);
+    }
+
+    @Override
+    public void render(SpriteBatch sb, float x, float y, float width, float height, float angle, float originX, float originY) {
+        sb.draw(getFrame(), x, y, originX, originY, width, height, 1, 1,
+                (float)Math.toDegrees(angle),0, 0, getFrame().getWidth(),
                 getFrame().getHeight(), horizontalFlip, verticalFlip);
     }
 

@@ -22,11 +22,15 @@ public class GameState extends State {
         PlayerActor player = new PlayerActor("username", 100, null, true );
         player.setPosition(200, 300);
         player.setVelocity(40, 10);
+        player.setAngle(90);
+        //player.setVerticalFlip(true);
+        player.getWeapon().setAim(30);
         addComponent(player);
 
         PlayerActor otherplayer = new PlayerActor("username", 100, null, true );
         otherplayer.setPosition(350, 400);
         otherplayer.setVelocity(-30, 10);
+        otherplayer.getWeapon().setAim(-30);
         addComponent(otherplayer);
     }
 

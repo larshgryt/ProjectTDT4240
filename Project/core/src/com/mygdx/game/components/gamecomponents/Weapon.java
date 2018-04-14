@@ -14,13 +14,10 @@ public abstract class Weapon extends Component {
 
     private Projectile projectile;
     private Sprite sprite;
+    protected float originX;    // The x-coordinate which will be placed in the holding point.
+    protected float originY;    // The y-coordinate which will be placed in the holding point.
+    protected float aimAngle;   // The angle at which the weapon is aimed, relative to its original angle.
 
-    public Weapon(Sprite sprite, Projectile projectile){
-        this.sprite = sprite;
-        this.projectile = projectile;
-        width = sprite.getWidth();
-        height = sprite.getHeight();
-    }
     public Weapon(int width, int height, Projectile projectile){
         Animation sprite = new Animation(100);
         //Create a white texture
@@ -35,10 +32,28 @@ public abstract class Weapon extends Component {
         this.height = sprite.getHeight();
     }
 
+    public void setAim(float angle){
+        this.aimAngle = (float)Math.toRadians(angle);
+    }
+    public float getAim(){
+        return (float)Math.toDegrees(aimAngle);
+    }
+
     public void setSprite(Sprite sprite){
         this.sprite = sprite;
-        this.width = sprite.getWidth();
-        this.height = sprite.getHeight();
+    }
+
+    public float getOriginX(){
+        return originX;
+    }
+    public void setOriginX(float originX){
+        this.originX = originX;
+    }
+    public float getOriginY(){
+        return originY;
+    }
+    public void setOriginY(float originY){
+        this.originY = originY;
     }
 
     public void setProjectile(Projectile projectile){
@@ -50,8 +65,43 @@ public abstract class Weapon extends Component {
     @Override
     public void render(SpriteBatch sb) {
         if(sprite != null){
-            sprite.render(sb, position.x, position.y, width, height, angle);
+            float a = angle;
+            float x = position.x;
+            float y = position.y;
+            float w = width;
+            float h = height;
+            float a1 = 1;
+            float ox = originX;
+            float oy = originY;
+            if(horizontalFlip){
+                w *= -1;
+                x += originX;
+                ox *= -1;
+                a1 *= -1;
+            }
+            else{
+                x -= originX;
+            }
+            if(verticalFlip){
+                h *= -1;
+                y += originY;
+                oy *= -1;
+                a1 *= -1;
+            }
+            else{
+                y -= originY;
+            }
+            a += aimAngle * a1;
+            sprite.setVerticalFlip(false);
+            sprite.setHorizontalFlip(false);
+            sprite.render(sb, x, y, w, h, a, ox, oy);
         }
+    }
+
+    @Override
+    public void update(float dt){
+        super.update(dt);
+        sprite.update(dt);
     }
 
     @Override

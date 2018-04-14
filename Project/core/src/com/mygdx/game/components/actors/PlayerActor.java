@@ -1,10 +1,14 @@
 package com.mygdx.game.components.actors;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.gamecomponents.TestBazooka;
 import com.mygdx.game.components.gamecomponents.Weapon;
 import com.mygdx.game.handlers.collision.CollisionBox;
+import com.mygdx.game.sprites.Animation;
 import com.mygdx.game.sprites.PenguinAnimation;
 
 public class PlayerActor extends Actor {
@@ -28,10 +32,20 @@ public class PlayerActor extends Actor {
             setWidth(32);
             setHeight(40);
             addSprite(new PenguinAnimation(100));
+            /*
+            Pixmap pixmap = new Pixmap(32,40, Pixmap.Format.RGB888);
+            pixmap.setColor(Color.GRAY);
+            pixmap.fill();
+            Animation sprite = new Animation(100);
+            sprite.addFrame(new Texture(pixmap));
+            pixmap.dispose();
+            addSprite(sprite);
+            */
+
         }
         setRotatesOnMovement(false);
         bounces = true;
-        holdingPoint = new Vector3(position.x + width/2, position.y + height/2, 0);
+        holdingPoint = new Vector3(width/2, height/2, 0);
         setWeapon(new TestBazooka());
     }
 
@@ -88,10 +102,6 @@ public class PlayerActor extends Actor {
 
     @Override
     public void setAngle(float angle){
-        double theta = Math.toRadians(angle) - getAngle();
-        double newX = holdingPoint.x * Math.cos(theta) - holdingPoint.y * Math.sin(theta);
-        double newY = holdingPoint.x * Math.sin(theta) + holdingPoint.y * Math.cos(theta);
-        holdingPoint.set((float)newX, (float)newY, 0);
         super.setAngle(angle);
         weapon.setAngle(angle);
     }
@@ -106,16 +116,44 @@ public class PlayerActor extends Actor {
 
     @Override
     public void update(float dt){
+        super.update(dt);
 
-        weapon.setPosition(position.x + holdingPoint.x, position.y + holdingPoint.y);
-        weapon.setHorizontalFlip(horizontalFlip);
-        weapon.setVerticalFlip(verticalFlip);
+        // Holding point
+        float hx = position.x + holdingPoint.x;
+        float hy = position.y + holdingPoint.y;
+
+        // Center around which the holding point will be rotated
+        float cx = position.x + width/2;
+        float cy = position.y + height/2;
+
+        double theta = Math.toRadians(getAngle());
+
+        // If the actor is flipped, then flip the holding point across the center.
+        float dx = cx - hx;
+        float dy = cy - hy;
         if(horizontalFlip){
-            weapon.setPosition(weapon.getPosition().x - weapon.getWidth(), weapon.getPosition().y);
+            hx += 2 * dx;
         }
         if(verticalFlip){
-            weapon.setPosition(weapon.getPosition().x, weapon.getPosition().y - weapon.getHeight());
+            hy += 2 * dy;
         }
-        super.update(dt);
+
+        // Shift the point so that it may rotate around origin.
+        hx -= cx;
+        hy -= cy;
+
+        // Rotate point around the origin
+        float x = hx * (float)Math.cos(theta) - hy * (float)Math.sin(theta);
+        float y = hx * (float)Math.sin(theta) + hy * (float)Math.cos(theta);
+
+        // Shift back to original center.
+        x += cx;
+        y += cy;
+
+        weapon.setPosition(x, y);
+        weapon.setHorizontalFlip(horizontalFlip);
+        weapon.setVerticalFlip(verticalFlip);
+
+
     }
 }
