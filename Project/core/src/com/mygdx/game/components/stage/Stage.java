@@ -23,12 +23,14 @@ public abstract class Stage {
 
     public Stage(float width, float height){
         stageComponents = new ArrayList<StageComponent>();
+
         //Create a white background texture
         Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         backgroundTexture = new Texture(pixmap);
         pixmap.dispose();
+
         this.width = width;
         this.height = height;
         this.gravity = DEFAULT_GRAVITY;
@@ -36,17 +38,19 @@ public abstract class Stage {
 
     // Applies gravity to an actor unless it's standing on top of a solid stage component.
     public void applyGravityToActor(Actor actor){
-        for(StageComponent sc: stageComponents){
-            if(sc.getCollisionBox().getCollisionMode() != CollisionBox.CollisionMode.NEVER &&
-                    actor.getPosition().y < sc.getPosition().y + sc.getHeight() + 2 &&
-                    actor.getPosition().y > sc.getPosition().y + sc.getHeight() &&
-                    actor.getPosition().x > sc.getPosition().x &&
-                    actor.getPosition().x < sc.getPosition().x + sc.getWidth() &&
-                    (!actor.bounces() ||
-                            Math.abs(actor.getVelocity().y) < actor.getBounceThreshold().y)){
-                actor.setAcceleration(actor.getAcceleration().x, 0);
-                actor.setVelocity(actor.getVelocity().x * sc.getFriction(), 0);
-                return;
+        if(actor.getCollisionBox().getCollisionMode() != CollisionBox.CollisionMode.NEVER){
+            for(StageComponent sc: stageComponents){
+                if(sc.getCollisionBox().getCollisionMode() != CollisionBox.CollisionMode.NEVER &&
+                        actor.getPosition().y < sc.getPosition().y + sc.getHeight() + 2 &&
+                        actor.getPosition().y > sc.getPosition().y + sc.getHeight() &&
+                        actor.getPosition().x > sc.getPosition().x &&
+                        actor.getPosition().x < sc.getPosition().x + sc.getWidth() &&
+                        (!actor.bounces() ||
+                                Math.abs(actor.getVelocity().y) < actor.getBounceThreshold().y)){
+                    actor.setAcceleration(actor.getAcceleration().x, 0);
+                    actor.setVelocity(actor.getVelocity().x * sc.getFriction(), 0);
+                    return;
+                }
             }
         }
         actor.setAcceleration(actor.getAcceleration().x, getGravity());

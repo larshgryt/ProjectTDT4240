@@ -15,6 +15,8 @@ public abstract class Component {
     protected BoundingBox boundingBox;
     protected boolean verticalFlip;
     protected boolean horizontalFlip;
+    protected Vector3 rotationPoint; // Rotation point relative to the components coordinates
+
     public Component(){
         position = new Vector3(0, 0, 0);
         width = 0;
@@ -23,6 +25,7 @@ public abstract class Component {
         boundingBox = new BoundingBox(this);
         verticalFlip = false;
         horizontalFlip = false;
+        rotationPoint = new Vector3(0, 0,0);
     }
 
     public boolean isVerticalFlip() {

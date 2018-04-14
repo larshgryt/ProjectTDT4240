@@ -76,6 +76,7 @@ public abstract class Actor extends Component implements Collidable{
         acceleration.set(x, y, 0);
     }
 
+    // Returns the current active sprite of the actor.
     public Sprite getCurrentSprite() {
         if(sprites.isEmpty()){
             return null;
@@ -83,12 +84,15 @@ public abstract class Actor extends Component implements Collidable{
         return sprites.get(currentSprite);
     }
 
+    // Adds a sprite to the actors set of sprites.
     public void addSprite(Sprite sprite) {
         this.sprites.add(sprite);
     }
     public void removeSprite(float index){
         sprites.remove(index);
     }
+
+    // Sets the active sprite to the one at the given index.
     public void setSprite(int index){
         if(index < sprites.size()){
             currentSprite = index;
