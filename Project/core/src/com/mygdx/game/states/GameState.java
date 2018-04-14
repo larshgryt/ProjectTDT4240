@@ -10,10 +10,13 @@ import com.mygdx.game.handlers.collision.CollisionHandler;
 
 
 // In-game state. Requires a stage and a collision handler.
+// Note that this is only a sample game state for testing purposes. Should be changed later.
 public class GameState extends State {
 
     private Stage stage;
     private CollisionHandler collisionHandler;
+
+    // Variables for testing purposes.
     private boolean fire;
     private PlayerActor weaponPlayer;
 
@@ -21,6 +24,7 @@ public class GameState extends State {
         super();
         stage = new TestStage();
         collisionHandler = new CollisionHandler();
+
         PlayerActor player = new PlayerActor("username", 100, null, true );
         player.setPosition(200, 300);
         player.setVelocity(40, 10);
@@ -28,6 +32,7 @@ public class GameState extends State {
         player.setVerticalFlip(false);
         addComponent(player);
         weaponPlayer = player;
+
         PlayerActor otherplayer = new PlayerActor("username", 100, null, true );
         otherplayer.setPosition(350, 400);
         otherplayer.setVelocity(-20, 10);
@@ -54,6 +59,7 @@ public class GameState extends State {
         super.update(dt);
         collisionHandler.checkForCollisions(components, stage);
 
+        // Code for testing purposes.
         if(!fire){
             if(Math.abs(weaponPlayer.getVelocity().x) < 2 && Math.abs(weaponPlayer.getVelocity().y) < 2){
                 addComponent(weaponPlayer.getWeapon().shoot());

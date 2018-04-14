@@ -18,7 +18,7 @@ public class StageComponent extends Component implements Collidable {
 
     private Texture texture;
     private CollisionBox collisionBox;
-    protected float friction;       // A sliding actors velocity is multiplied by the friction
+    protected float friction;       // A sliding actors' velocity is multiplied by the friction
 
     public StageComponent(int width, int height){
         super();
@@ -28,6 +28,7 @@ public class StageComponent extends Component implements Collidable {
         pixmap.fill();
         setTexture(new Texture(pixmap));
         pixmap.dispose();
+
         this.width = width;
         this.height = height;
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
@@ -37,6 +38,7 @@ public class StageComponent extends Component implements Collidable {
     public StageComponent(Texture texture){
         setTexture(texture);
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
+        friction = 0.95f;
     }
 
     public void setTexture(Texture texture){
@@ -91,17 +93,17 @@ public class StageComponent extends Component implements Collidable {
 
     @Override
     public void setVelocity(float x, float y) {
-
+        // StageComponent can not have velocity. May be added at a later point.
     }
 
     @Override
     public void setAcceleration(float x, float y) {
-
+        // StageComponent can not have acceleration. May be added at a later point.
     }
 
     @Override
     public void setAcceleration(Vector3 acceleration) {
-
+        // StageComponent can not have acceleration. May be added at a later point.
     }
 
     @Override

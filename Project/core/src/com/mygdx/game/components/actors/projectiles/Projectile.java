@@ -6,17 +6,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.Animation;
-import com.mygdx.game.sprites.Sprite;
 
 public abstract class Projectile extends Actor {
 
-    public Projectile(Sprite sprite){
-        sprites.add(sprite);
-        width = sprite.getWidth();
-        height = sprite.getHeight();
-        rotatesOnMovement = true;
-        collisionBox.setCollisionMode(CollisionBox.CollisionMode.NEVER);
-    }
+    // A generic white rectangle projectile.
+
     public Projectile(int width, int height){
         Animation sprite = new Animation(100);
         //Create a white background texture
@@ -32,6 +26,9 @@ public abstract class Projectile extends Actor {
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.NEVER);
     }
 
+    /* Returns a new instance of this class and shoots it from the given coordinates in the
+        given angle at the given velocity.
+     */
     public Projectile fire(float x, float y, float angle, float velocity){
         Projectile projectile = getInstance();
         projectile.setPosition(x, y);
@@ -40,6 +37,8 @@ public abstract class Projectile extends Actor {
         System.out.println(angle);
         return projectile;
     }
+
+    // Returns a new instance of the projectile subclass.
     protected abstract Projectile getInstance();
 
     /* Code that determines projectiles effect on another actor */
