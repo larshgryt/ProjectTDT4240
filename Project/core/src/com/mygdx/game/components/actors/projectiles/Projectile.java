@@ -15,7 +15,7 @@ public abstract class Projectile extends Actor {
         width = sprite.getWidth();
         height = sprite.getHeight();
         rotatesOnMovement = true;
-        collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
+        collisionBox.setCollisionMode(CollisionBox.CollisionMode.NEVER);
     }
     public Projectile(int width, int height){
         Animation sprite = new Animation(100);
@@ -29,8 +29,18 @@ public abstract class Projectile extends Actor {
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();
         rotatesOnMovement = true;
-        collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
+        collisionBox.setCollisionMode(CollisionBox.CollisionMode.NEVER);
     }
+
+    public Projectile fire(float x, float y, float angle, float velocity){
+        Projectile projectile = getInstance();
+        projectile.setPosition(x, y);
+        double theta = Math.toRadians(angle);
+        projectile.setVelocity(velocity * (float)Math.cos(theta), velocity * (float) Math.sin(theta));
+        System.out.println(angle);
+        return projectile;
+    }
+    protected abstract Projectile getInstance();
 
     /* Code that determines projectiles effect on another actor */
     public abstract void hit(Actor other);

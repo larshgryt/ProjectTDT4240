@@ -12,7 +12,7 @@ public class TestStage extends Stage {
         setBackgroundTexture(new Texture("sky.jpg"));
         addStageComponent(new Snow((int) width, 80));
 
-        Snow platform = new Snow(100, 30);
+        Snow platform = new Snow(200, 30);
         platform.setPosition(144, 200);
         addStageComponent(platform);
     }

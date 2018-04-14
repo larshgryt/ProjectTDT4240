@@ -13,13 +13,7 @@ public class TestBazooka extends Weapon {
         sprite.addFrame(new Texture("Rocket_Launcher.png"));
         setSprite(sprite);
         setOriginY(height/2);
-        setOriginX(width / 4);
-    }
-
-
-
-    @Override
-    public void fire(float angle) {
-
+        setOriginX(width / 3);
+        setProjectilePoint(width, height/2);
     }
 }
