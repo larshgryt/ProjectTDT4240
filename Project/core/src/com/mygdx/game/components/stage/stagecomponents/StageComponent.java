@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;
@@ -17,6 +18,7 @@ import com.mygdx.game.handlers.collision.CollisionBox;
 public class StageComponent extends Component implements Collidable {
 
     private Texture texture;
+    private TiledDrawable tiledDrawable;
     private CollisionBox collisionBox;
     protected float friction;       // A sliding actors' velocity is multiplied by the friction
 
@@ -37,6 +39,15 @@ public class StageComponent extends Component implements Collidable {
 
     public StageComponent(Texture texture){
         setTexture(texture);
+        collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
+        friction = 0.95f;
+    }
+
+    public StageComponent(TiledDrawable tiledDrawable, int width, int height){
+        //Create a component which repeats inside area defined by width and height
+        this.tiledDrawable = tiledDrawable;
+        this.width = width;
+        this.height = height;
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
         friction = 0.95f;
     }
@@ -64,6 +75,9 @@ public class StageComponent extends Component implements Collidable {
             sb.draw(texture, position.x, position.y, 0, 0, width, height,
                     1, 1, (float) Math.toRadians(angle),0, 0,
                     texture.getWidth(), texture.getHeight(), false, false);
+        }
+        if(tiledDrawable != null){
+            tiledDrawable.draw(sb, position.x, position.y, width, height);
         }
     }
 
