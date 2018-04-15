@@ -26,9 +26,9 @@ public class GameState extends State {
         collisionHandler = new CollisionHandler(this);
 
         PlayerActor player = new PlayerActor("username", 100, null, true );
-        player.setPosition(200, 300);
-        player.setVelocity(40, 0);
-        player.setAngle(20);
+        player.setPosition(200, 205);
+        player.setVelocity(40, 40);
+        player.setAngle(40);
         player.getWeapon().setAim(30);
         player.setVerticalFlip(false);
         addComponent(player);
@@ -38,6 +38,7 @@ public class GameState extends State {
         otherplayer.setPosition(350, 300);
         otherplayer.setVelocity(-20, 0);
         addComponent(otherplayer);
+        otherplayer.setAngle(0);
         fire = false;
 
     }
@@ -50,14 +51,11 @@ public class GameState extends State {
     @Override
     public void update(float dt) {
         stage.update(dt);
-
         for(Component c: components){
             if(c instanceof Actor){
                 stage.applyGravityToActor((Actor) c);
             }
         }
-
-
         super.update(dt);
         collisionHandler.checkForCollisions(components, stage);
         //weaponPlayer.setAngle(weaponPlayer.getAngle() + 1);

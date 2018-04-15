@@ -1,7 +1,9 @@
 package com.mygdx.game.handlers.collision;
 
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.stage.Stage;
+import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.State;
 
@@ -98,125 +100,157 @@ public class CollisionHandler extends Handler {
                 - Math.min(c1.getBoundingBox().endX, c2.getBoundingBox().endX));
         float yPenetration = Math.abs(Math.max(c1.getBoundingBox().startY, c2.getBoundingBox().startY)
                 - Math.min(c1.getBoundingBox().endY, c2.getBoundingBox().endY));
-
-        // Each collidables step value for backing off
-        float x1 = 0;
-        float y1 = 0;
-        float x2 = 0;
-        float y2 = 0;
-        float a1 = 0;
-        float a2 = 0;
-
-        // Checks whether the collision is horizontal or vertical
-        if(xPenetration < yPenetration){
-            // Horizontal collision
-            System.out.println("Horizontal collision");
-            if(c1.getBoundingBox().startX < c2.getBoundingBox().startX){
-                // c1 on the left, c2 on the right
-                System.out.println(c1.toString()+" left, " + c2.toString() +" right");
-                if(yields1){
-                    x1 = -1;
-                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                        c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
-                    }
-                    else{
-                        c1.setVelocity(0, c1.getVelocity().y);
-                    }
-                }
-                if(yields2){
-                    x2 = 1;
-                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                        c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
-                    }
-                    else{
-                        c2.setVelocity(0, c2.getVelocity().y);
-                    }
-                }
-            }
-            else{
-                // c2 on the left, c1 on the right
-                System.out.println(c2.toString()+" left, " + c1.toString() +" right");
-                if(yields1){
-                    x1 = 1;
-                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                        c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
-                    }
-                    else{
-                        c1.setVelocity(0, c1.getVelocity().y);
-                    }
-                }
-                if(yields2){
-                    x2 = -1;
-                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                        c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
-                    }
-                    else{
-                        c2.setVelocity(0, c2.getVelocity().y);
-                    }
-                }
-                x1 = 1;
-                x2 = -1;
-            }
+        if(yields1 && yields2){
+            c1.getCollisionBox().align(c2);
+        }
+        else if(yields1){
+            c1.getCollisionBox().alignTo(c2);
         }
         else{
-            // Vertical collision
-            System.out.println("Vertical collision");
-            if(c1.getBoundingBox().startY < c2.getBoundingBox().startY){
-                // c1 on the bottom, c2 on the top
-                System.out.println(c1.toString()+" bottom, " + c2.toString() +" top");
-                if(yields1){
-                    y1 = -1;
-                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                        c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
-                    }
-                    else{
-                        c1.setVelocity(c1.getVelocity().x, 0);
+            c2.getCollisionBox().alignTo(c1);
+        }
+        boolean b = true;
+        int a1 = (int)Math.toDegrees(Math.atan(c1.getVelocity().y/c1.getVelocity().x));
+        int a2 = (int)Math.toDegrees(Math.atan(c2.getVelocity().y/c2.getVelocity().x));
+        System.out.println(a1 + " " + a2);
+        if(((c1.getVelocity().len() > 0 && yields1) || (c2.getVelocity().len() > 0 && yields2))
+                && a1 != a2){
+            System.out.println("Collision mode 1");
+            while(c1.collidesWith(c2)){
+                if(b){
+                    if(yields1){
+                        c1.addPosition((c1.getVelocity().x / c1.getVelocity().len() * -1),
+                                c1.getVelocity().y/c1.getVelocity().len() * -1);
+                        System.out.println("cx1:"+c1.getPosition().x+" cy1:"+c1.getPosition().y);
                     }
                 }
-                if(yields2){
-                    y2 = 1;
-                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                        c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
+                else{
+                    if(yields2){
+                        c2.addPosition((c2.getVelocity().x / c2.getVelocity().len() * -1),
+                                c2.getVelocity().y/c2.getVelocity().len() * -1);
+                        System.out.println("cx2:"+c2.getPosition().x+" cy2:"+c2.getPosition().y);
                     }
-                    else{
-                        c2.setVelocity(c2.getVelocity().x, 0);
+                }
+                b = !b;
+            }
+        }
+            // Each collidables step value for backing off
+            float x1 = 0;
+            float y1 = 0;
+            float x2 = 0;
+            float y2 = 0;
+
+            // Checks whether the collision is horizontal or vertical
+            if(xPenetration < yPenetration){
+                // Horizontal collision
+                System.out.println("Horizontal collision");
+                if(c1.getBoundingBox().startX < c2.getBoundingBox().startX){
+                    // c1 on the left, c2 on the right
+                    System.out.println(c1.toString()+" left, " + c2.toString() +" right");
+                    if(yields1){
+                        x1 = -1;
+                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                            c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
+                        }
+                        else{
+                            c1.setVelocity(0, c1.getVelocity().y);
+                        }
                     }
+                    if(yields2){
+                        x2 = 1;
+                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                            c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
+                        }
+                        else{
+                            c2.setVelocity(0, c2.getVelocity().y);
+                        }
+                    }
+                }
+                else{
+                    // c2 on the left, c1 on the right
+                    System.out.println(c2.toString()+" left, " + c1.toString() +" right");
+                    if(yields1){
+                        x1 = 1;
+                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                            c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
+                        }
+                        else{
+                            c1.setVelocity(0, c1.getVelocity().y);
+                        }
+                    }
+                    if(yields2){
+                        x2 = -1;
+                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                            c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
+                        }
+                        else{
+                            c2.setVelocity(0, c2.getVelocity().y);
+                        }
+                    }
+                    x1 = 1;
+                    x2 = -1;
                 }
             }
             else{
-                // c2 on the bottom, c1 on the top
-                System.out.println(c2.toString()+" bottom, " + c1.toString() +" top");
-                if(yields1){
-                    y1 = 1;
-                    if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                        c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
+                // Vertical collision
+                System.out.println("Vertical collision");
+                if(c1.getBoundingBox().startY < c2.getBoundingBox().startY){
+                    // c1 on the bottom, c2 on the top
+                    System.out.println(c1.toString()+" bottom, " + c2.toString() +" top");
+                    if(yields1){
+                        y1 = -1;
+                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                            c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
+                        }
+                        else{
+                            c1.setVelocity(c1.getVelocity().x, 0);
+                        }
                     }
-                    else{
-                        c1.setVelocity(c1.getVelocity().x, 0);
+                    if(yields2){
+                        y2 = 1;
+                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                            c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
+                        }
+                        else{
+                            c2.setVelocity(c2.getVelocity().x, 0);
+                        }
                     }
                 }
-                if(yields2){
-                    y2 = -1;
-                    if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                        c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
+                else{
+                    // c2 on the bottom, c1 on the top
+                    System.out.println(c2.toString()+" bottom, " + c1.toString() +" top");
+                    if(yields1){
+                        y1 = 1;
+                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
+                            c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
+                        }
+                        else{
+                            c1.setVelocity(c1.getVelocity().x, 0);
+                        }
                     }
-                    else{
-                        c2.setVelocity(c2.getVelocity().x, 0);
+                    if(yields2){
+                        y2 = -1;
+                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
+                            c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
+                        }
+                        else{
+                            c2.setVelocity(c2.getVelocity().x, 0);
+                        }
                     }
                 }
             }
-        }
-        while(c1.collidesWith(c2)){
-            System.out.println("c1x:"+c1.getBoundingBox().startX+" c1w:"+c1.getBoundingBox().endX);
-            System.out.println("x1:"+x1+" y1:"+y1);
-            System.out.println("c2x:"+c2.getBoundingBox().startX+" c2w:"+c2.getBoundingBox().endX);
-            System.out.println("x2:"+x2+" y2:"+y2);
-            c1.addPosition(x1, y1);
-            c1.getBoundingBox().update();
-            c2.addPosition(x2, y2);
-            c2.getBoundingBox().update();
-        }
-
+            while(c1.collidesWith(c2)){
+                System.out.println("Backing off.");
+                System.out.println("c1x:"+c1.getPosition().x + " c1y:"+c1.getPosition().y);
+                System.out.println("c2x:"+c2.getPosition().x + " c2y:"+c2.getPosition().y);
+                if(b){
+                    c1.addPosition(x1, y1);
+                }
+                else{
+                    c2.addPosition(x2, y2);
+                }
+                b = !b;
+            }
     }
 
 

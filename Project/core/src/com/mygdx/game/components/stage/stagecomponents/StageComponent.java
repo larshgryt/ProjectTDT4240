@@ -60,9 +60,12 @@ public class StageComponent extends Component implements Collidable {
     @Override
     public void render(SpriteBatch sb) {
 
+        float px = position.x;
+        float py = position.y;
+
         if(texture != null){
             sb.draw(texture, position.x, position.y, 0, 0, width, height,
-                    1, 1, (float) Math.toRadians(angle),0, 0,
+                    1, 1, getAngle(),0, 0,
                     texture.getWidth(), texture.getHeight(), false, false);
         }
     }

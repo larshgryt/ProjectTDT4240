@@ -115,6 +115,101 @@ public class CollisionBox {
         }
         return true;
     }
+
+    public void align(Collidable other){
+        // Coordinates of the centers of rectangles A and B.
+        Vector3 pA = new Vector3(collidable.getPosition().x + collidable.getWidth()/2,
+                collidable.getPosition().y + collidable.getHeight()/2, 0);
+        Vector3 pB = new Vector3(other.getPosition().x + other.getWidth()/2,
+                other.getPosition().y + other.getHeight()/2, 0);
+
+        // Unit vector of local x axis of rectangle A
+        Vector3 xA = new Vector3((float)Math.cos(Math.toRadians(collidable.getAngle())),
+                (float)Math.sin(Math.toRadians(collidable.getAngle())), 0);
+
+        // Unit vector of local y axis of rectangle A
+        Vector3 yA = new Vector3((float)Math.sin(Math.toRadians(collidable.getAngle())),
+                (float)Math.cos(Math.toRadians(collidable.getAngle())), 0);
+
+        // Unit vector of local x axis of rectangle B
+        Vector3 xB = new Vector3((float)Math.cos(Math.toRadians(other.getAngle())),
+                (float)Math.sin(Math.toRadians(other.getAngle())), 0);
+
+        // Unit vector of local y axis of rectangle B
+        Vector3 yB = new Vector3((float)Math.sin(Math.toRadians(other.getAngle())),
+                (float)Math.cos(Math.toRadians(other.getAngle())), 0);
+
+        // Half width of rectangle A along its local x-axis.
+        Vector3 wA = new Vector3(xA.x, xA.y, 0).scl(collidable.getWidth()/2);
+
+        // Half height of rectangle A along its local y-axis.
+        Vector3 hA = new Vector3(yA.x, yA.y, 0).scl(collidable.getHeight()/2);
+
+        // Half width of rectangle B along its local x-axis.
+        Vector3 wB = new Vector3(xB.x, xB.y, 0).scl(other.getWidth()/2);
+
+        // Half height of rectangle B along its local y-axis.
+        Vector3 hB = new Vector3(yB.x, yB.y, 0).scl(other.getHeight()/2);
+
+        int alpha1 = (int) Math.toDegrees(Math.acos((xA.x*xB.x + xA.y*xB.y)/(xA.len()*xB.len())));
+        int alpha2 = (int) Math.toDegrees(Math.acos((xA.x*yB.x + xA.y*yB.y)/(xA.len()*yB.len())));
+        int angle = Math.min(alpha1, alpha2);
+        if(collidable.getAngle() < other.getAngle()){
+            collidable.setAngle(collidable.getAngle() + angle/2);
+            other.setAngle(other.getAngle() - angle/2);
+        }
+        else{
+            collidable.setAngle(collidable.getAngle() - angle/2);
+            other.setAngle(other.getAngle() + angle/2);
+        }
+
+    }
+
+    public void alignTo(Collidable other){
+        // Coordinates of the centers of rectangles A and B.
+        Vector3 pA = new Vector3(collidable.getPosition().x + collidable.getWidth()/2,
+                collidable.getPosition().y + collidable.getHeight()/2, 0);
+        Vector3 pB = new Vector3(other.getPosition().x + other.getWidth()/2,
+                other.getPosition().y + other.getHeight()/2, 0);
+
+        // Unit vector of local x axis of rectangle A
+        Vector3 xA = new Vector3((float)Math.cos(Math.toRadians(collidable.getAngle())),
+                (float)Math.sin(Math.toRadians(collidable.getAngle())), 0);
+
+        // Unit vector of local y axis of rectangle A
+        Vector3 yA = new Vector3((float)Math.sin(Math.toRadians(collidable.getAngle())),
+                (float)Math.cos(Math.toRadians(collidable.getAngle())), 0);
+
+        // Unit vector of local x axis of rectangle B
+        Vector3 xB = new Vector3((float)Math.cos(Math.toRadians(other.getAngle())),
+                (float)Math.sin(Math.toRadians(other.getAngle())), 0);
+
+        // Unit vector of local y axis of rectangle B
+        Vector3 yB = new Vector3((float)Math.sin(Math.toRadians(other.getAngle())),
+                (float)Math.cos(Math.toRadians(other.getAngle())), 0);
+
+        // Half width of rectangle A along its local x-axis.
+        Vector3 wA = new Vector3(xA.x, xA.y, 0).scl(collidable.getWidth()/2);
+
+        // Half height of rectangle A along its local y-axis.
+        Vector3 hA = new Vector3(yA.x, yA.y, 0).scl(collidable.getHeight()/2);
+
+        // Half width of rectangle B along its local x-axis.
+        Vector3 wB = new Vector3(xB.x, xB.y, 0).scl(other.getWidth()/2);
+
+        // Half height of rectangle B along its local y-axis.
+        Vector3 hB = new Vector3(yB.x, yB.y, 0).scl(other.getHeight()/2);
+
+        int alpha1 = (int) Math.toDegrees(Math.acos((xA.x*xB.x + xA.y*xB.y)/(xA.len()*xB.len())));
+        int alpha2 = (int) Math.toDegrees(Math.acos((xA.x*yB.x + xA.y*yB.y)/(xA.len()*yB.len())));
+        if(collidable.getAngle() < other.getAngle()){
+            collidable.setAngle(collidable.getAngle() + Math.min(alpha1, alpha2));
+        }
+        else{
+            collidable.setAngle(collidable.getAngle() - Math.min(alpha1, alpha2));
+        }
+
+    }
     public boolean yieldsTo(Collidable other){
         if(isCollidable(other) && collisionMode != CollisionMode.FIXED){
             if(collisionMode == other.getCollisionBox().collisionMode ||

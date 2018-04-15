@@ -25,5 +25,6 @@ public interface Collidable {
     Vector3 getBounceThreshold();
     void update(float dt);
     void addPosition(float x, float y);
+    void setAngle(float angle);
 
 }

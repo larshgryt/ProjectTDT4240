@@ -43,6 +43,8 @@ public class PlayerActor extends Actor {
         bounces = true;
         holdingPoint = new Vector3(width/2, height/2, 0);
         setWeapon(new TestBazooka());
+        setElasticity(0.85f, 0.5f);
+        setBounceThreshold(10, 5);
     }
 
     @Override
