@@ -23,7 +23,7 @@ public class PlayerActor extends Actor {
         this.weapon = initialWeapon;
         this.penguin = penguin;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.ACTIVE);
-        setWidth(32);
+        setWidth(28);
         setHeight(40);
         health = 100;
         if(penguin){

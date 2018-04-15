@@ -23,5 +23,7 @@ public interface Collidable {
     boolean bounces();
     Vector3 getElasticity();
     Vector3 getBounceThreshold();
+    void update(float dt);
+    void addPosition(float x, float y);
 
 }

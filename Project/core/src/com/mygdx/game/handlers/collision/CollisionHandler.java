@@ -2,13 +2,21 @@ package com.mygdx.game.handlers.collision;
 
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.stage.Stage;
-import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.Handler;
+import com.mygdx.game.states.State;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class CollisionHandler extends Handler {
+
+    private State state;
+
+    public CollisionHandler(State state){
+        super();
+        this.state = state;
+    }
+
 
     /* Uses sort and sweep algorithm to traverse through component array and check for possible
     collision. This is the broad phrase of collision detection. */
@@ -85,23 +93,27 @@ public class CollisionHandler extends Handler {
             return;
         }
 
-        // Check how many pixels the two collidables penetrate on each axis
-        float xPenetration = Math.abs(Math.max(c1.getPosition().x, c2.getPosition().x)
-                - Math.min(c1.getPosition().x+c1.getWidth(), c2.getPosition().x+c2.getWidth()));
-        float yPenetration = Math.abs(Math.max(c1.getPosition().y, c2.getPosition().y)
-                - Math.min(c1.getPosition().y+c1.getHeight(), c2.getPosition().y+c2.getHeight()));
+        // Check how many pixels the two collidables bounding boxes penetrate on each axis
+        float xPenetration = Math.abs(Math.max(c1.getBoundingBox().startX, c2.getBoundingBox().startX)
+                - Math.min(c1.getBoundingBox().endX, c2.getBoundingBox().endX));
+        float yPenetration = Math.abs(Math.max(c1.getBoundingBox().startY, c2.getBoundingBox().startY)
+                - Math.min(c1.getBoundingBox().endY, c2.getBoundingBox().endY));
 
         // Each collidables step value for backing off
         float x1 = 0;
         float y1 = 0;
         float x2 = 0;
         float y2 = 0;
+        float a1 = 0;
+        float a2 = 0;
 
         // Checks whether the collision is horizontal or vertical
         if(xPenetration < yPenetration){
             // Horizontal collision
-            if(c1.getPosition().x < c2.getPosition().x){
+            System.out.println("Horizontal collision");
+            if(c1.getBoundingBox().startX < c2.getBoundingBox().startX){
                 // c1 on the left, c2 on the right
+                System.out.println(c1.toString()+" left, " + c2.toString() +" right");
                 if(yields1){
                     x1 = -1;
                     if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
@@ -123,6 +135,7 @@ public class CollisionHandler extends Handler {
             }
             else{
                 // c2 on the left, c1 on the right
+                System.out.println(c2.toString()+" left, " + c1.toString() +" right");
                 if(yields1){
                     x1 = 1;
                     if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
@@ -141,12 +154,16 @@ public class CollisionHandler extends Handler {
                         c2.setVelocity(0, c2.getVelocity().y);
                     }
                 }
+                x1 = 1;
+                x2 = -1;
             }
         }
         else{
             // Vertical collision
-            if(c1.getPosition().y < c2.getPosition().y){
+            System.out.println("Vertical collision");
+            if(c1.getBoundingBox().startY < c2.getBoundingBox().startY){
                 // c1 on the bottom, c2 on the top
+                System.out.println(c1.toString()+" bottom, " + c2.toString() +" top");
                 if(yields1){
                     y1 = -1;
                     if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
@@ -168,6 +185,7 @@ public class CollisionHandler extends Handler {
             }
             else{
                 // c2 on the bottom, c1 on the top
+                System.out.println(c2.toString()+" bottom, " + c1.toString() +" top");
                 if(yields1){
                     y1 = 1;
                     if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
@@ -188,9 +206,15 @@ public class CollisionHandler extends Handler {
                 }
             }
         }
-        while(c1.getBoundingBox().overlaps(c2.getBoundingBox())){
-            c1.setPosition(c1.getPosition().x + x1, c1.getPosition().y + y1);
-            c2.setPosition(c2.getPosition().x + x2, c2.getPosition().y + y2);
+        while(c1.collidesWith(c2)){
+            System.out.println("c1x:"+c1.getBoundingBox().startX+" c1w:"+c1.getBoundingBox().endX);
+            System.out.println("x1:"+x1+" y1:"+y1);
+            System.out.println("c2x:"+c2.getBoundingBox().startX+" c2w:"+c2.getBoundingBox().endX);
+            System.out.println("x2:"+x2+" y2:"+y2);
+            c1.addPosition(x1, y1);
+            c1.getBoundingBox().update();
+            c2.addPosition(x2, y2);
+            c2.getBoundingBox().update();
         }
 
     }

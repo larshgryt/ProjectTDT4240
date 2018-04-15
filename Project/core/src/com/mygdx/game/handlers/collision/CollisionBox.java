@@ -54,31 +54,62 @@ public class CollisionBox {
         if(collidable == other){
             return false;
         }
+
+        // Coordinates of the centers of rectangles A and B.
         Vector3 pA = new Vector3(collidable.getPosition().x + collidable.getWidth()/2,
                 collidable.getPosition().y + collidable.getHeight()/2, 0);
-        Vector3 xA = new Vector3(1, 0, 0).rotate(collidable.getAngle(), 1, 0, 0);
-        Vector3 yA = new Vector3(0, 1, 0).rotate(collidable.getAngle(), 0, 1, 0);
-        float wA = collidable.getWidth()/2;
-        float hA = collidable.getHeight()/2;
-
         Vector3 pB = new Vector3(other.getPosition().x + other.getWidth()/2,
                 other.getPosition().y + other.getHeight()/2, 0);
-        Vector3 xB = new Vector3(1, 0, 0).rotate(other.getAngle(), 1, 0, 0);
-        Vector3 yB = new Vector3(0, 1, 0).rotate(other.getAngle(), 0, 1, 0);
-        float wB = other.getWidth()/2;
-        float hB = other.getHeight()/2;
 
-        Vector3[] axes = {xA, xB, yA, yB};
+        // Unit vector of local x axis of rectangle A
+        Vector3 xA = new Vector3((float)Math.cos(Math.toRadians(collidable.getAngle())),
+                (float)Math.sin(Math.toRadians(collidable.getAngle())), 0);
 
-        for(Vector3 v: axes){
-            Vector3 L = v.cpy();
-            Vector3 T = pB.cpy().sub(pA);
-            float projT = T.cpy().dot(L);
-            float a = xA.cpy().scl(wA).dot(L);
-            float b = yA.cpy().scl(hA).dot(L);
-            float c = xB.cpy().scl(wB).dot(L);
-            float d = yB.cpy().scl(hB).dot(L);
-            if(projT > a + b + c + d){
+        // Unit vector of local y axis of rectangle A
+        Vector3 yA = new Vector3((float)Math.sin(Math.toRadians(collidable.getAngle())),
+                (float)Math.cos(Math.toRadians(collidable.getAngle())), 0);
+
+        // Unit vector of local x axis of rectangle B
+        Vector3 xB = new Vector3((float)Math.cos(Math.toRadians(other.getAngle())),
+                (float)Math.sin(Math.toRadians(other.getAngle())), 0);
+
+        // Unit vector of local y axis of rectangle B
+        Vector3 yB = new Vector3((float)Math.sin(Math.toRadians(other.getAngle())),
+                (float)Math.cos(Math.toRadians(other.getAngle())), 0);
+
+        // Half width of rectangle A along its local x-axis.
+        Vector3 wA = new Vector3(xA.x, xA.y, 0).scl(collidable.getWidth()/2);
+
+        // Half height of rectangle A along its local y-axis.
+        Vector3 hA = new Vector3(yA.x, yA.y, 0).scl(collidable.getHeight()/2);
+
+        // Half width of rectangle B along its local x-axis.
+        Vector3 wB = new Vector3(xB.x, xB.y, 0).scl(other.getWidth()/2);
+
+        // Half height of rectangle B along its local y-axis.
+        Vector3 hB = new Vector3(yB.x, yB.y, 0).scl(other.getHeight()/2);
+
+        Vector3[] unitVectors = new Vector3[4];
+        unitVectors[0] = xA;
+        unitVectors[1] = yA;
+        unitVectors[2] = xB;
+        unitVectors[3] = yB;
+
+        Vector3 T = pB.cpy().sub(pA.cpy());
+
+        for(Vector3 u: unitVectors){
+            Vector3 L = u.cpy();
+
+            //Projection of T onto L.
+            float projT = Math.abs(T.x*L.x + T.y*L.y);
+
+            // Projection of half of rectangle A onto L.
+            float projA = Math.abs(wA.x*L.x + wA.y+L.y) + Math.abs(hA.x*L.x + hA.y*L.y);
+
+            // Projection of hald of rectangle B onto L.
+            float projB = Math.abs(wB.x*L.x + wB.y+L.y) + Math.abs(hB.x*L.x + hB.y*L.y);
+
+            if(projT > projA + projB){
                 return false;
             }
         }

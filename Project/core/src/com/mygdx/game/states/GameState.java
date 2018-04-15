@@ -23,19 +23,20 @@ public class GameState extends State {
     public GameState() {
         super();
         stage = new TestStage();
-        collisionHandler = new CollisionHandler();
+        collisionHandler = new CollisionHandler(this);
 
         PlayerActor player = new PlayerActor("username", 100, null, true );
         player.setPosition(200, 300);
-        player.setVelocity(40, 10);
+        player.setVelocity(40, 0);
+        player.setAngle(20);
         player.getWeapon().setAim(30);
         player.setVerticalFlip(false);
         addComponent(player);
         weaponPlayer = player;
 
         PlayerActor otherplayer = new PlayerActor("username", 100, null, true );
-        otherplayer.setPosition(350, 400);
-        otherplayer.setVelocity(-20, 10);
+        otherplayer.setPosition(350, 300);
+        otherplayer.setVelocity(-20, 0);
         addComponent(otherplayer);
         fire = false;
 
@@ -56,9 +57,10 @@ public class GameState extends State {
             }
         }
 
+
         super.update(dt);
         collisionHandler.checkForCollisions(components, stage);
-
+        //weaponPlayer.setAngle(weaponPlayer.getAngle() + 1);
         // Code for testing purposes.
         if(!fire){
             if(Math.abs(weaponPlayer.getVelocity().x) < 2 && Math.abs(weaponPlayer.getVelocity().y) < 2){

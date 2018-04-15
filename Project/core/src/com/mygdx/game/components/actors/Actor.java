@@ -21,6 +21,7 @@ public abstract class Actor extends Component implements Collidable{
     protected boolean bounces;          // Whether the actor bounces on collision
     protected Vector3 elasticity;       // Velocity is multiplied by elasticity on collision bounce
     protected Vector3 bounceThreshold; // Minimum velocity required to bounce insted of stopping on collision
+    protected float mass;               // How the actor will be affected by gravity.
 
     // Enables an actor to keep several sprites.
     protected ArrayList<Sprite> sprites;
@@ -45,6 +46,7 @@ public abstract class Actor extends Component implements Collidable{
         bounces = false;
         elasticity = new Vector3(0.8f, 0.5f, 0);
         bounceThreshold = new Vector3(30, 30,0);
+        mass = 1;
     }
 
     /* Whether the actor rotates in direction of the velocity. */
@@ -125,6 +127,13 @@ public abstract class Actor extends Component implements Collidable{
         boundingBox.update();
     }
 
+    public float getMass(){
+        return mass;
+    }
+    public void setMass(float mass){
+        this.mass = mass;
+    }
+
     @Override
     public void render(SpriteBatch sb) {
         if(getCurrentSprite() != null){
@@ -161,5 +170,9 @@ public abstract class Actor extends Component implements Collidable{
     @Override
     public Vector3 getBounceThreshold(){
         return bounceThreshold;
+    }
+    @Override
+    public void setPosition(float x, float y){
+        super.setPosition(x, y);
     }
 }
