@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;
+import com.mygdx.game.sprites.Animation;
+import com.mygdx.game.sprites.Sprite;
 
     /*
     A collidable rectangle component with a texture to be placed on a stage.
@@ -17,7 +19,7 @@ import com.mygdx.game.handlers.collision.CollisionBox;
 
 public class StageComponent extends Component implements Collidable {
 
-    private Texture texture;
+    protected Sprite sprite;
     private TiledDrawable tiledDrawable;
     private CollisionBox collisionBox;
     protected float friction;       // A sliding actors' velocity is multiplied by the friction
@@ -53,9 +55,15 @@ public class StageComponent extends Component implements Collidable {
     }
 
     public void setTexture(Texture texture){
-        this.texture = texture;
-        width = texture.getWidth();
-        height = texture.getHeight();
+        Animation animation = new Animation(100);
+        animation.addFrame(texture);
+        setSprite(animation);
+    }
+
+    public void setSprite(Sprite sprite){
+        this.sprite = sprite;
+        width = sprite.getWidth();
+        height = sprite.getHeight();
     }
 
     // Sets whether the component is collidable (fixed) or just decorative.
@@ -71,21 +79,19 @@ public class StageComponent extends Component implements Collidable {
     @Override
     public void render(SpriteBatch sb) {
 
-        if(texture != null){
-            sb.draw(texture, position.x, position.y, 0, 0, width, height,
-                    1, 1, (float) Math.toRadians(angle),0, 0,
-                    texture.getWidth(), texture.getHeight(), false, false);
-        }
-        if(tiledDrawable != null){
-            tiledDrawable.draw(sb, position.x, position.y, width, height);
+        float px = position.x;
+        float py = position.y;
+
+        if(sprite != null){
+            sprite.render(sb, position.x, position.y, width, height, angle);
         }
     }
 
     @Override
     public void dispose() {
 
-        if(texture != null){
-            texture.dispose();
+        if(sprite != null){
+            sprite.dispose();
         }
 
     }
