@@ -82,24 +82,23 @@ public class CollisionHandler extends Handler {
             //Check whether the two collidables actually collide using their narrow collision boxes.
             if(c1.collidesWith(c2)){
                 if(c1.getCollisionBox().yieldsTo(c2) || c2.getCollisionBox().yieldsTo(c1)){
-                    collide(c1, c1.getCollisionBox().yieldsTo(c2), c2, c2.getCollisionBox().yieldsTo(c1));
+                    collide(c1, c2);
                 }
             }
         }
     }
 
-    // Separates the two collidables so that they no longer touch
-    public void collide(Collidable c1, boolean yields1, Collidable c2, boolean yields2){
+
+    public void collide(Collidable c1, Collidable c2){
+
+        boolean yields1 = c1.getCollisionBox().yieldsTo(c2);
+        boolean yields2 = c2.getCollisionBox().yieldsTo(c1);
 
         if(!yields1 && !yields2){
             return;
         }
 
-        // Check how many pixels the two collidables bounding boxes penetrate on each axis
-        float xPenetration = Math.abs(Math.max(c1.getBoundingBox().startX, c2.getBoundingBox().startX)
-                - Math.min(c1.getBoundingBox().endX, c2.getBoundingBox().endX));
-        float yPenetration = Math.abs(Math.max(c1.getBoundingBox().startY, c2.getBoundingBox().startY)
-                - Math.min(c1.getBoundingBox().endY, c2.getBoundingBox().endY));
+        // Rotate the collidables so that they are aligned.
         if(yields1 && yields2){
             c1.getCollisionBox().align(c2);
         }
@@ -109,148 +108,190 @@ public class CollisionHandler extends Handler {
         else{
             c2.getCollisionBox().alignTo(c1);
         }
-        boolean b = true;
-        int a1 = (int)Math.toDegrees(Math.atan(c1.getVelocity().y/c1.getVelocity().x));
-        int a2 = (int)Math.toDegrees(Math.atan(c2.getVelocity().y/c2.getVelocity().x));
-        System.out.println(a1 + " " + a2);
-        if(((c1.getVelocity().len() > 0 && yields1) || (c2.getVelocity().len() > 0 && yields2))
-                && a1 != a2){
-            System.out.println("Collision mode 1");
-            while(c1.collidesWith(c2)){
-                if(b){
-                    if(yields1){
-                        c1.addPosition((c1.getVelocity().x / c1.getVelocity().len() * -1),
-                                c1.getVelocity().y/c1.getVelocity().len() * -1);
-                        System.out.println("cx1:"+c1.getPosition().x+" cy1:"+c1.getPosition().y);
-                    }
-                }
-                else{
-                    if(yields2){
-                        c2.addPosition((c2.getVelocity().x / c2.getVelocity().len() * -1),
-                                c2.getVelocity().y/c2.getVelocity().len() * -1);
-                        System.out.println("cx2:"+c2.getPosition().x+" cy2:"+c2.getPosition().y);
-                    }
-                }
-                b = !b;
-            }
-        }
-            // Each collidables step value for backing off
-            float x1 = 0;
-            float y1 = 0;
-            float x2 = 0;
-            float y2 = 0;
+        c1.setVelocity(0, 0);
+        c1.setAcceleration(0, 0);
+        c2.setVelocity(0, 0);
+        c2.setAcceleration(0, 0);
+        separate(c1, c2);
+        c1.setVelocity(0, 0);
+        c2.setVelocity(0, 0);
+        c1.setAcceleration(0, 0);
+        c2.setAcceleration(0, 0);
+    }
 
-            // Checks whether the collision is horizontal or vertical
-            if(xPenetration < yPenetration){
-                // Horizontal collision
-                System.out.println("Horizontal collision");
+    // Separates the two collidables so that they no longer touch
+    public void separate(Collidable c1, Collidable c2){
+
+        boolean yields1 = c1.getCollisionBox().yieldsTo(c2);
+        boolean yields2 = c2.getCollisionBox().yieldsTo(c1);
+
+        Vector3 m1 = new Vector3(0, 0, 0);  // Movement vector for separation
+        Vector3 m2 = new Vector3(0, 0, 0);  // Movement vector for separation
+
+        float angle1 = c1.getAngle();   // The collidables original angles
+        float angle2 = c2.getAngle();   // the collidables original angles
+
+        // Align the two collidables along the x-axis and y-axis
+        float angle = c1.getAngle();
+
+        // Rotate the collidables positions around the origin
+        float px1 = c1.getPosition().x;
+        float py1 = c1.getPosition().y;
+        float px2 = c2.getPosition().x;
+        float py2 = c2.getPosition().y;
+
+        double theta = Math.toRadians(-1 *angle);
+
+        float x1 = px1 * (float)Math.cos(theta) - py1 * (float)Math.sin(theta);
+        float y1 = px1 * (float)Math.sin(theta) + py1 * (float)Math.cos(theta);
+        float x2 = px2 * (float)Math.cos(theta) - py2 * (float)Math.sin(theta);
+        float y2 = px2 * (float)Math.sin(theta) + py2 * (float)Math.cos(theta);
+
+        c1.setPosition(x1, y1);
+        c2.setPosition(x2, y2);
+
+        // Rotate the rectangles around their centers.
+        c1.setAngle(angle1 - angle);
+        c2.setAngle(angle1 - angle);
+
+        // Update the bounding boxes accordingly.
+        c1.getBoundingBox().update();
+        c2.getBoundingBox().update();
+
+        if(c1.getBoundingBox().overlaps(c2.getBoundingBox())) {
+            // The movement vectors for the separation
+            float sx1 = 0;   // Step unit for backing off
+            float sy1 = 0;   // Step unit for backing off
+            float sx2 = 0;   // Step unit for backing off
+            float sy2 = 0;   // Step unit for backing off
+
+            // Calculate the amount of overlapping pixels on each axis.
+            BoundingBox intersection = c1.getBoundingBox().intersection(c2.getBoundingBox());
+            float xOverlap = intersection.endX - intersection.startX;
+            float yOverlap = intersection.endY - intersection.startY;
+
+            System.out.println("c1 startX:"+c1.getBoundingBox().startX+ " endX:" +
+            c1.getBoundingBox().endX + " startY:"+c1.getBoundingBox().startY+ " endY:"+
+            c1.getBoundingBox().endY);
+
+            System.out.println("c2 startX:"+c2.getBoundingBox().startX+ " endX:" +
+                    c2.getBoundingBox().endX + " startY:"+c2.getBoundingBox().startY+ " endY:"+
+                    c2.getBoundingBox().endY);
+
+            System.out.println("xOverlap:"+xOverlap+" yOverlap:"+yOverlap);
+            if (xOverlap < yOverlap) {
+                // Horozontal collision
+                System.out.println("New horizontal collision detected");
                 if(c1.getBoundingBox().startX < c2.getBoundingBox().startX){
                     // c1 on the left, c2 on the right
-                    System.out.println(c1.toString()+" left, " + c2.toString() +" right");
-                    if(yields1){
-                        x1 = -1;
-                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                            c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
-                        }
-                        else{
-                            c1.setVelocity(0, c1.getVelocity().y);
-                        }
+                    System.out.println("c1: "+c1.toString() + " to the left, c2: " + c2.toString() +
+                    " to the right");
+                    if(yields1 || (!yields1 && !yields2)){
+                        m1.x = -1;
+                        sx1 = -1;
                     }
-                    if(yields2){
-                        x2 = 1;
-                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                            c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
-                        }
-                        else{
-                            c2.setVelocity(0, c2.getVelocity().y);
-                        }
+                    if(yields2 || (!yields1 && !yields2)){
+                        m2.x = 1;
+                        sx2 = 1;
                     }
                 }
                 else{
                     // c2 on the left, c1 on the right
-                    System.out.println(c2.toString()+" left, " + c1.toString() +" right");
-                    if(yields1){
-                        x1 = 1;
-                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                            c1.setVelocity(c1.getVelocity().x * -1 * c1.getElasticity().x, c1.getVelocity().y);
-                        }
-                        else{
-                            c1.setVelocity(0, c1.getVelocity().y);
-                        }
+                    System.out.println("c2: "+c2.toString() + " to the left, c1: " + c1.toString() +
+                            " to the right");
+                    if(yields1 || (!yields1 && !yields2)){
+                        m1.x = 1;
+                        sx1 = 1;
                     }
-                    if(yields2){
-                        x2 = -1;
-                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                            c2.setVelocity(c2.getVelocity().x * -1 * c2.getElasticity().x, c2.getVelocity().y);
-                        }
-                        else{
-                            c2.setVelocity(0, c2.getVelocity().y);
-                        }
+                    if(yields2 || (!yields1 && !yields2)){
+                        m2.x = -1;
+                        sx2 = -1;
                     }
-                    x1 = 1;
-                    x2 = -1;
                 }
             }
             else{
                 // Vertical collision
-                System.out.println("Vertical collision");
+                System.out.println("New vertical collision detected");
                 if(c1.getBoundingBox().startY < c2.getBoundingBox().startY){
                     // c1 on the bottom, c2 on the top
-                    System.out.println(c1.toString()+" bottom, " + c2.toString() +" top");
-                    if(yields1){
-                        y1 = -1;
-                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                            c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
-                        }
-                        else{
-                            c1.setVelocity(c1.getVelocity().x, 0);
-                        }
+                    System.out.println("c1: "+c1.toString() + " to the bottom, c2: " + c2.toString() +
+                            " to the top");
+                    if(yields1 || (!yields1 && !yields2)){
+                        System.out.println("c1 yields.");
+                        m1.y = -1;
+                        sy1 = -1;
                     }
-                    if(yields2){
-                        y2 = 1;
-                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                            c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
-                        }
-                        else{
-                            c2.setVelocity(c2.getVelocity().x, 0);
-                        }
+                    if(yields2 || (!yields1 && !yields2)){
+                        System.out.println("c2 yields.");
+                        m2.y = 1;
+                        sy2 = 1;
                     }
                 }
                 else{
                     // c2 on the bottom, c1 on the top
-                    System.out.println(c2.toString()+" bottom, " + c1.toString() +" top");
-                    if(yields1){
-                        y1 = 1;
-                        if(c1.bounces() && Math.abs(c1.getVelocity().y) > c1.getBounceThreshold().y){
-                            c1.setVelocity(c1.getVelocity().x, c1.getVelocity().y * -1 * c1.getElasticity().y);
-                        }
-                        else{
-                            c1.setVelocity(c1.getVelocity().x, 0);
-                        }
+                    System.out.println("c2: "+c2.toString() + " to the bottom, c1: " + c1.toString() +
+                            " to the top");
+                    if(yields1 || (!yields1 && !yields2)){
+                        System.out.println("c1 yields.");
+                        m1.y = 1;
+                        sy1 = 1;
                     }
-                    if(yields2){
-                        y2 = -1;
-                        if(c2.bounces() && Math.abs(c2.getVelocity().y) > c2.getBounceThreshold().y){
-                            c2.setVelocity(c2.getVelocity().x, c2.getVelocity().y * -1 * c2.getElasticity().y);
-                        }
-                        else{
-                            c2.setVelocity(c2.getVelocity().x, 0);
-                        }
+                    if(yields2 || (!yields1 && !yields2)){
+                        System.out.println("c2 yields.");
+                        m2.y = -1;
+                        sy2 = -1;
                     }
                 }
             }
-            while(c1.collidesWith(c2)){
-                System.out.println("Backing off.");
-                System.out.println("c1x:"+c1.getPosition().x + " c1y:"+c1.getPosition().y);
-                System.out.println("c2x:"+c2.getPosition().x + " c2y:"+c2.getPosition().y);
-                if(b){
-                    c1.addPosition(x1, y1);
+            boolean turn = true;
+            boolean overlaps = c1.getBoundingBox().overlaps(c2.getBoundingBox());
+            while(overlaps){
+                if(turn){
+                    // c1 yields
+                    c1.setPosition(x1 + m1.x, y1 + m1.y);
                 }
                 else{
-                    c2.addPosition(x2, y2);
+                    // c2 yields
+                    c2.setPosition(x2 + m2.x, y2 + m2.y);
                 }
-                b = !b;
+                c1.getBoundingBox().update();
+                c2.getBoundingBox().update();
+                overlaps = c1.getBoundingBox().overlaps(c2.getBoundingBox());
+                if(overlaps){
+                    m1.set(m1.x + sx1, m1.y + sy1, 0);
+                    m2.set(m2.x + sx2, m2.y + sy2, 0);
+                    turn = !turn;
+                }
+                else{
+                    System.out.println("mx1:"+m1.x+" my1:"+m1.y+" mx2:"+m2.x+" my2:"+m2.y);
+                }
             }
+        }
+        // Rotate the movement vectors by the given angle.
+        Vector3 movement1 = new Vector3(m1.len() * (float)Math.sin(Math.toRadians(angle)),
+                m1.len() * (float)Math.cos(Math.toRadians(angle)), 0);
+
+        // Rotate the movement vectors by the given angle.
+        Vector3 movement2 = new Vector3(m2.len() * (float)Math.sin(Math.toRadians(angle)),
+                m2.len() * (float)Math.cos(Math.toRadians(angle)), 0);
+
+        // Rotate the collidables to their original angle.
+        c1.setAngle(angle1);
+        c2.setAngle(angle2);
+
+        // Move the collidables to their original locations and add the separating movement vectors.
+        c1.setPosition(px1 + movement1.x, py1 + movement1.y);
+        c2.setPosition(px2 + movement2.x, py2 + movement2.y);
+
+        System.out.println("movx1:"+movement1.x+" movy1:"+movement1.y+" movx2:"+movement2.x+" movy2:"+movement2.y);
+
+    }
+
+    private float angle(Vector3 v1, Vector3 v2){
+        return((v1.x*v2.x + v1.y*v2.y)/(v1.len()*v2.len()));
+    }
+    private float proj(Vector3 v1, Vector3 v2){
+        return Math.abs(v1.x*v2.x + v1.y*v2.y);
     }
 
 
