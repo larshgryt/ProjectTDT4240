@@ -4,35 +4,41 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.Stack;
 
-/**
- * Created by agava on 08.03.2018.
- */
-
 public class GameStateManager {
+
+    private static GameStateManager instance = new GameStateManager();
+
     private Stack<State> states;
 
-    public GameStateManager(){
+    private GameStateManager(){
         states = new Stack<State>();
+    }
+
+    public static GameStateManager getInstance(){
+        return instance;
     }
 
     public void push(State state){
         states.push(state);
     }
 
-    public void pop(){
-        states.pop().dispose();
-    }
-
     public void set(State state){
-        states.pop().dispose();
+        states.pop();
         states.push(state);
     }
 
-    public  void update(float dt){
+    public void update(float dt){
         states.peek().update(dt);
     }
 
     public void render(SpriteBatch sb){
         states.peek().render(sb);
     }
+    public void dispose(){
+        for(State s: states){
+            s.dispose();
+        }
+    }
+
 }
+
