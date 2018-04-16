@@ -14,7 +14,7 @@ public class TestStage extends Stage {
 
         Snow platform = new Snow(300, 30);
         platform.setPosition(10, 150);
-        platform.setAngle(-10);
+        platform.setAngle(0);
         addStageComponent(platform);
     }
 

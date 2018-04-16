@@ -27,17 +27,16 @@ public class GameState extends State {
 
         PlayerActor player = new PlayerActor("username", 100, null, true );
         player.setPosition(200, 305);
-        player.setVelocity(40, 40);
+        player.setVelocity(200, 100);
         player.setAcceleration(0, stage.getGravity());
         player.setAngle(40);
         player.getWeapon().setAim(30);
         player.setVerticalFlip(false);
         addComponent(player);
         weaponPlayer = player;
-
         PlayerActor otherplayer = new PlayerActor("username", 100, null, true );
         otherplayer.setPosition(350, 300);
-        otherplayer.setVelocity(-20, 0);
+        otherplayer.setVelocity(-100, 0);
         otherplayer.setAcceleration(0, stage.getGravity());
         addComponent(otherplayer);
         otherplayer.setAngle(0);
@@ -53,13 +52,11 @@ public class GameState extends State {
     @Override
     public void update(float dt) {
         stage.update(dt);
-        /*
         for(Component c: components){
             if(c instanceof Actor){
                 stage.applyGravityToActor((Actor) c);
             }
         }
-        */
         super.update(dt);
         collisionHandler.checkForCollisions(components, stage);
         //weaponPlayer.setAngle(weaponPlayer.getAngle() + 1);

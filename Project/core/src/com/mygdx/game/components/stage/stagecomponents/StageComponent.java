@@ -67,9 +67,6 @@ public class StageComponent extends Component implements Collidable {
     @Override
     public void render(SpriteBatch sb) {
 
-        float px = position.x;
-        float py = position.y;
-
         if(sprite != null){
             sprite.render(sb, position.x, position.y, width, height, angle);
         }
@@ -130,12 +127,12 @@ public class StageComponent extends Component implements Collidable {
     }
 
     @Override
-    public Vector3 getElasticity() {
-        return new Vector3(0, 0, 0);
+    public float getElasticity() {
+        return 0;
     }
     @Override
-    public Vector3 getBounceThreshold() {
-        return new Vector3(1000, 1000, 1000);
+    public float getBounceThreshold() {
+        return 1000;
     }
     public float getFriction(){
         return friction;

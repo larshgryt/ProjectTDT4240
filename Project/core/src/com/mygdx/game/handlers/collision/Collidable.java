@@ -21,8 +21,8 @@ public interface Collidable {
     float getHeight();
     float getAngle();
     boolean bounces();
-    Vector3 getElasticity();
-    Vector3 getBounceThreshold();
+    float getElasticity();
+    float getBounceThreshold();
     void update(float dt);
     void addPosition(float x, float y);
     void setAngle(float angle);

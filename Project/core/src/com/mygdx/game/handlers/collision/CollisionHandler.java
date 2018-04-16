@@ -3,7 +3,6 @@ package com.mygdx.game.handlers.collision;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.stage.Stage;
-import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.State;
 
@@ -108,15 +107,117 @@ public class CollisionHandler extends Handler {
         else{
             c2.getCollisionBox().alignTo(c1);
         }
-        c1.setVelocity(0, 0);
-        c1.setAcceleration(0, 0);
-        c2.setVelocity(0, 0);
-        c2.setAcceleration(0, 0);
+        impact(c1, c2);
         separate(c1, c2);
-        c1.setVelocity(0, 0);
-        c2.setVelocity(0, 0);
-        c1.setAcceleration(0, 0);
-        c2.setAcceleration(0, 0);
+    }
+
+    // Changes velocities at impact.
+    public void impact(Collidable c1, Collidable c2){
+
+        boolean yields1 = c1.getCollisionBox().yieldsTo(c2);
+        boolean yields2 = c2.getCollisionBox().yieldsTo(c1);
+
+        Vector3 v1 = new Vector3(0, 0, 0);  // Unit vector for velocity change
+        Vector3 v2 = new Vector3(0, 0, 0);  // Unit vector for velocity change
+
+        float angle1 = c1.getAngle();   // The collidables original angles
+        float angle2 = c2.getAngle();   // the collidables original angles
+
+        float angle;
+        if(yields2){
+            angle = c1.getAngle();
+        }
+        else{
+            angle = c2.getAngle();
+        }
+
+        // Rotate the collidables positions around the origin
+        float px1 = c1.getPosition().x;
+        float py1 = c1.getPosition().y;
+        float px2 = c2.getPosition().x;
+        float py2 = c2.getPosition().y;
+
+        double theta = Math.toRadians(-1 *angle);
+
+        float x1 = px1 * (float)Math.cos(theta) - py1 * (float)Math.sin(theta);
+        float y1 = px1 * (float)Math.sin(theta) + py1 * (float)Math.cos(theta);
+        float x2 = px2 * (float)Math.cos(theta) - py2 * (float)Math.sin(theta);
+        float y2 = px2 * (float)Math.sin(theta) + py2 * (float)Math.cos(theta);
+
+        c1.setPosition(x1, y1);
+        c2.setPosition(x2, y2);
+
+        // Rotate the rectangles around their centers.
+        c1.setAngle(angle1 - angle);
+        c2.setAngle(angle2 - angle);
+
+        // Update the bounding boxes accordingly.
+        c1.getBoundingBox().update();
+        c2.getBoundingBox().update();
+
+        if(c1.getBoundingBox().overlaps(c2.getBoundingBox())) {
+
+            // Calculate the amount of overlapping pixels on each axis.
+            BoundingBox intersection = c1.getBoundingBox().intersection(c2.getBoundingBox());
+            float xOverlap = intersection.endX - intersection.startX;
+            float yOverlap = intersection.endY - intersection.startY;
+
+            if (xOverlap < yOverlap) {
+                // Horozontal collision
+                if (c1.getBoundingBox().startX < c2.getBoundingBox().startX) {
+                    // c1 on the left, c2 on the right
+                    if (yields1 || (!yields1 && !yields2)) {
+                        v1.x = -1;
+                    }
+                    if (yields2 || (!yields1 && !yields2)) {
+                        v2.x = 1;
+                    }
+                } else {
+                    // c2 on the left, c1 on the right
+                    if (yields1 || (!yields1 && !yields2)) {
+                        v1.x = 1;
+                    }
+                    if (yields2 || (!yields1 && !yields2)) {
+                        v2.x = -1;
+                    }
+                }
+            } else {
+                // Vertical collision
+                if (c1.getBoundingBox().startY < c2.getBoundingBox().startY) {
+                    // c1 on the bottom, c2 on the top
+                    if (yields1 || (!yields1 && !yields2)) {
+                        v1.y = -1;
+                    }
+                    if (yields2 || (!yields1 && !yields2)) {
+                        v2.y = 1;
+                    }
+                } else {
+                    // c2 on the bottom, c1 on the top
+                    if (yields1 || (!yields1 && !yields2)) {
+                        v1.y = 1;
+                    }
+                    if (yields2 || (!yields1 && !yields2)) {
+                        v2.y = -1;
+                    }
+                }
+            }
+        }
+
+        v1 = v1.rotate(Vector3.Z, angle);
+        v2 = v2.rotate(Vector3.Z, angle);
+
+        Vector3 A = c1.getVelocity().cpy();
+        Vector3 B = c2.getVelocity().cpy();
+
+        c1.setVelocity(A.sub(v1.cpy().scl(A.dot(v1) * 2)).scl(c1.getElasticity()));
+        c2.setVelocity(B.sub(v2.cpy().scl(B.dot(v2) * 2)).scl(c2.getElasticity()));
+
+        c1.setPosition(px1, py1);
+        c1.setAngle(angle1);
+        c2.setPosition(px2, py2);
+        c2.setAngle(angle2);
+        c1.getBoundingBox().update();
+        c2.getBoundingBox().update();
     }
 
     // Separates the two collidables so that they no longer touch
@@ -170,22 +271,10 @@ public class CollisionHandler extends Handler {
             float xOverlap = intersection.endX - intersection.startX;
             float yOverlap = intersection.endY - intersection.startY;
 
-            System.out.println("c1 startX:"+c1.getBoundingBox().startX+ " endX:" +
-            c1.getBoundingBox().endX + " startY:"+c1.getBoundingBox().startY+ " endY:"+
-            c1.getBoundingBox().endY);
-
-            System.out.println("c2 startX:"+c2.getBoundingBox().startX+ " endX:" +
-                    c2.getBoundingBox().endX + " startY:"+c2.getBoundingBox().startY+ " endY:"+
-                    c2.getBoundingBox().endY);
-
-            System.out.println("xOverlap:"+xOverlap+" yOverlap:"+yOverlap);
             if (xOverlap < yOverlap) {
                 // Horozontal collision
-                System.out.println("New horizontal collision detected");
                 if(c1.getBoundingBox().startX < c2.getBoundingBox().startX){
                     // c1 on the left, c2 on the right
-                    System.out.println("c1: "+c1.toString() + " to the left, c2: " + c2.toString() +
-                    " to the right");
                     if(yields1 || (!yields1 && !yields2)){
                         m1.x = -1;
                         sx1 = -1;
@@ -197,8 +286,6 @@ public class CollisionHandler extends Handler {
                 }
                 else{
                     // c2 on the left, c1 on the right
-                    System.out.println("c2: "+c2.toString() + " to the left, c1: " + c1.toString() +
-                            " to the right");
                     if(yields1 || (!yields1 && !yields2)){
                         m1.x = 1;
                         sx1 = 1;
@@ -211,33 +298,24 @@ public class CollisionHandler extends Handler {
             }
             else{
                 // Vertical collision
-                System.out.println("New vertical collision detected");
                 if(c1.getBoundingBox().startY < c2.getBoundingBox().startY){
                     // c1 on the bottom, c2 on the top
-                    System.out.println("c1: "+c1.toString() + " to the bottom, c2: " + c2.toString() +
-                            " to the top");
                     if(yields1 || (!yields1 && !yields2)){
-                        System.out.println("c1 yields.");
                         m1.y = -1;
                         sy1 = -1;
                     }
                     if(yields2 || (!yields1 && !yields2)){
-                        System.out.println("c2 yields.");
                         m2.y = 1;
                         sy2 = 1;
                     }
                 }
                 else{
                     // c2 on the bottom, c1 on the top
-                    System.out.println("c2: "+c2.toString() + " to the bottom, c1: " + c1.toString() +
-                            " to the top");
                     if(yields1 || (!yields1 && !yields2)){
-                        System.out.println("c1 yields.");
                         m1.y = 1;
                         sy1 = 1;
                     }
                     if(yields2 || (!yields1 && !yields2)){
-                        System.out.println("c2 yields.");
                         m2.y = -1;
                         sy2 = -1;
                     }
@@ -262,18 +340,13 @@ public class CollisionHandler extends Handler {
                     m2.set(m2.x + sx2, m2.y + sy2, 0);
                     turn = !turn;
                 }
-                else{
-                    System.out.println("mx1:"+m1.x+" my1:"+m1.y+" mx2:"+m2.x+" my2:"+m2.y);
-                }
             }
         }
         // Rotate the movement vectors by the given angle.
-        Vector3 movement1 = new Vector3(m1.len() * (float)Math.sin(Math.toRadians(angle)),
-                m1.len() * (float)Math.cos(Math.toRadians(angle)), 0);
+        Vector3 movement1 = m1.cpy().rotate(Vector3.Z, angle);
 
         // Rotate the movement vectors by the given angle.
-        Vector3 movement2 = new Vector3(m2.len() * (float)Math.sin(Math.toRadians(angle)),
-                m2.len() * (float)Math.cos(Math.toRadians(angle)), 0);
+        Vector3 movement2 = m2.cpy().rotate(Vector3.Z, angle);
 
         // Rotate the collidables to their original angle.
         c1.setAngle(angle1);
@@ -282,9 +355,6 @@ public class CollisionHandler extends Handler {
         // Move the collidables to their original locations and add the separating movement vectors.
         c1.setPosition(px1 + movement1.x, py1 + movement1.y);
         c2.setPosition(px2 + movement2.x, py2 + movement2.y);
-
-        System.out.println("movx1:"+movement1.x+" movy1:"+movement1.y+" movx2:"+movement2.x+" movy2:"+movement2.y);
-
     }
 
     private float angle(Vector3 v1, Vector3 v2){

@@ -38,6 +38,22 @@ public abstract class Stage {
 
     // Applies gravity to an actor unless it's standing on top of a solid stage component.
     public void applyGravityToActor(Actor actor){
+        for(StageComponent sc: stageComponents){
+            if(sc.getCollisionBox().getCollisionMode() != CollisionBox.CollisionMode.NEVER &&
+                    actor.getPosition().y > sc.getPosition().y &&
+                    actor.getPosition().x > sc.getPosition().x &&
+                    actor.getPosition().x < sc.getPosition().x+sc.getWidth() &&
+                    actor.getPosition().y < sc.getPosition().y+sc.getHeight() + 2 &&
+                    Math.abs(actor.getVelocity().y) < actor.getBounceThreshold()){
+                    actor.setAcceleration(actor.getAcceleration().x, 0);
+                    actor.getVelocity().x = actor.getVelocity().x * sc.getFriction();
+                    if(Math.abs(actor.getVelocity().y) < actor.getBounceThreshold()){
+                        actor.getVelocity().y = 0;
+                    }
+                    return;
+
+            }
+        }
         actor.setAcceleration(actor.getAcceleration().x, getGravity() * actor.getMass());
     }
 

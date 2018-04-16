@@ -22,7 +22,7 @@ public class PlayerActor extends Actor {
         super();
         this.weapon = initialWeapon;
         this.penguin = penguin;
-        collisionBox.setCollisionMode(CollisionBox.CollisionMode.ACTIVE);
+        collisionBox.setCollisionMode(CollisionBox.CollisionMode.PASSIVE);
         setWidth(28);
         setHeight(40);
         health = 100;
@@ -43,8 +43,8 @@ public class PlayerActor extends Actor {
         bounces = true;
         holdingPoint = new Vector3(width/2, height/2, 0);
         setWeapon(new TestBazooka());
-        setElasticity(0.85f, 0.5f);
-        setBounceThreshold(10, 5);
+        setElasticity(0.4f);
+        setBounceThreshold(10);
     }
 
     @Override
