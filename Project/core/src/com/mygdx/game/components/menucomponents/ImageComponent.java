@@ -17,6 +17,14 @@ public class ImageComponent extends Component {
         height = texture.getHeight();
     }
 
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
     @Override
     public void update(float dt) {
 
