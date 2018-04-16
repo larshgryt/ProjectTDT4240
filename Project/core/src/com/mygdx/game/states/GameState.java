@@ -69,7 +69,7 @@ public class GameState extends State {
         weaponGrid.setPosition(weaponGrid.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
         weaponGrid.positionGrid(false);
 
-        weaponButton = new ImageButton(new Texture("bazooka.temporary.png"), "bazooka");
+        weaponButton = new ImageButton(new Texture("bazooka_temporary.png"), "bazooka");
         weaponButton.setPosition(5, (GdxGame.HEIGHT - weaponButton.getHeight()));
 
         ImageButton menuButton = new ImageButton(new Texture("menuButton.png"), "menuButton");
