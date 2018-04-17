@@ -9,3 +9,8 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-core"
 }
+
+dependencies {
+    compile 'com.badlogicgames.gdx:gdx-backend-headless:1.9.8'
+    compile 'org.mockito:mockito-core:2.2.7'
+}

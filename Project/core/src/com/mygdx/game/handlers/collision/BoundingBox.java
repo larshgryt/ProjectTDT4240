@@ -14,7 +14,6 @@ public class BoundingBox {
     protected float endX;
     protected float endY;
     private Component component;
-
     public BoundingBox(Component component){
         this.component = component;
         update();
