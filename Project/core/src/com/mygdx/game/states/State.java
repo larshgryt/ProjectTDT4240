@@ -1,21 +1,29 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.components.Component;
-
+import com.mygdx.game.presenters.Presenter;
 import java.util.ArrayList;
+
+/* Standard abstract class for views. May be extended for spesific views.*/
 
 public abstract class State {
 
-    protected ArrayList<Component> components;
+    protected ArrayList<Component> components;  // Components to be rendered.
+    protected ArrayList<Presenter> presenters;  // Presenters (GUI) to be rendered.
+    protected AudioService audioService = new AudioService();
 
     public State(){
         components = new ArrayList<Component>();
+        presenters = new ArrayList<Presenter>();
+        audioService.create();
     }
 
-    protected ArrayList<Component> getAllComponents(){
-        return components;
+    protected void setMusic(String path){
+        audioService.set(path);
     }
+
     protected void addComponent(Component component){
         components.add(component);
     }
@@ -28,27 +36,12 @@ public abstract class State {
         }
         return false;
     }
-    protected Component removeComponent(int index){
-        if(index < 0 || index >= components.size()){
-            throw new IndexOutOfBoundsException();
-        }
-        else{
-            return components.remove(index);
-        }
+    protected void addPresenter(Presenter presenter){
+        presenters.add(presenter);
     }
-
-    protected Component getComponent(int index){
-        if(index < 0 || index >= components.size()){
-            throw new IndexOutOfBoundsException();
-        }
-        else{
-            return components.get(index);
-        }
+    protected void removePresenter(Presenter presenter){
+        presenters.remove(presenter);
     }
-    protected int indexOfComponent(Component component){
-        return components.indexOf(component);
-    }
-
     abstract void handleInput();
 
     public void update(float dt){
@@ -56,15 +49,24 @@ public abstract class State {
         for(Component component: components){
             component.update(dt);
         }
+        for(Presenter presenter: presenters){
+            presenter.update(dt);
+        }
     }
     public void render(SpriteBatch sb){
         for(Component component: components){
             component.render(sb);
         }
+        for(Presenter presenter: presenters){
+            presenter.render(sb);
+        }
     }
     public void dispose(){
         for(Component component: components){
             component.dispose();
+        }
+        for(Presenter presenter: presenters){
+            presenter.dispose();
         }
     }
 
