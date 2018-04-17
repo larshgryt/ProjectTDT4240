@@ -39,16 +39,14 @@ public class MenuState extends State {
                     GameStateManager.getInstance().set(new GameState());
                 }
                 else{
-                    notifyError(e, "Invalid username was entered.");
+                    menuPresenter.notifyError(e, "Invalid username was entered.");
                 }
             }
         }
 
         @Override
         public void notifyError(EventObject e, String message) {
-            if(e instanceof PlayEvent){
-                menuPresenter.notifyError(e, message);
-            }
+
         }
     }
     public static class PlayEvent extends EventObject{
