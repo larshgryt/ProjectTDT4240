@@ -1,18 +1,14 @@
 package com.mygdx.game.states;
 
-
-import com.mygdx.game.components.Component;
 import com.mygdx.game.listeners.EventListener;
 import com.mygdx.game.presenters.MenuPresenter;
-import com.mygdx.game.presenters.Presenter;
-
 import java.util.EventObject;
 
 
 public class MenuState extends State {
 
     private String username;
-    MenuPresenter menuPresenter;
+    private MenuPresenter menuPresenter;
 
     public MenuState() {
         super();
@@ -20,6 +16,7 @@ public class MenuState extends State {
         menuPresenter.addEventListener(new PlayGameListener());
         addPresenter(menuPresenter);
         username = "Guest";
+        setMusic("background.mp3");
     }
 
     private boolean isValid(String username){
@@ -39,6 +36,7 @@ public class MenuState extends State {
                 if(isValid(newUsername)){
                     username = newUsername;
                     System.out.println("Username "+username+" was entered.");
+                    GameStateManager.getInstance().set(new GameState());
                 }
                 else{
                     notifyError(e, "Invalid username was entered.");

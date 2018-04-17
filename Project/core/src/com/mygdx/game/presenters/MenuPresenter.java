@@ -58,7 +58,7 @@ public class MenuPresenter extends Presenter {
 
     public void notifyError(EventObject e, String message){
         if(e instanceof MenuState.PlayEvent){
-            input.setText(message);
+            input.setText(((MenuState.PlayEvent) e).getValue());
             errorMessage.setText(message);
         }
     }
