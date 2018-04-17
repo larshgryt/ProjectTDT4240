@@ -68,11 +68,11 @@ public class Grid extends Component{
         float gridY= c*position.y;
        for (int i = 0; i<squares.size(); i++){
             if (i!=0 && i%4==0){
-                gridY =- squareHeight;
+                gridY -= squareHeight;
                 gridX = position.x;
             }
             squares.get(i).setPosition(gridX,gridY);
-            gridX =+ squareWidth;
+            gridX += squareWidth;
         }
         }
 
@@ -94,13 +94,13 @@ public class Grid extends Component{
        for (int i = 0; i<squares.size(); i++){
 
            if (i!=0 && i%4==0){
-               gridY =- squareHeight;
+               gridY -= squareHeight;
                gridX = position.x;
            }
 
            squares.get(i).setPosition(gridX,gridY);
            sb.draw(squares.get(i).getTexture(),squares.get(i).getPosition().x,squares.get(i).getPosition().y,squareWidth,squareHeight);
-           gridX =+ squareWidth;
+           gridX += squareWidth;
         }
 
     }
