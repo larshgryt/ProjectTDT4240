@@ -120,7 +120,12 @@ public abstract class Actor extends Component implements Collidable{
             velocity.set(0, 0, 0);
         }
         if(rotatesOnMovement){
-            setAngle((float) Math.acos(velocity.x/velocity.len()));
+            if(velocity.y < 0){
+                angle = (float)Math.acos(velocity.x/velocity.len()) * -1;
+            }
+            else{
+                angle = (float)Math.acos(velocity.x/velocity.len());
+            }
         }
         if(getCurrentSprite() != null){
             getCurrentSprite().setVerticalFlip(verticalFlip);
