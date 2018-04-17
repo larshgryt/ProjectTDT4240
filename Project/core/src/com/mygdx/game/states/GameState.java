@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.actors.PlayerActor;
+import com.mygdx.game.components.stage.Forest;
 import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.components.stage.TestStage;
 import com.mygdx.game.handlers.collision.CollisionHandler;
@@ -41,7 +42,6 @@ public class GameState extends State {
     public GameState() {
 
         super();
-
         stage = new TestStage();
         collisionHandler = new CollisionHandler(this);
 
