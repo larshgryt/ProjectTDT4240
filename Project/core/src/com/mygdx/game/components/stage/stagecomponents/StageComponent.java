@@ -25,13 +25,13 @@ public class StageComponent extends Component implements Collidable {
 
     public StageComponent(int width, int height){
         super();
+
         //Create a white background texture
         Pixmap pixmap = new Pixmap(width,height, Pixmap.Format.RGB888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         setTexture(new Texture(pixmap));
         pixmap.dispose();
-
         this.width = width;
         this.height = height;
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
@@ -55,7 +55,7 @@ public class StageComponent extends Component implements Collidable {
         animation.addFrame(texture);
         setSprite(animation);
     }
-
+  
     public void setSprite(Sprite sprite){
         this.sprite = sprite;
         width = sprite.getWidth();
@@ -75,8 +75,6 @@ public class StageComponent extends Component implements Collidable {
     @Override
     public void render(SpriteBatch sb) {
 
-        float px = position.x;
-        float py = position.y;
 
         if(sprite != null){
             sprite.render(sb, position.x, position.y, width, height, angle);
@@ -138,12 +136,12 @@ public class StageComponent extends Component implements Collidable {
     }
 
     @Override
-    public Vector3 getElasticity() {
-        return new Vector3(0, 0, 0);
+    public float getElasticity() {
+        return 0;
     }
     @Override
-    public Vector3 getBounceThreshold() {
-        return new Vector3(1000, 1000, 1000);
+    public float getBounceThreshold() {
+        return 1000;
     }
     public float getFriction(){
         return friction;

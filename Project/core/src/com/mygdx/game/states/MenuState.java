@@ -1,10 +1,13 @@
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.components.menucomponents.Button;
+import com.mygdx.game.components.menucomponents.Grid;
+import com.mygdx.game.components.menucomponents.ImageButton;
 import com.mygdx.game.components.menucomponents.ImageComponent;
 import com.mygdx.game.components.menucomponents.TextInputField;
 import com.mygdx.game.components.menucomponents.TextLabel;
@@ -12,12 +15,21 @@ import com.mygdx.game.components.actors.PlayerActor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuState extends State {
 
     private String username;
     private TextLabel errorMessage;
     AudioService audioService = new AudioService();
+
+    List<ImageButton> weaponTextures = new ArrayList<ImageButton>();
+    Grid weaponGrid;
+    ImageButton weaponButton;
+    ImageButton bazookaButton;
+    ImageButton snowballButton;
+
 
     public MenuState() {
         super();
@@ -84,4 +96,7 @@ public class MenuState extends State {
 
         }
     }
+
+
+
 }
