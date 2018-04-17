@@ -2,17 +2,36 @@ package com.mygdx.game.presenters;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.Component;
-
+import com.mygdx.game.listeners.EventListener;
 import java.util.ArrayList;
+import java.util.EventObject;
 
 public abstract class Presenter {
 
+    protected ArrayList<EventListener> eventListeners;
     protected ArrayList<Component> components;
     protected boolean visible;
 
     public Presenter(){
+        eventListeners = new ArrayList<EventListener>();
         components = new ArrayList<Component>();
         visible = true;
+    }
+
+    public void notifyEvent(EventObject e){
+        for(EventListener listener: eventListeners){
+            listener.notifyEvent(e);
+        }
+    }
+
+    public void notifyError(EventObject e, String message){
+        for(EventListener listener: eventListeners){
+            listener.notifyError(e, message);
+        }
+    }
+
+    public void addEventListener(EventListener listener){
+        this.eventListeners.add(listener);
     }
 
     protected void addComponent(Component component){
@@ -47,5 +66,4 @@ public abstract class Presenter {
             c.dispose();
         }
     }
-
 }

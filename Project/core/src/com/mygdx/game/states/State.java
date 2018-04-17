@@ -1,10 +1,15 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.presenters.Presenter;
 
+import java.awt.Event;
 import java.util.ArrayList;
+import java.util.EventListener;
+
+import javax.swing.event.ChangeEvent;
 
 /* Standard abstract class for views. May be extended for spesific views.*/
 
@@ -12,10 +17,12 @@ public abstract class State {
 
     protected ArrayList<Component> components;  // Components to be rendered.
     protected ArrayList<Presenter> presenters;  // Presenters (GUI) to be rendered.
+    protected AudioService audioService = new AudioService();
 
     public State(){
         components = new ArrayList<Component>();
         presenters = new ArrayList<Presenter>();
+        audioService.create();
     }
 
     protected void addComponent(Component component){
