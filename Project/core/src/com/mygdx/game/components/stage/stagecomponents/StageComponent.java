@@ -20,7 +20,6 @@ import com.mygdx.game.sprites.Sprite;
 public class StageComponent extends Component implements Collidable {
 
     protected Sprite sprite;
-    private TiledDrawable tiledDrawable;
     private CollisionBox collisionBox;
     protected float friction;       // A sliding actors' velocity is multiplied by the friction
 
@@ -45,11 +44,8 @@ public class StageComponent extends Component implements Collidable {
         friction = 0.95f;
     }
 
-    public StageComponent(TiledDrawable tiledDrawable, int width, int height){
-        //Create a component which repeats inside area defined by width and height
-        this.tiledDrawable = tiledDrawable;
-        this.width = width;
-        this.height = height;
+    public StageComponent(Sprite sprite){
+        setSprite(sprite);
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
         friction = 0.95f;
     }
