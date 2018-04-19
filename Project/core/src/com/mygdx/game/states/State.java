@@ -36,8 +36,8 @@ public abstract class State {
         }
         return false;
     }
-    public ArrayList<Component> getComponents(){
-        return components;
+    public boolean containsComponent(Component component){
+        return(components.contains(component));
     }
     protected void addPresenter(Presenter presenter){
         presenters.add(presenter);

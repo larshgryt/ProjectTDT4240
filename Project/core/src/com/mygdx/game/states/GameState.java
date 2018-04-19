@@ -28,7 +28,7 @@ public class GameState extends State {
         collisionHandler = new CollisionHandler(this);
 
         PlayerActor player = new PlayerActor("username", 100, null, true );
-        player.setPosition(100, 305);
+        player.setPosition(200, 105);
         player.setVelocity(10, 100);
         player.setAcceleration(0, stage.getGravity());
         player.setAngle(40);
@@ -43,6 +43,11 @@ public class GameState extends State {
         addComponent(otherplayer);
         fire = false;
 
+    }
+
+    @Override
+    public boolean containsComponent(Component component){
+        return(super.containsComponent(component) || stage.getStageComponents().contains(component));
     }
 
     @Override

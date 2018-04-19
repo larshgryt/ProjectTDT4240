@@ -3,6 +3,7 @@ package com.mygdx.game.components.actors.projectiles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;
@@ -44,13 +45,20 @@ public abstract class Projectile extends Actor {
 
     /* Code that determines projectiles effect on another actor */
     public void hit(State state, Collidable other){
-        if(state.getComponents().contains(this) && state.getComponents().contains(other)){
-            destroy(state);
+        if(other instanceof Component){
+            if(state.containsComponent(this) && state.containsComponent((Component)other)){
+                destroy(state);
+            }
+        }
+        else{
+            if(state.containsComponent(this)){
+                destroy(state);
+            }
         }
     }
 
     public void hit(State state, Projectile other){
-        if(state.getComponents().contains(this) && state.getComponents().contains(other)){
+        if(state.containsComponent(this) && state.containsComponent(other)){
             destroy(state);
             other.destroy(state);
         }
