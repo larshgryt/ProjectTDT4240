@@ -2,6 +2,7 @@ package com.mygdx.game.handlers.collision;
 
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.components.actors.projectiles.Projectile;
 import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.State;
@@ -80,7 +81,16 @@ public class CollisionHandler extends Handler {
         if(c1.getCollisionBox().isCollidable(c2)){
             //Check whether the two collidables actually collide using their narrow collision boxes.
             if(c1.collidesWith(c2)){
-                if(c1.getCollisionBox().yieldsTo(c2) || c2.getCollisionBox().yieldsTo(c1)){
+                if(c1 instanceof Projectile && c2 instanceof Projectile){
+                    ((Projectile)c1).hit(state, (Projectile)c2);
+                }
+                else if(c1 instanceof Projectile){
+                    ((Projectile)c1).hit(state, c2);
+                }
+                else if(c2 instanceof Projectile){
+                    ((Projectile)c2).hit(state, c1);
+                }
+                else if(c1.getCollisionBox().yieldsTo(c2) || c2.getCollisionBox().yieldsTo(c1)){
                     collide(c1, c2);
                 }
             }

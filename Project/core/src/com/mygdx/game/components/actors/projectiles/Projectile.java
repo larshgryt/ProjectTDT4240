@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.actors.Actor;
+import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.Animation;
+import com.mygdx.game.states.State;
 
 public abstract class Projectile extends Actor {
 
@@ -23,7 +25,7 @@ public abstract class Projectile extends Actor {
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();
         rotatesOnMovement = true;
-        collisionBox.setCollisionMode(CollisionBox.CollisionMode.NEVER);
+        collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
     }
 
     /* Returns a new instance of this class and shoots it from the given coordinates in the
@@ -41,9 +43,23 @@ public abstract class Projectile extends Actor {
     protected abstract Projectile getInstance();
 
     /* Code that determines projectiles effect on another actor */
-    public abstract void hit(Actor other);
+    public void hit(State state, Collidable other){
+        if(state.getComponents().contains(this) && state.getComponents().contains(other)){
+            destroy(state);
+        }
+    }
+
+    public void hit(State state, Projectile other){
+        if(state.getComponents().contains(this) && state.getComponents().contains(other)){
+            destroy(state);
+            other.destroy(state);
+        }
+    }
 
     /* Code that will be ran when the projectile is destroyed (e.g explotion) */
-    public abstract void destroy();
+    public void destroy(State state){
+        state.removeComponent(this);
+        this.dispose();
+    }
 
 }

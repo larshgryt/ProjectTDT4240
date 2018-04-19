@@ -37,11 +37,10 @@ public class GameState extends State {
         addComponent(player);
         weaponPlayer = player;
         PlayerActor otherplayer = new PlayerActor("username", 100, null, true );
-        otherplayer.setPosition(350, 300);
+        otherplayer.setPosition(450, 100);
         otherplayer.setVelocity(-100, 0);
         otherplayer.setAcceleration(0, stage.getGravity());
         addComponent(otherplayer);
-        otherplayer.setAngle(0);
         fire = false;
 
     }

@@ -1,7 +1,5 @@
 package com.mygdx.game.components.actors.projectiles;
 
-import com.mygdx.game.components.actors.Actor;
-
 public class TestProjectile extends Projectile {
 
     @Override
@@ -12,15 +10,5 @@ public class TestProjectile extends Projectile {
 
     public TestProjectile(){
         super(30, 10);
-    }
-
-    @Override
-    public void hit(Actor other) {
-
-    }
-
-    @Override
-    public void destroy() {
-
     }
 }
