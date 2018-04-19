@@ -99,9 +99,8 @@ public class MenuPresenter extends Presenter {
         @Override
         public void update(float dt){
             super.update(dt);
-            button.setPosition(getPosition().x + getWidth() - button.getWidth(),
-                    getPosition().y - button.getHeight()/2);
-            label.setPosition(button.getPosition().x - label.getWidth() - 4, label.getPosition().y);
+            label.setPosition(button.getPosition().x - label.getWidth() - 4,
+                    label.getPosition().y + button.getHeight()/2);
         }
 
     }
@@ -204,7 +203,7 @@ public class MenuPresenter extends Presenter {
             setySpacing(10);
             joinedPlayers = new TextLabel("Joined players:");
             joinedPlayers.setColor(Color.WHITE);
-            joinedPlayers.setHeight(12);
+            joinedPlayers.setHeight(20);
             setPosition(10, GdxGame.HEIGHT - 20);
             addComponent(joinedPlayers);
         }
