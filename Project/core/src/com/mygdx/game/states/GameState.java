@@ -28,8 +28,8 @@ public class GameState extends State {
         collisionHandler = new CollisionHandler(this);
 
         PlayerActor player = new PlayerActor("username", 100, null, true );
-        player.setPosition(200, 105);
-        player.setVelocity(10, 100);
+        player.setPosition(30, 50);
+        player.setVelocity(0, 500);
         player.setAcceleration(0, stage.getGravity());
         player.setAngle(40);
         player.getWeapon().setAim(30);
@@ -37,8 +37,8 @@ public class GameState extends State {
         addComponent(player);
         weaponPlayer = player;
         PlayerActor otherplayer = new PlayerActor("username", 100, null, true );
-        otherplayer.setPosition(450, 100);
-        otherplayer.setVelocity(-100, 0);
+        otherplayer.setPosition(300, 100);
+        otherplayer.setVelocity(0, 0);
         otherplayer.setAcceleration(0, stage.getGravity());
         addComponent(otherplayer);
         fire = false;

@@ -29,6 +29,16 @@ public abstract class Projectile extends Actor {
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
     }
 
+    public Projectile(Texture texture){
+        Animation sprite = new Animation(100);
+        sprite.addFrame(texture);
+        sprites.add(sprite);
+        this.width = sprite.getWidth();
+        this.height = sprite.getHeight();
+        rotatesOnMovement = true;
+        collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
+    }
+
     /* Returns a new instance of this class and shoots it from the given coordinates in the
         given angle at the given velocity.
      */

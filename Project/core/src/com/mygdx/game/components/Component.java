@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.handlers.collision.BoundingBox;
 
-import java.awt.Event;
-
 public abstract class Component {
 
     /* Standard class for containing the logic of items that will be rendered on screen.*/
