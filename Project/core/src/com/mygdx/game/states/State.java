@@ -48,13 +48,13 @@ public abstract class State {
     abstract void handleInput();
 
     public void update(float dt){
-        handleInput();
         for(Component component: components){
             component.update(dt);
         }
         for(Presenter presenter: presenters){
             presenter.update(dt);
         }
+        handleInput();
     }
     public void render(SpriteBatch sb){
         for(Component component: components){
