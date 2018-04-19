@@ -27,49 +27,15 @@ public class MenuPresenter extends Presenter {
     public MenuPresenter(){
         super();
 
-        joinedPlayerList = new ComponentList();
-        joinedPlayerList.setySpacing(10);
-        joinedPlayerList.setPosition(50, 300);
-        TextLabel joinedPlayers = new TextLabel("Joined players:");
-        joinedPlayers.setColor(Color.WHITE);
-        joinedPlayers.setHeight(12);
-        joinedPlayerList.addComponent(joinedPlayers);
-
-        input = new TextInputField("Username", "Guest", "");
-        input.setWidth(200);
-        input.setHeight(40);
-        input.setPosition((GdxGame.WIDTH - input.getWidth())/2, (GdxGame.HEIGHT - input.getHeight())*1/3 );
-
-
-        Button playButton = new Button(200, 40);
-        playButton.setText("Play game");
-        playButton.setPosition((GdxGame.WIDTH - playButton.getWidth())/2, (GdxGame.HEIGHT - playButton.getHeight())*1/6 );
-        playButton.setBorderWidth(2);
-        playButton.setFontColor(Color.WHITE);
-        playButton.setBackgroundColor(Color.NAVY);
-        playButton.setBorderColor(Color.BLUE);
-        playButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                ArrayList<String> usernames = new ArrayList<String>();
-                for(Component c: joinedPlayerList.getComponents()){
-                    if(c instanceof PlayerListItem){
-                        usernames.add(((PlayerListItem) c).getUsername());
-                    }
-                }
-                notifyEvent(new MenuState.PlayEvent(usernames));
-            }
-        });
-
-        errorMessage = new TextLabel("");
-        errorMessage.setPosition((GdxGame.WIDTH - errorMessage.getWidth())/2, (GdxGame.HEIGHT - errorMessage.getHeight())*1/12 );
-        errorMessage.setColor(Color.RED);
+        joinedPlayerList = new JoinedPlayerList();
+        input = new UsernameField();
+        errorMessage = new ErrorMessageLabel();
 
         addComponent(new Logo());
-        addComponent(playButton);
+        addComponent(new PlayButton());
+        addComponent(new AddPlayerButton());
         addComponent(input);
         addComponent(errorMessage);
-        addComponent(new AddPlayerButton());
         addComponent(joinedPlayerList);
         addEventListener(new EventListener() {
             @Override
@@ -107,23 +73,49 @@ public class MenuPresenter extends Presenter {
     private class PlayerListItem extends ComponentList{
 
         private String username;
+        private Button button;
+        private TextLabel label;
 
         public PlayerListItem(String username){
-
             this.username = username;
-
             setVertical(false);
             setxSpacing(25);
-
-            TextLabel playerName = new TextLabel(username);
-            playerName.setColor(Color.WHITE);
-            addComponent(playerName);
-            addComponent(new RemovePlayerButton(this));
+            label = new TextLabel(username);
+            label.setColor(Color.WHITE);
+            button = new RemovePlayerButton(this);
+            addComponent(label);
+            addComponent(button);
 
         }
 
         public String getUsername(){
             return username;
+        }
+        @Override
+        public float getWidth(){
+            return 90;
+        }
+
+        @Override
+        public void update(float dt){
+            super.update(dt);
+            button.setPosition(getPosition().x + getWidth() - button.getWidth(),
+                    getPosition().y - button.getHeight()/2);
+            label.setPosition(button.getPosition().x - label.getWidth() - 4, label.getPosition().y);
+        }
+
+    }
+
+    private class ErrorMessageLabel extends TextLabel{
+        public ErrorMessageLabel(){
+            super(" ");
+            setPosition((GdxGame.WIDTH - getWidth())/2, (GdxGame.HEIGHT - getHeight())*1/14 );
+            setColor(Color.RED);
+        }
+        @Override
+        public void update(float dt){
+            super.update(dt);
+            setPosition((GdxGame.WIDTH - getWidth())/2, getPosition().y);
         }
     }
 
@@ -145,10 +137,20 @@ public class MenuPresenter extends Presenter {
         }
     }
 
+    private class UsernameField extends TextInputField{
+        public UsernameField(){
+            super("Username", "Guest", "");
+            setWidth(200);
+            setHeight(30);
+            setPosition(176, (GdxGame.HEIGHT - getHeight())*1/3 );
+        }
+    }
+
     private class AddPlayerButton extends Button{
         public AddPlayerButton(){
-            super(100, 40);
+            super(80, input.getHeight()-1);
             setText("Add player");
+            setPosition(GdxGame.WIDTH - input.getPosition().x - getWidth(), input.getPosition().y);
             setBorderWidth(2);
             setFontColor(Color.WHITE);
             setBackgroundColor(Color.NAVY);
@@ -171,5 +173,41 @@ public class MenuPresenter extends Presenter {
         }
     }
 
+    private class PlayButton extends Button{
+        public PlayButton(){
+            super(200, 40);
+            setText("Play game");
+            setPosition((GdxGame.WIDTH - getWidth())/2, input.getPosition().y - getHeight() - 20);
+            setBorderWidth(2);
+            setFontColor(Color.WHITE);
+            setBackgroundColor(Color.NAVY);
+            setBorderColor(Color.BLUE);
+            addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    ArrayList<String> usernames = new ArrayList<String>();
+                    for(Component c: joinedPlayerList.getComponents()){
+                        if(c instanceof PlayerListItem){
+                            usernames.add(((PlayerListItem) c).getUsername());
+                        }
+                    }
+                    notifyEvent(new MenuState.PlayEvent(usernames));
+                }
+            });
+        }
+    }
+
+    public class JoinedPlayerList extends ComponentList{
+        private TextLabel joinedPlayers;
+        public JoinedPlayerList(){
+            super();
+            setySpacing(10);
+            joinedPlayers = new TextLabel("Joined players:");
+            joinedPlayers.setColor(Color.WHITE);
+            joinedPlayers.setHeight(12);
+            setPosition(10, GdxGame.HEIGHT - 20);
+            addComponent(joinedPlayers);
+        }
+    }
 
 }

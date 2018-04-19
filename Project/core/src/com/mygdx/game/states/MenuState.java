@@ -41,8 +41,7 @@ public class MenuState extends State {
             if(e instanceof PlayEvent){
                 ArrayList<String> usernames = ((PlayEvent) e).getUsernames();
                 if(isValid(usernames)){
-                    System.out.println(usernames.size()+" players entered the game.");
-                    GameStateManager.getInstance().set(new GameState());
+                    GameStateManager.getInstance().set(new GameState(usernames));
                 }
                 else{
                     menuPresenter.notifyError(e, "At least 2 players must join the game.");

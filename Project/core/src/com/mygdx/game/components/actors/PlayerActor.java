@@ -13,6 +13,8 @@ import com.mygdx.game.sprites.PenguinAnimation;
 
 public class PlayerActor extends Actor {
 
+    public static final int DEFAULT_WIDTH = 28;
+    public static final int DEFAULT_HEIGHT = 40;
     private Weapon weapon;          // The actors current held weapon.
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
@@ -23,8 +25,8 @@ public class PlayerActor extends Actor {
         this.weapon = initialWeapon;
         this.penguin = penguin;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.PASSIVE);
-        setWidth(28);
-        setHeight(40);
+        setWidth(DEFAULT_WIDTH);
+        setHeight(DEFAULT_HEIGHT);
         health = 100;
         if(penguin){
             addSprite(new PenguinAnimation(100));
