@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;

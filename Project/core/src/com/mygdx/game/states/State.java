@@ -27,14 +27,17 @@ public abstract class State {
     protected void addComponent(Component component){
         components.add(component);
     }
-    protected boolean removeComponent(Component component){
+    public boolean removeComponent(Component component){
         for(Component c: components){
-            if(component.equals(c)){
+            if(c == component){
                 components.remove(c);
                 return true;
             }
         }
         return false;
+    }
+    public boolean containsComponent(Component component){
+        return(components.contains(component));
     }
     protected void addPresenter(Presenter presenter){
         presenters.add(presenter);
