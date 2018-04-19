@@ -11,7 +11,7 @@ public class TestProjectile extends Projectile {
     }
 
     public TestProjectile(){
-        super(10, 10);
+        super(30, 10);
     }
 
     @Override
