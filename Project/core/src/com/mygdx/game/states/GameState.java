@@ -5,8 +5,13 @@ import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.actors.PlayerActor;
 import com.mygdx.game.components.stage.Forest;
 import com.mygdx.game.components.stage.Stage;
+import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.collision.CollisionHandler;
+import com.mygdx.game.listeners.EventListener;
 import com.mygdx.game.presenters.GameStatePresenter;
+import com.mygdx.game.presenters.Presenter;
+
+import java.util.EventObject;
 
 
 // In-game state. Requires a stage and a collision handler.
@@ -24,8 +29,13 @@ public class GameState extends State {
 
         super();
         addPresenter(new GameStatePresenter());
+        for(Presenter presenter: presenters){
+            presenter.addEventListener(new InputListener());
+        }
+
         stage = new Forest();
         collisionHandler = new CollisionHandler(this);
+        mainHandler = new GameHandler();
 
         PlayerActor player = new PlayerActor("username", 100, null, true );
         player.setPosition(200, 305);
@@ -44,11 +54,43 @@ public class GameState extends State {
         otherplayer.setAngle(0);
         fire = false;
 
+        ((GameHandler)mainHandler).addPlayer(weaponPlayer);
+        ((GameHandler)mainHandler).addPlayer(otherplayer);
+        ((GameHandler)mainHandler).nextTurn();
     }
 
     @Override
     public void handleInput() {
 
+    }
+
+    private class InputListener extends EventListener{
+        @Override
+        public void notifyEvent(EventObject e) {
+            if(e instanceof MovementEvent){
+                String direction = ((MovementEvent) e).getDirection();
+                if(direction.equalsIgnoreCase("right")){
+                    ((GameHandler)mainHandler).playerMove(true);
+                    System.out.println("Player moved right");
+                }
+            }
+        }
+
+        @Override
+        public void notifyError(EventObject e, String message) {
+
+        }
+    }
+
+    public static class MovementEvent extends EventObject{
+        private String direction;
+        public MovementEvent(String string) {
+            super(string);
+            this.direction = string;
+        }
+        public String getDirection(){
+            return direction;
+        }
     }
 
     @Override
