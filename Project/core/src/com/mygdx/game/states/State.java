@@ -79,4 +79,8 @@ public abstract class State {
         return mainHandler;
     }
 
+    public ArrayList<Presenter> getPresenters() {
+        return presenters;
+    }
+
 }

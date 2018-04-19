@@ -29,7 +29,9 @@ public class InputHandler extends Handler implements InputProcessor{
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         State activeState = GameStateManager.getInstance().getActiveState();
         if(activeState instanceof GameState) {
-            ((GameHandler)activeState.getMainHandler()).playerMove(true);
+            GameHandler gameHandler = ((GameHandler)activeState.getMainHandler());
+            for()
+            gameHandler.playerMove(true);
             System.out.println("Active player moved");
         }
         return false;

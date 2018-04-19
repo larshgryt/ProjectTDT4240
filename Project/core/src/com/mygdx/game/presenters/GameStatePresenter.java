@@ -35,12 +35,12 @@ public class GameStatePresenter extends Presenter {
         menuButton.setPosition(GdxGame.WIDTH-menuButton.getWidth()-5,GdxGame.HEIGHT-5);
 
         //Movement control buttons
-        final ImageButton rightButton = new ImageButton(new Texture("right-button.png"), "rightButton");
+        ImageButton rightButton = new ImageButton(new Texture("right-button.png"), "rightButton");
         ImageButton leftButton = new ImageButton(new Texture("left-button.png"), "leftButton");
         rightButton.setPosition(GdxGame.WIDTH-rightButton.getWidth(), (GdxGame.HEIGHT-leftButton.getHeight())/2);
         leftButton.setPosition(0, (GdxGame.HEIGHT-leftButton.getHeight())/2);
 
-        weaponButton.addActionListener(new WeaponButtonListener());
+        /*weaponButton.addActionListener(new WeaponButtonListener());
         bazookaButton.addActionListener(new BazookaButtonListener());
         menuButton.addActionListener(new MenuButtonListener());
         rightButton.addActionListener(new ActionListener() {
@@ -48,7 +48,7 @@ public class GameStatePresenter extends Presenter {
             public void actionPerformed(ActionEvent actionEvent) {
                 notifyEvent(new GameState.MovementEvent("right"));
             }
-        });
+        });*/
 
         addComponent(rightButton);
         addComponent(leftButton);
@@ -56,7 +56,7 @@ public class GameStatePresenter extends Presenter {
         addComponent(weaponButton);
         addComponent(weaponGrid);
     }
-
+/*
     private class WeaponButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -87,6 +87,6 @@ public class GameStatePresenter extends Presenter {
         public void actionPerformed(ActionEvent actionEvent){
 
         }
-    }
+    }*/
 
 }
