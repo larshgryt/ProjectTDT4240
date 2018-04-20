@@ -11,8 +11,8 @@ public class Animation implements Sprite{
     private float currentFrameTime;     // How long the current frame has been shown.
     private int frameCount;             // Number of total frames.
     private int frame;                  // The index of the current frame.
-    private boolean horizontalFlip;     // Whether the animation should flip horizontally when rendered.
-    private boolean verticalFlip;       // Whether the animation should flip vertically when rendered.
+    protected boolean horizontalFlip;     // Whether the animation should flip horizontally when rendered.
+    protected boolean verticalFlip;       // Whether the animation should flip vertically when rendered.
 
     /* Creates a new animation using the given array of frames. */
     public Animation(Array<Texture> frames, float maxFrameTime){
@@ -32,6 +32,13 @@ public class Animation implements Sprite{
         frame = 0;
         horizontalFlip = false;
         verticalFlip = false;
+    }
+
+    public void setMaxFrameTime(float maxFrameTime){
+        this.maxFrameTime = maxFrameTime;
+    }
+    public int getFrameCount(){
+        return frameCount;
     }
 
     public float getWidth(){
@@ -66,6 +73,15 @@ public class Animation implements Sprite{
         return frames.get(frame);
     }
 
+    public Animation copy(){
+        Animation animation = new Animation(maxFrameTime);
+        for(Texture frame: frames){
+            animation.addFrame(new Texture(frame.getTextureData()));
+        }
+        animation.reset();
+        return animation;
+    }
+
 
     /* Renders the animation on the given SpriteBatch, at the given location with the given
     dimensions.
@@ -93,7 +109,7 @@ public class Animation implements Sprite{
                 currentFrameTime = 0;
             }
             if (frame >= frameCount) {
-                frame = 0;
+                reset();
             }
         }
     }
