@@ -55,7 +55,6 @@ public class InputHandler extends Handler implements InputProcessor{
                 }
             }
         }*/
-        System.out.println("Touched down");
         return false;
     }
 
@@ -69,6 +68,9 @@ public class InputHandler extends Handler implements InputProcessor{
             }
             if(s.equalsIgnoreCase("left")){
                 gameHandler.playerMove(false);
+            }
+            if(s.equalsIgnoreCase("useWeapon")){
+                //TODO: Add functionality for shooting
             }
         }
     }

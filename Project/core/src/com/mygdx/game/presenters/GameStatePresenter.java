@@ -21,13 +21,6 @@ public class GameStatePresenter extends Presenter {
 
     public GameStatePresenter(){
         super();
-        ImageButton bazookaButton = new ImageButton(new Texture("bazooka_temporary.png"),"bazooka");
-        weaponTextures.add(bazookaButton);
-
-        weaponGrid = new Grid(weaponTextures);
-        weaponGrid.setPosition(weaponGrid.getWidth(), GdxGame.HEIGHT - weaponGrid.getHeight());
-        weaponGrid.positionGrid(false);
-
         weaponButton = new ImageButton(new Texture("bazooka_temporary.png"), "bazooka");
         weaponButton.setPosition(5, (GdxGame.HEIGHT - weaponButton.getHeight()));
 
@@ -41,9 +34,6 @@ public class GameStatePresenter extends Presenter {
         rightButton.setPosition(GdxGame.WIDTH-rightButton.getWidth(), (GdxGame.HEIGHT-leftButton.getHeight())/2);
         leftButton.setPosition(0, (GdxGame.HEIGHT-leftButton.getHeight())/2);
 
-/*        weaponButton.addActionListener(new WeaponButtonListener());
-        bazookaButton.addActionListener(new BazookaButtonListener());
-        menuButton.addActionListener(new MenuButtonListener());*/
         rightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -56,44 +46,17 @@ public class GameStatePresenter extends Presenter {
                 InputHandler.getInstance().processInputEvent(new InputEvent("left"));
             }
         });
+        weaponButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                InputHandler.getInstance().processInputEvent(new InputEvent("useWeapon"));
+            }
+        });
+
 
         addComponent(rightButton);
         addComponent(leftButton);
         addComponent(menuButton);
         addComponent(weaponButton);
-        addComponent(weaponGrid);
     }
-/*
-    private class WeaponButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            setVisible(!isVisible());
-        }
-
-    }
-    private class BazookaButtonListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-            weaponButton.setTexture(new Texture("bazooka_temporary.png"));
-            setVisible(!isVisible());
-            //change weapon logic here
-        }
-
-    }
-
-    private class MenuButtonListener implements  ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-
-        }
-
-    }
-
-    private class rightButtonListener implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent actionEvent){
-
-        }
-    }*/
-
 }

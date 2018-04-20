@@ -30,9 +30,6 @@ public class GameState extends State {
 
         super();
         addPresenter(new GameStatePresenter());
-/*        for(Presenter presenter: presenters){
-            presenter.addEventListener(new InputListener());
-        }*/
 
         stage = new Forest();
         collisionHandler = new CollisionHandler(this);
@@ -65,35 +62,6 @@ public class GameState extends State {
     public void handleInput() {
 
     }
-
-/*    private class InputListener extends EventListener{
-        @Override
-        public void notifyEvent(EventObject e) {
-            if(e instanceof MovementEvent){
-                String direction = ((MovementEvent) e).getDirection();
-                if(direction.equalsIgnoreCase("right")){
-                    ((GameHandler)mainHandler).playerMove(true);
-                    System.out.println("Player moved right");
-                }
-            }
-        }
-
-        @Override
-        public void notifyError(EventObject e, String message) {
-
-        }
-    }*/
-
-   /* public static class MovementEvent extends EventObject{
-        private String direction;
-        public MovementEvent(String string) {
-            super(string);
-            this.direction = string;
-        }
-        public String getDirection(){
-            return direction;
-        }
-    }*/
 
     @Override
     public void update(float dt) {
