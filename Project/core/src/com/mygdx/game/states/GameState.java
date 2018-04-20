@@ -56,6 +56,8 @@ public class GameState extends State {
             }
             addComponent(player);
         }
+        // Set active player to start game
+        gameHandler.nextTurn();
     }
 
     @Override
