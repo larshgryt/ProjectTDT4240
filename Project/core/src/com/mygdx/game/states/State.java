@@ -17,8 +17,6 @@ public abstract class State {
     protected AudioService audioService = new AudioService();
 
 
-    protected Handler mainHandler;
-
     public State(){
         components = new ArrayList<Component>();
         presenters = new ArrayList<Presenter>();
@@ -73,10 +71,6 @@ public abstract class State {
         for(Presenter presenter: presenters){
             presenter.dispose();
         }
-    }
-
-    public Handler getMainHandler() {
-        return mainHandler;
     }
 
     public ArrayList<Presenter> getPresenters() {

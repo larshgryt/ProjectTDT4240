@@ -22,8 +22,7 @@ public class GdxGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		InputHandler inputHandler = new InputHandler();
-		Gdx.input.setInputProcessor(inputHandler);
+		Gdx.input.setInputProcessor(InputHandler.getInstance());
 		gsm.push(new MenuState());
 	}
 

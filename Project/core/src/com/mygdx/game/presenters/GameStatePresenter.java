@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.menucomponents.Grid;
 import com.mygdx.game.components.menucomponents.ImageButton;
+import com.mygdx.game.handlers.input.InputEvent;
 import com.mygdx.game.handlers.input.InputHandler;
 import com.mygdx.game.states.GameState;
 
@@ -40,15 +41,15 @@ public class GameStatePresenter extends Presenter {
         rightButton.setPosition(GdxGame.WIDTH-rightButton.getWidth(), (GdxGame.HEIGHT-leftButton.getHeight())/2);
         leftButton.setPosition(0, (GdxGame.HEIGHT-leftButton.getHeight())/2);
 
-        /*weaponButton.addActionListener(new WeaponButtonListener());
+/*        weaponButton.addActionListener(new WeaponButtonListener());
         bazookaButton.addActionListener(new BazookaButtonListener());
-        menuButton.addActionListener(new MenuButtonListener());
+        menuButton.addActionListener(new MenuButtonListener());*/
         rightButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                notifyEvent(new GameState.MovementEvent("right"));
+                InputHandler.getInstance().processInputEvent(new InputEvent("right"));
             }
-        });*/
+        });
 
         addComponent(rightButton);
         addComponent(leftButton);

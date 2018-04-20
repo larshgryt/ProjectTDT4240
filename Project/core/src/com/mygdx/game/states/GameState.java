@@ -20,6 +20,7 @@ public class GameState extends State {
 
     private Stage stage;
     private CollisionHandler collisionHandler;
+    private GameHandler gameHandler;
 
     // Variables for testing purposes.
     private boolean fire;
@@ -35,7 +36,7 @@ public class GameState extends State {
 
         stage = new Forest();
         collisionHandler = new CollisionHandler(this);
-        mainHandler = new GameHandler();
+        gameHandler = new GameHandler();
 
         PlayerActor player = new PlayerActor("username", 100, null, true );
         player.setPosition(200, 305);
@@ -54,9 +55,10 @@ public class GameState extends State {
         otherplayer.setAngle(0);
         fire = false;
 
-        ((GameHandler)mainHandler).addPlayer(weaponPlayer);
-        ((GameHandler)mainHandler).addPlayer(otherplayer);
-        ((GameHandler)mainHandler).nextTurn();
+        //For testing
+        gameHandler.addPlayer(weaponPlayer);
+        gameHandler.addPlayer(otherplayer);
+        gameHandler.nextTurn();
     }
 
     @Override
@@ -124,5 +126,10 @@ public class GameState extends State {
     public void dispose() {
         stage.dispose();
         super.dispose();
+    }
+
+
+    public GameHandler getGameHandler() {
+        return gameHandler;
     }
 }

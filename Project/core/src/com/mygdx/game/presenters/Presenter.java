@@ -66,4 +66,8 @@ public abstract class Presenter {
             c.dispose();
         }
     }
+
+    public ArrayList<Component> getComponents() {
+        return components;
+    }
 }
