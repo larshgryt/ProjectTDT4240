@@ -9,7 +9,7 @@ import com.mygdx.game.components.gamecomponents.TestBazooka;
 import com.mygdx.game.components.gamecomponents.Weapon;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.Animation;
-import com.mygdx.game.sprites.PenguinAnimation;
+import com.mygdx.game.sprites.PlayerAnimation;
 
 public class PlayerActor extends Actor {
 
@@ -28,19 +28,7 @@ public class PlayerActor extends Actor {
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
         health = 100;
-        if(penguin){
-            addSprite(new PenguinAnimation(100));
-        }
-        else{
-            // Sets the sprite to a gray rectangle.
-            Pixmap pixmap = new Pixmap(32,40, Pixmap.Format.RGB888);
-            pixmap.setColor(Color.GRAY);
-            pixmap.fill();
-            Animation sprite = new Animation(100);
-            sprite.addFrame(new Texture(pixmap));
-            pixmap.dispose();
-            addSprite(sprite);
-        }
+        addSprite(new PlayerAnimation(100, penguin));
         setRotatesOnMovement(false);
         bounces = true;
         holdingPoint = new Vector3(width/2, height/2, 0);
