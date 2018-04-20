@@ -55,7 +55,7 @@ public class GameState extends State {
         otherplayer.setAngle(0);
         fire = false;
 
-        //For testing
+        //TODO: Remove before pushing
         gameHandler.addPlayer(weaponPlayer);
         gameHandler.addPlayer(otherplayer);
         gameHandler.nextTurn();

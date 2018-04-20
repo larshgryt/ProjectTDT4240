@@ -50,6 +50,12 @@ public class GameStatePresenter extends Presenter {
                 InputHandler.getInstance().processInputEvent(new InputEvent("right"));
             }
         });
+        leftButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                InputHandler.getInstance().processInputEvent(new InputEvent("left"));
+            }
+        });
 
         addComponent(rightButton);
         addComponent(leftButton);

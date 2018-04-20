@@ -61,11 +61,14 @@ public class InputHandler extends Handler implements InputProcessor{
 
     public void processInputEvent(InputEvent e){
         String s = (String)e.getSource();
-        if(s.equalsIgnoreCase("right")){
-            if(GameStateManager.getInstance().getActiveState() instanceof GameState){
-                GameState gameState = (GameState)GameStateManager.getInstance().getActiveState();
-                GameHandler gameHandler = gameState.getGameHandler();
+        if(GameStateManager.getInstance().getActiveState() instanceof GameState){
+            GameState gameState = (GameState)GameStateManager.getInstance().getActiveState();
+            GameHandler gameHandler = gameState.getGameHandler();
+            if(s.equalsIgnoreCase("right")){
                 gameHandler.playerMove(true);
+            }
+            if(s.equalsIgnoreCase("left")){
+                gameHandler.playerMove(false);
             }
         }
     }
