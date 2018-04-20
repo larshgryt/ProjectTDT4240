@@ -24,7 +24,7 @@ public abstract class State {
         audioService.set(path);
     }
 
-    protected void addComponent(Component component){
+    public void addComponent(Component component){
         components.add(component);
     }
     public boolean removeComponent(Component component){
