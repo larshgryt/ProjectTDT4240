@@ -27,17 +27,20 @@ public abstract class State {
         audioService.set(path);
     }
 
-    protected void addComponent(Component component){
+    public void addComponent(Component component){
         components.add(component);
     }
-    protected boolean removeComponent(Component component){
+    public boolean removeComponent(Component component){
         for(Component c: components){
-            if(component.equals(c)){
+            if(c == component){
                 components.remove(c);
                 return true;
             }
         }
         return false;
+    }
+    public boolean containsComponent(Component component){
+        return(components.contains(component));
     }
     protected void addPresenter(Presenter presenter){
         presenters.add(presenter);
@@ -48,13 +51,13 @@ public abstract class State {
     abstract void handleInput();
 
     public void update(float dt){
-        handleInput();
         for(Component component: components){
             component.update(dt);
         }
         for(Presenter presenter: presenters){
             presenter.update(dt);
         }
+        handleInput();
     }
     public void render(SpriteBatch sb){
         for(Component component: components){

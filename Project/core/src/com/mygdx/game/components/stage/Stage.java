@@ -78,6 +78,13 @@ public abstract class Stage {
         return stageComponents;
     }
 
+    public float getWidth(){
+        return width;
+    }
+    public float getHeight(){
+        return height;
+    }
+
     public void update(float dt){
         for(StageComponent sc: stageComponents){
             sc.update(dt);
