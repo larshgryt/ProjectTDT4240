@@ -61,8 +61,8 @@ public class GameHandler extends Handler {
     // Call on movement button touch
     public void playerMove(boolean direction){
         int velocity;
-        if (direction) velocity = 5;
-        else velocity = -5;
+        if (direction) velocity = 100;
+        else velocity = -100;
 
         this.activePlayer.setVelocity(velocity,0);
     }

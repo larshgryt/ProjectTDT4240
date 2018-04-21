@@ -11,10 +11,6 @@ import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.Animation;
 import com.mygdx.game.sprites.PlayerAnimation;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
 public class PlayerActor extends Actor {
 
     public static final int DEFAULT_WIDTH = 28;
@@ -23,12 +19,9 @@ public class PlayerActor extends Actor {
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
     private float health;           // Health. Should not actually be here.
-    private ArrayList<ActionListener> listeners;
-
 
     public PlayerActor(String username, float maxHealth, Weapon initialWeapon, boolean penguin){
         super();
-        listeners = new ArrayList<ActionListener>();
         this.weapon = initialWeapon;
         this.penguin = penguin;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.PASSIVE);
@@ -42,18 +35,6 @@ public class PlayerActor extends Actor {
         setWeapon(new TestBazooka());
         setElasticity(0.4f);
         setBounceThreshold(10);
-    }
-
-    public void addActionListener(ActionListener listener){
-        listeners.add(listener);
-    }
-
-    /* Notifies all listeners that the player has been clicked */
-    public void click(){
-        for(ActionListener l: listeners){
-            l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                    "Player clicked"));
-        }
     }
 
     @Override
