@@ -2,13 +2,12 @@ package com.mygdx.game.components.gamecomponents;
 
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.components.actors.PlayerActor;
 import com.mygdx.game.components.actors.projectiles.Projectile;
-import com.mygdx.game.sprites.Animation;
+import com.mygdx.game.sprites.ColoredField;
 import com.mygdx.game.sprites.Sprite;
 
 public abstract class Weapon extends Component {
@@ -22,18 +21,11 @@ public abstract class Weapon extends Component {
     protected float projectileVelocity;    // The velocity of the fired projectile.
 
     public Weapon(int width, int height, Projectile projectile){
-        Animation sprite = new Animation(100);
-        //Create a white texture
-        Pixmap pixmap = new Pixmap(width,height, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        sprite.addFrame(new Texture(pixmap));
-        pixmap.dispose();
-        this.sprite = sprite;
+        sprite = new ColoredField(Color.WHITE);
         this.projectile = projectile;
-        this.width = sprite.getWidth();
-        this.height = sprite.getHeight();
-        projectilePoint = new Vector3(0, 0, 0);
+        this.width = width;
+        this.height = height;
+        projectilePoint = new Vector3(width+1, height/2, 0);
         projectileVelocity = 500;
     }
 
@@ -132,6 +124,12 @@ public abstract class Weapon extends Component {
         }
 
         return projectile.fire(x, y, (float)Math.toDegrees(alpha), projectileVelocity);
+    }
+
+    public Projectile shoot(PlayerActor playerActor){
+        Projectile projectile = shoot();
+        projectile.setSource(playerActor);
+        return projectile;
     }
 
     // Sets the projectile point relative to the weapons position.

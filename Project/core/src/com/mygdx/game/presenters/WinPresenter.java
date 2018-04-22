@@ -9,16 +9,14 @@ import java.util.Stack;
 
 public class WinPresenter extends Presenter {
 
-    private Stack<PlayerActor> players;
     private ComponentList playerList;
 
     public WinPresenter(Stack<PlayerActor> scoreList) {
         super();
-        this.players = scoreList;
         playerList = new PlayerList();
         int playerPlacement = 0;
-        for (PlayerActor player : players){
-            TextLabel label = new TextLabel(++playerPlacement + ": "+player.getUsername());
+        while(!scoreList.empty()){
+            TextLabel label = new TextLabel(++playerPlacement + ": "+scoreList.pop().getUsername());
             playerList.addComponent(label);
         }
         addComponent(playerList);

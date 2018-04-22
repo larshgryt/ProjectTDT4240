@@ -1,6 +1,5 @@
 package com.mygdx.game.components.actors.projectiles;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.actors.PlayerActor;
@@ -17,10 +16,11 @@ public abstract class Projectile extends Actor {
 
     protected VisualEffect hitEffect;
     protected float damage;
+    protected PlayerActor source;
 
-    public Projectile(Texture texture){
+    public Projectile(String texturePath){
         Animation sprite = new Animation(100);
-        sprite.addFrame(texture);
+        sprite.addFrame(texturePath);
         sprites.add(sprite);
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();
@@ -28,6 +28,7 @@ public abstract class Projectile extends Actor {
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
         damage = 10;
         hitEffect = null;
+        source = null;
     }
 
     /* Returns a new instance of this class and shoots it from the given coordinates in the
@@ -44,12 +45,30 @@ public abstract class Projectile extends Actor {
     // Returns a new instance of the projectile subclass.
     protected abstract Projectile getInstance();
 
+    public Projectile fire(float x, float y, float angle, float velocity, PlayerActor source){
+        Projectile projectile = getInstance();
+        projectile.setPosition(x, y);
+        projectile.setSource(source);
+        double theta = Math.toRadians(angle);
+        projectile.setVelocity(velocity * (float)Math.cos(theta), velocity * (float) Math.sin(theta));
+        return projectile;
+    }
+
+    public void setSource(PlayerActor source){
+        this.source = source;
+    }
+    public PlayerActor getSource(){
+        return source;
+    }
+
     /* Code that determines projectiles effect on another actor */
     public void hit(State state, Collidable other){
         if(other instanceof Component){
             if(state.containsComponent(this) && state.containsComponent((Component)other)){
                 if(other instanceof PlayerActor){
-                    GameHandler.getInstance().damagePlayer(getDamage(), (PlayerActor) other);
+                    if(other != source){
+                        GameHandler.getInstance().damagePlayer(getDamage(), (PlayerActor) other);
+                    }
                 }
                 destroy(state);
             }

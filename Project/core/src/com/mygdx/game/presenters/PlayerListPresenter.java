@@ -64,7 +64,6 @@ public class PlayerListPresenter extends Presenter {
 
         @Override
         public void update(float dt){
-            healthBar.changeHealth(player.getHealth(), player.getMaxHealth());
             super.update(dt);
             if(GameHandler.getInstance().getActivePlayer() == player){
                 username.setColor(Color.BLACK);
@@ -72,6 +71,7 @@ public class PlayerListPresenter extends Presenter {
             else{
                 username.setColor(Color.GRAY);
             }
+            healthBar.changeHealth(player.getHealth(), player.getMaxHealth());
         }
     }
 
