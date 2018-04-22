@@ -18,5 +18,6 @@ public class RocketProjectile extends Projectile {
         super(new Texture("rocket.png"));
         setWidth(30);
         setHeight(14);
+        setDamage(100);
     }
 }
