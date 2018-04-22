@@ -15,7 +15,6 @@ public class GameHandler extends Handler {
     private Stack<PlayerActor> finishedPlayers;
     private PlayerActor activePlayer;
     private int turnCount;
-    private int listPosition;
     private boolean gameFinished;
     private float dx;
     private float dy;
@@ -39,14 +38,6 @@ public class GameHandler extends Handler {
 
     public PlayerActor getActivePlayer() {
         return activePlayer;
-    }
-
-    public int getPlayerNumber() {
-        return this.activePlayer.playerNumber;
-    }
-
-    public int getTurnCount() {
-        return turnCount;
     }
 
     public void addPlayer(PlayerActor player){
