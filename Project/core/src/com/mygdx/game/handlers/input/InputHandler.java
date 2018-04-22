@@ -58,7 +58,14 @@ public class InputHandler extends Handler implements InputProcessor{
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        if(GameStateManager.getInstance().getActiveState() instanceof GameState){
+            GameState gameState = (GameState)GameStateManager.getInstance().getActiveState();
+            GameHandler gameHandler = gameState.getGameHandler();
+            if (gameHandler.getActivePlayer().isMoving()){
+                gameHandler.getActivePlayer().setMoving(false);
+            }
+        }
+        return true;
     }
 
     @Override
