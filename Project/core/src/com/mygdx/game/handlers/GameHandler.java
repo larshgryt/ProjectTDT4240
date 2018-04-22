@@ -4,6 +4,7 @@ package com.mygdx.game.handlers;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.actors.PlayerActor;
 import com.mygdx.game.components.actors.projectiles.Projectile;
+import com.mygdx.game.handlers.collision.CollisionHandler;
 import com.mygdx.game.states.GameState;
 import com.mygdx.game.states.GameStateManager;
 
@@ -100,7 +101,10 @@ public class GameHandler{
                 GameState gameState = (GameState) GameStateManager.getInstance().getActiveState();
                 if(activePlayer.isShooting()){
                     activePlayer.setShooting(false);
-                    activeProjectile = activePlayer.getWeapon().shoot();
+                    activeProjectile = activePlayer.getWeapon().shoot(activePlayer);
+                    if(activePlayer.collidesWith(activeProjectile)){
+                        CollisionHandler.getInstance().separate(activePlayer, activeProjectile);
+                    }
                     activeProjectile.setVelocity(dx * 2, dy * 2);
                     gameState.addComponent(activeProjectile);
                 }
@@ -111,7 +115,12 @@ public class GameHandler{
     public void playerAim(float x, float y){
         if(enabled){
             activePlayer.setShooting(true);
-            dx = x - activePlayer.getPosition().x;
+            if(x < activePlayer.getPosition().x + activePlayer.getWidth()/2){
+                 dx = x - activePlayer.getPosition().x;
+            }
+            else{
+                dx = x - activePlayer.getPosition().x - activePlayer.getWidth();
+            }
             dy = (GdxGame.HEIGHT - y) - activePlayer.getPosition().y;
             float angle = (float)Math.toDegrees(Math.atan(dy/dx));
             if(dx < 0){
