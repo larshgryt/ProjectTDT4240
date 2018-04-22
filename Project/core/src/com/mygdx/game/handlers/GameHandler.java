@@ -18,6 +18,8 @@ public class GameHandler extends Handler {
     private float dx;
     private float dy;
     private int listCounter;
+    private boolean enabled;
+    private Projectile activeProjectile;
 
     public GameHandler() {
         this.players = new ArrayList<PlayerActor>();
@@ -25,6 +27,8 @@ public class GameHandler extends Handler {
         this.turnCount = 0;
         dx = 0;
         dy = 0;
+        enabled = true;
+        activeProjectile = null;
     }
 
     public ArrayList<PlayerActor> getPlayers() {
@@ -65,6 +69,7 @@ public class GameHandler extends Handler {
             this.activePlayer = players.get(this.listCounter++);
         }
         this.activePlayer.setShooting(false);
+        enabled = true;
         turnCount++;
     }
     public void damagePlayer(float damage, int number){
@@ -76,40 +81,57 @@ public class GameHandler extends Handler {
                     this.players.remove(actor);
                 }
                 else actor.setHealth(pHealth - damage);
+                break;
             }
         }
     }
 
+    public void setEnabled(boolean enabled){
+        this.enabled = enabled;
+    }
+
+    public Projectile getActiveProjectile(){
+        return activeProjectile;
+    }
+    public void setActiveProjectile(Projectile projectile){
+        enabled = (projectile == null);
+        activeProjectile = projectile;
+    }
+
     public void fireWeapon(){
-        if(GameStateManager.getInstance().getActiveState() instanceof GameState){
-            GameState gameState = (GameState) GameStateManager.getInstance().getActiveState();
-            if(activePlayer.isShooting()){
-                System.out.println("shooting...");
-                activePlayer.setShooting(false);
-                Projectile p = activePlayer.getWeapon().shoot();
-                p.setVelocity(dx * 2, dy * 2);
-                gameState.addComponent(p);
+        if(enabled){
+            if(GameStateManager.getInstance().getActiveState() instanceof GameState){
+                GameState gameState = (GameState) GameStateManager.getInstance().getActiveState();
+                if(activePlayer.isShooting()){
+                    System.out.println("shooting...");
+                    activePlayer.setShooting(false);
+                    activeProjectile = activePlayer.getWeapon().shoot();
+                    activeProjectile.setVelocity(dx * 2, dy * 2);
+                    gameState.addComponent(activeProjectile);
+                }
             }
         }
     }
 
     public void playerAim(float x, float y){
-        activePlayer.setShooting(true);
-        System.out.println("x:"+x +" y:" + y);
-        dx = x - activePlayer.getPosition().x;
-        dy = (GdxGame.HEIGHT - y) - activePlayer.getPosition().y;
-        System.out.println("dx:"+dx+" dy:"+dy);
-        float angle = (float)Math.toDegrees(Math.atan(dy/dx));
-        if(dx < 0){
-            activePlayer.setHorizontalFlip(true);
-            angle *= -1;
+        if(enabled){
+            activePlayer.setShooting(true);
+            System.out.println("x:"+x +" y:" + y);
+            dx = x - activePlayer.getPosition().x;
+            dy = (GdxGame.HEIGHT - y) - activePlayer.getPosition().y;
+            System.out.println("dx:"+dx+" dy:"+dy);
+            float angle = (float)Math.toDegrees(Math.atan(dy/dx));
+            if(dx < 0){
+                activePlayer.setHorizontalFlip(true);
+                angle *= -1;
+            }
+            else{
+                activePlayer.setHorizontalFlip(false);
+            }
+            activePlayer.setAimAngle(angle);
+            System.out.println(activePlayer.toString()+" x:"+activePlayer.getPosition().x+" y:"+
+                    activePlayer.getPosition().y+" angle:"+activePlayer.getAngle()+" aimAngle:"+activePlayer.getAimAngle());
         }
-        else{
-            activePlayer.setHorizontalFlip(false);
-        }
-        activePlayer.setAimAngle(angle);
-        System.out.println(activePlayer.toString()+" x:"+activePlayer.getPosition().x+" y:"+
-                activePlayer.getPosition().y+" angle:"+activePlayer.getAngle()+" aimAngle:"+activePlayer.getAimAngle());
     }
 
     public float getDx(){
@@ -123,12 +145,14 @@ public class GameHandler extends Handler {
     // Sets velocity on active player actor. Direction= true is right movement. False is left movement.
     // Call on movement button touch
     public void playerMove(boolean direction){
-        int velocity;
-        if (direction) velocity = 100;
-        else velocity = -100;
+        if(enabled){
+            int velocity;
+            if (direction) velocity = 100;
+            else velocity = -100;
 
-        this.activePlayer.setVelocity(velocity,0);
-        this.activePlayer.setMoving(true);
+            this.activePlayer.setVelocity(velocity,0);
+            this.activePlayer.setMoving(true);
+        }
     }
 
     // Stops player movement. Call on touch stop

@@ -77,6 +77,14 @@ public class GameState extends State {
         }
         super.update(dt);
         collisionHandler.checkForCollisions(components, stage);
+        if(gameHandler.getActiveProjectile() != null){
+            if(containsComponent(gameHandler.getActiveProjectile())){
+                gameHandler.setEnabled(false);
+            }
+            else{
+                gameHandler.setActiveProjectile(null);
+            }
+        }
     }
 
     @Override
