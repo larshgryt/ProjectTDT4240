@@ -3,9 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.states.GameState;
+import com.mygdx.game.handlers.input.GameInputProcessor;
 import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
 
@@ -14,13 +13,12 @@ public class GdxGame extends ApplicationAdapter {
 	public static final int HEIGHT = 360;
 
 	SpriteBatch batch;
-	Texture img;
 	GameStateManager gsm = GameStateManager.getInstance();
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		Gdx.input.setInputProcessor(new GameInputProcessor());
 		gsm.push(new MenuState());
 	}
 
@@ -37,6 +35,5 @@ public class GdxGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		gsm.dispose();
-		img.dispose();
 	}
 }

@@ -5,34 +5,30 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.mygdx.game.listeners.EventListener;
 import java.util.ArrayList;
+import java.util.EventObject;
 
 public class ImageButton extends Component {
     private Texture image;
-    private String name;
-    private ArrayList<ActionListener> listeners;
+    private ArrayList<EventListener> listeners;
 
-    public ImageButton(Texture texture, String name){
+    public ImageButton(Texture texture){
         super();
         image = texture;
-        this.name = name;
-        listeners = new ArrayList<ActionListener>();
+        listeners = new ArrayList<EventListener>();
         width = image.getWidth();
         height = image.getHeight();
     }
 
-    public void addActionListener(ActionListener listener){
+    public void addEventListener(EventListener listener){
         listeners.add(listener);
     }
 
     /* Notifies all listeners that the button has been clicked */
     public void click(){
-        for(ActionListener l: listeners){
-            l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                    "Button clicked"));
+        for(EventListener l: listeners){
+            l.notifyEvent(new EventObject(this));
         }
     }
 
@@ -56,13 +52,6 @@ public class ImageButton extends Component {
         image = texture;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
 
     @Override
     public void dispose() {

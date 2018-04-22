@@ -1,50 +1,61 @@
 package com.mygdx.game.components.actors;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.components.gamecomponents.TestBazooka;
+import com.mygdx.game.components.gamecomponents.Bazooka;
 import com.mygdx.game.components.gamecomponents.Weapon;
 import com.mygdx.game.handlers.collision.CollisionBox;
-import com.mygdx.game.sprites.Animation;
-import com.mygdx.game.sprites.PenguinAnimation;
+import com.mygdx.game.sprites.PlayerAnimation;
 
 public class PlayerActor extends Actor {
 
+    public static final int DEFAULT_WIDTH = 28;
+    public static final int DEFAULT_HEIGHT = 40;
+    public int playerNumber;
+    private String username;
     private Weapon weapon;          // The actors current held weapon.
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
-    private float health;           // Health. Should not actually be here.
+    private float health;
+    private float maxHealth;
+    private boolean shooting;
+    private float aimAngle;
 
     public PlayerActor(String username, float maxHealth, Weapon initialWeapon, boolean penguin){
         super();
+        setUsername(username);
         this.weapon = initialWeapon;
         this.penguin = penguin;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.PASSIVE);
-        setWidth(28);
-        setHeight(40);
-        health = 100;
-        if(penguin){
-            addSprite(new PenguinAnimation(100));
-        }
-        else{
-            // Sets the sprite to a gray rectangle.
-            Pixmap pixmap = new Pixmap(32,40, Pixmap.Format.RGB888);
-            pixmap.setColor(Color.GRAY);
-            pixmap.fill();
-            Animation sprite = new Animation(100);
-            sprite.addFrame(new Texture(pixmap));
-            pixmap.dispose();
-            addSprite(sprite);
-        }
+        setWidth(DEFAULT_WIDTH);
+        setHeight(DEFAULT_HEIGHT);
+        health = maxHealth;
+        this.maxHealth = maxHealth;
+        addSprite(new PlayerAnimation(100, penguin));
         setRotatesOnMovement(false);
         bounces = true;
         holdingPoint = new Vector3(width/2, height/2, 0);
-        setWeapon(new TestBazooka());
+        setWeapon(new Bazooka());
         setElasticity(0.4f);
         setBounceThreshold(10);
+        shooting = false;
+        aimAngle = 0;
+    }
+
+    public void setShooting(boolean shooting){
+        this.shooting = shooting;
+    }
+    public boolean isShooting(){
+        return shooting;
+    }
+    public void setAimAngle(float aimAngle){
+        this.aimAngle = aimAngle;
+    }
+    public float getAimAngle(){
+        return aimAngle;
+    }
+    public float getMaxHealth(){
+        return maxHealth;
     }
 
     @Override
@@ -53,7 +64,7 @@ public class PlayerActor extends Actor {
         if(x < 0){
             setHorizontalFlip(true);
         }
-        else{
+        else if(x > 0){
             setHorizontalFlip(false);
         }
     }
@@ -91,6 +102,15 @@ public class PlayerActor extends Actor {
     @Override
     public void update(float dt){
         super.update(dt);
+
+        if(shooting) {
+            if(aimAngle > 90 || aimAngle < -90){
+                weapon.setAim(aimAngle + 180);
+            }
+            else{
+                weapon.setAim(aimAngle);
+            }
+        }
 
         // Rotate the holding point around the center so that it matches the players angle.
 
@@ -135,5 +155,20 @@ public class PlayerActor extends Actor {
     }
     public float getHealth(){
         return health;
+    }
+    @Override
+    public boolean isMoving() {
+        return moving;
+    }
+    @Override
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

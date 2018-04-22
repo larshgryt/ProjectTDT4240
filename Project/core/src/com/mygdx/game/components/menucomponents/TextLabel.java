@@ -31,6 +31,8 @@ public class TextLabel extends Component {
     public void setText(String text){
         this.text = text;
         glyphLayout.setText(font, text);
+        this.width = glyphLayout.width;
+        this.height = glyphLayout.height;
     }
 
     @Override

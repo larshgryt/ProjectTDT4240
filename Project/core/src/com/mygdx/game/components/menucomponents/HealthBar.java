@@ -1,6 +1,8 @@
 package com.mygdx.game.components.menucomponents;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.components.Component;
@@ -9,22 +11,25 @@ import com.mygdx.game.components.Component;
 
 public class HealthBar extends Component {
     private ShapeRenderer shapeRenderer;
-    private Color color;
-    private Color borderColor;
     private float fillWidth;
-    private float fillHeight;
     private float totalFillWidth;
+    private Texture texture;
+    private Texture borderTexture;
+    private int borderWidth;
 
 
     public HealthBar(float width, float height){
         super();
+        texture = null;
+        borderTexture = null;
         shapeRenderer = new ShapeRenderer();
         this.width = width;
         this.height = height;
-        fillWidth = width -2;
-        fillHeight = height -2;
+        fillWidth = width;
         totalFillWidth = fillWidth;
-
+        setColor(Color.RED);
+        setBorderColor(Color.BLACK);
+        borderWidth = 1;
     }
 
     public void changeHealth(float currentHealth, float totalHealth){
@@ -32,29 +37,26 @@ public class HealthBar extends Component {
     }
 
     public void setBorderColor(Color color){
-        borderColor = color;
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
+        pixmap.setColor(color);
+        pixmap.fill();
+        borderTexture = new Texture(pixmap);
+        pixmap.dispose();
     }
 
     public void setColor(Color color){
-        this.color = color;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public Color getBorderColor() {
-        return borderColor;
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
+        pixmap.setColor(color);
+        pixmap.fill();
+        texture = new Texture(pixmap);
+        pixmap.dispose();
     }
 
     public void render(SpriteBatch sb){
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(borderColor);
-        shapeRenderer.rect(position.x, position.y, width, height);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(color);
-        shapeRenderer.rect(position.x+1, position.y+1, fillWidth, fillHeight);
-        shapeRenderer.end();
+        sb.draw(borderTexture, position.x, position.y,
+                width + 2*borderWidth, height+2*borderWidth);
+        sb.draw(texture, position.x + borderWidth, position.y + borderWidth,
+                fillWidth, height);
     }
 
     public void dispose(){

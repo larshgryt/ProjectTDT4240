@@ -43,11 +43,18 @@ public class StageComponent extends Component implements Collidable {
         friction = 0.95f;
     }
 
+    public StageComponent(Sprite sprite){
+        setSprite(sprite);
+        collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
+        friction = 0.95f;
+    }
+
     public void setTexture(Texture texture){
         Animation animation = new Animation(100);
         animation.addFrame(texture);
         setSprite(animation);
     }
+  
     public void setSprite(Sprite sprite){
         this.sprite = sprite;
         width = sprite.getWidth();
@@ -66,6 +73,7 @@ public class StageComponent extends Component implements Collidable {
 
     @Override
     public void render(SpriteBatch sb) {
+
 
         if(sprite != null){
             sprite.render(sb, position.x, position.y, width, height, angle);

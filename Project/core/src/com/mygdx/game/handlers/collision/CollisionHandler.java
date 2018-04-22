@@ -2,26 +2,33 @@ package com.mygdx.game.handlers.collision;
 
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.components.actors.projectiles.Projectile;
 import com.mygdx.game.components.stage.Stage;
-import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.State;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CollisionHandler extends Handler {
+public class CollisionHandler {
+
+    public static CollisionHandler instance = new CollisionHandler();
 
     private State state;
 
-    public CollisionHandler(State state){
-        super();
-        this.state = state;
+    private CollisionHandler(){
+        this.state = null;
+    }
+
+    public static CollisionHandler getInstance(){
+        return instance;
     }
 
 
     /* Uses sort and sweep algorithm to traverse through component array and check for possible
     collision. This is the broad phrase of collision detection. */
-    public void checkForCollisions(ArrayList<Collidable> collidables){
+    public void checkForCollisions(State state, ArrayList<Collidable> collidables){
+
+        this.state = state;
 
         /* These are all the x-positions of edges of bounding boxes. Used to check for overlapping
         bounding boxes on the x-axis, and sort them for a sort-and-sweep traversal.*/
@@ -65,14 +72,14 @@ public class CollisionHandler extends Handler {
 
     }
 
-    public void checkForCollisions(ArrayList<Component> components, Stage stage){
+    public void checkForCollisions(State state, ArrayList<Component> components, Stage stage){
         ArrayList<Collidable> collidables = new ArrayList<Collidable>(stage.getStageComponents());
         for(Component c: components){
             if(c instanceof Collidable){
                 collidables.add((Collidable) c);
             }
         }
-        checkForCollisions(collidables);
+        checkForCollisions(state, collidables);
     }
 
     // Narrow phase of collision detection between two collidables.
@@ -80,7 +87,16 @@ public class CollisionHandler extends Handler {
         if(c1.getCollisionBox().isCollidable(c2)){
             //Check whether the two collidables actually collide using their narrow collision boxes.
             if(c1.collidesWith(c2)){
-                if(c1.getCollisionBox().yieldsTo(c2) || c2.getCollisionBox().yieldsTo(c1)){
+                if(c1 instanceof Projectile && c2 instanceof Projectile){
+                    ((Projectile)c1).hit(state, (Projectile)c2);
+                }
+                else if(c1 instanceof Projectile){
+                    ((Projectile)c1).hit(state, c2);
+                }
+                else if(c2 instanceof Projectile){
+                    ((Projectile)c2).hit(state, c1);
+                }
+                else if(c1.getCollisionBox().yieldsTo(c2) || c2.getCollisionBox().yieldsTo(c1)){
                     collide(c1, c2);
                 }
             }

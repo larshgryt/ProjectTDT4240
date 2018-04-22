@@ -82,4 +82,7 @@ public abstract class Component {
     }
     public abstract void render(SpriteBatch sb);
     public abstract void dispose();
+    public void handleError(String errorMessage){
+
+    }
 }

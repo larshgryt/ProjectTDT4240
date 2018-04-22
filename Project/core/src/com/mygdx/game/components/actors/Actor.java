@@ -15,6 +15,7 @@ public abstract class Actor extends Component implements Collidable{
     sprite and a collisionBox.
      */
 
+    protected boolean moving;         // Used for continuous movement
     protected Vector3 velocity;
     protected Vector3 acceleration;
     protected CollisionBox collisionBox;
@@ -114,13 +115,26 @@ public abstract class Actor extends Component implements Collidable{
 
     @Override
     public void update(float dt) {
+        if (this.moving) {
+            if (this.velocity.x > 0){
+                velocity.add(100, 0, 0);
+            }
+            else if (this.velocity.x < 0){
+                velocity.add(-100, 0, 0);
+            }
+        }
         position.add(velocity.x*dt, velocity.y*dt, velocity.z*dt);
         velocity.add(acceleration.x*dt, acceleration.y*dt, acceleration.z*dt);
         if(velocity.len() < 0.00001f){
             velocity.set(0, 0, 0);
         }
         if(rotatesOnMovement){
-            setAngle((float) Math.acos(velocity.x/velocity.len()));
+            if(velocity.y < 0){
+                angle = (float)Math.acos(velocity.x/velocity.len()) * -1;
+            }
+            else{
+                angle = (float)Math.acos(velocity.x/velocity.len());
+            }
         }
         if(getCurrentSprite() != null){
             getCurrentSprite().setVerticalFlip(verticalFlip);
@@ -177,5 +191,12 @@ public abstract class Actor extends Component implements Collidable{
     @Override
     public void setPosition(float x, float y){
         super.setPosition(x, y);
+    }
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
     }
 }

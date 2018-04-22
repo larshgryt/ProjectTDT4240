@@ -1,7 +1,6 @@
 package com.mygdx.game.components.menucomponents;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
@@ -68,24 +67,13 @@ public class Grid extends Component{
         float gridY= c*position.y;
        for (int i = 0; i<squares.size(); i++){
             if (i!=0 && i%4==0){
-                gridY =- squareHeight;
+                gridY -= squareHeight;
                 gridX = position.x;
             }
             squares.get(i).setPosition(gridX,gridY);
-            gridX =+ squareWidth;
+            gridX += squareWidth;
         }
         }
-
-    public void update(){
-        if(Gdx.input.justTouched()){
-            float posX = Gdx.input.getX();
-            float posY = GdxGame.HEIGHT - Gdx.input.getY();
-
-            if(posX > position.x && posX < position.x + width && posY > position.y && posY < position.y + height){
-
-            }
-        }
-    }
 
     @Override
     public void render(SpriteBatch sb) {
@@ -94,13 +82,13 @@ public class Grid extends Component{
        for (int i = 0; i<squares.size(); i++){
 
            if (i!=0 && i%4==0){
-               gridY =- squareHeight;
+               gridY -= squareHeight;
                gridX = position.x;
            }
 
            squares.get(i).setPosition(gridX,gridY);
            sb.draw(squares.get(i).getTexture(),squares.get(i).getPosition().x,squares.get(i).getPosition().y,squareWidth,squareHeight);
-           gridX =+ squareWidth;
+           gridX += squareWidth;
         }
 
     }
