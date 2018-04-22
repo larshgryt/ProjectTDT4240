@@ -4,14 +4,11 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
-        google()
-        maven { url "https://maven.google.com"}
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
-        compile 'com.google.android.gms:play-services-games:11.8.0'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         
 
     }
@@ -20,7 +17,6 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
-    apply plugin: "com.android.application"
 
     version = '1.0'
     ext {
