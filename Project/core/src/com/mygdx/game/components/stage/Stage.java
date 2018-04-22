@@ -1,15 +1,14 @@
 package com.mygdx.game.components.stage;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.stage.stagecomponents.Border;
 import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.collision.CollisionBox;
+import com.mygdx.game.sprites.ColoredField;
+import com.mygdx.game.sprites.Image;
+import com.mygdx.game.sprites.Sprite;
 
 import java.util.ArrayList;
 
@@ -19,21 +18,14 @@ public abstract class Stage {
 
     public static float DEFAULT_GRAVITY = -981;
     private ArrayList<StageComponent> stageComponents;
-    private Texture backgroundTexture;
+    private Sprite background;
     protected float width;
     protected float height;
     private float gravity;
 
     public Stage(float width, float height){
         stageComponents = new ArrayList<StageComponent>();
-
-        //Create a white background texture
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        backgroundTexture = new Texture(pixmap);
-        pixmap.dispose();
-
+        background = new ColoredField(Color.WHITE);
         this.width = width;
         this.height = height;
         this.gravity = DEFAULT_GRAVITY;
@@ -81,8 +73,8 @@ public abstract class Stage {
         return gravity;
     }
 
-    public void setBackgroundTexture(Texture texture){
-        this.backgroundTexture = texture;
+    public void setBackgroundTexture(String texturePath){
+        this.background = new Image(texturePath);
     }
 
     public void addStageComponent(StageComponent sc){
@@ -109,14 +101,14 @@ public abstract class Stage {
     }
 
     public void render(SpriteBatch sb){
-        sb.draw(backgroundTexture, 0, 0, width, height);
+        background.render(sb, 0, 0, width, height, 0);
         for(StageComponent sc: stageComponents){
             sc.render(sb);
         }
     }
 
     public void dispose(){
-        backgroundTexture.dispose();
+        background.dispose();
         for(StageComponent sc: stageComponents){
             sc.dispose();
         }

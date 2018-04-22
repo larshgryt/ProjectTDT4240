@@ -1,6 +1,5 @@
 package com.mygdx.game.components.menucomponents;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.sprites.Image;

@@ -1,6 +1,5 @@
 package com.mygdx.game.components.stage;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.stage.stagecomponents.GrassPlatform;
 import com.mygdx.game.components.stage.stagecomponents.Ground;
@@ -10,7 +9,7 @@ public class Forest extends Stage {
 
     public Forest(){
         super(GdxGame.WIDTH, GdxGame.HEIGHT);
-        setBackgroundTexture(new Texture("forest.png"));
+        setBackgroundTexture("forest.png");
         Ground ground = new Ground((int)width);
         addStageComponent(ground);
 

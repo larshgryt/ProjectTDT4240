@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.game.GdxGame;
 
 //simple OrthographicCamera that handles zooming and moves viewport based on key input given a stage (takes in Sprite)
@@ -22,8 +21,6 @@ public class GameCamera {
         float h = GdxGame.HEIGHT;
 
         camera = new OrthographicCamera(w,h);
-        //can position camera in the bottom left corner (it is in the middle by default):
-        //camera.position.set(camera.viewportHeight/2f, camera.viewportHeight/2f, 0);
         camera.update();
     }
 
@@ -53,13 +50,7 @@ public class GameCamera {
             camera.translate(0,-3,0);
         }
 
-        //makes sure camera is not zoomed in too much or outside the stage
-        //camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
         camera.zoom = 100f;
-        float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
-        float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
-        //camera.position.x = MathUtils.clamp(camera.position.x, effectiveViewportWidth / 2f, 100 - effectiveViewportWidth / 2f);
-        //camera.position.y = MathUtils.clamp(camera.position.y, effectiveViewportHeight / 2f, 100 - effectiveViewportHeight / 2f);
         camera.position.x = 0;
         camera.position.y = 0;
     }
