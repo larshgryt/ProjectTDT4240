@@ -32,7 +32,7 @@ public class GameState extends State {
         this.scorePresented = false;
 
         stage = new Forest();
-        collisionHandler = new CollisionHandler(this);
+        collisionHandler = CollisionHandler.getInstance();
         gameHandler = GameHandler.getInstance();
 
         boolean p = true;
@@ -81,7 +81,7 @@ public class GameState extends State {
             }
         }
         super.update(dt);
-        collisionHandler.checkForCollisions(components, stage);
+        collisionHandler.checkForCollisions(this, components, stage);
         if (gameHandler.isGameFinished()) {
             if (!this.scorePresented) {
                 addPresenter(new WinPresenter(this.gameHandler.getFinishedPlayers()));
