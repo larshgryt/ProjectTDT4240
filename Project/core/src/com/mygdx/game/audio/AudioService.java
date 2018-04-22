@@ -8,9 +8,8 @@ public class AudioService extends ApplicationAdapter{
 
     private Music bgMusic;
 
-    @Override
-    public void create() {
-        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
+    public void set(String path){
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal(path));
         bgMusic.play();
         bgMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
@@ -18,6 +17,11 @@ public class AudioService extends ApplicationAdapter{
                 bgMusic.play();
             }
         });
+    }
+
+    @Override
+    public void create() {
+
     }
 
     @Override

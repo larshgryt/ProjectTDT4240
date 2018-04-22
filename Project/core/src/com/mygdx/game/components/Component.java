@@ -62,6 +62,9 @@ public abstract class Component {
     public float getHeight(){
         return height;
     }
+    public void addPosition(float x, float y){
+        this.position.set(position.x + x, position.y + y, 0);
+    }
     public void setPosition(Vector3 position){
         this.position = position;
     }
@@ -79,4 +82,7 @@ public abstract class Component {
     }
     public abstract void render(SpriteBatch sb);
     public abstract void dispose();
+    public void handleError(String errorMessage){
+
+    }
 }

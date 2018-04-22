@@ -40,48 +40,60 @@ public class BoundingBox {
         }
     }
 
-    // Updates the bounding box values from the values of the component.
-    public void update(){
-        float x1 = component.getPosition().x;
-        float y1 = component.getPosition().y;
-        float x2 = component.getPosition().x + component.getWidth();
-        float y2 = component.getPosition().y + component.getHeight();
-        float xc = component.getPosition().x + component.getWidth()/2;
-        float yc = component.getPosition().y + component.getHeight()/2;
-        float theta = (float) Math.toRadians(component.getAngle());
-
-        Float[] x = new Float[4];
-        Float[] y = new Float[4];
-
-        float tempX = x1 - xc;
-        float tempY = y1 - yc;
-        float rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
-        float rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
-        x[0] = rotatedX + xc;
-        y[0] = rotatedY + yc;
-
-        tempY = y2 - yc;
-        rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
-        rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
-        x[1] = rotatedX + xc;
-        y[1] = rotatedY + yc;
-
-        tempX = x2 - xc;
-        rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
-        rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
-        x[2] = rotatedX + xc;
-        y[2] = rotatedY + yc;
-
-        tempY = y1 - yc;
-        rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
-        rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
-        x[3] = rotatedX + xc;
-        y[3] = rotatedY + yc;
-
-        this.startX = Collections.min(Arrays.asList(x));
-        this.startY = Collections.min(Arrays.asList(y));
-        this.endX = Collections.max(Arrays.asList(x));
-        this.endY = Collections.max(Arrays.asList(y));
+    public BoundingBox intersection(BoundingBox other){
+        BoundingBox intersection = new BoundingBox(null);
+        update();
+        other.update();
+        intersection.startX = Math.max(startX, other.startX);
+        intersection.endX = Math.min(endX, other.endX);
+        intersection.startY = Math.max(startY, other.startY);
+        intersection.endY = Math.min(endY, other.endY);
+        return intersection;
     }
 
+    // Updates the bounding box values from the values of the component.
+    public void update(){
+        if(component != null){
+            float x1 = component.getPosition().x;
+            float y1 = component.getPosition().y;
+            float x2 = component.getPosition().x + component.getWidth();
+            float y2 = component.getPosition().y + component.getHeight();
+            float xc = component.getPosition().x + component.getWidth()/2;
+            float yc = component.getPosition().y + component.getHeight()/2;
+            float theta = (float) Math.toRadians(component.getAngle());
+
+            Float[] x = new Float[4];
+            Float[] y = new Float[4];
+
+            float tempX = x1 - xc;
+            float tempY = y1 - yc;
+            float rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
+            float rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
+            x[0] = rotatedX + xc;
+            y[0] = rotatedY + yc;
+
+            tempY = y2 - yc;
+            rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
+            rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
+            x[1] = rotatedX + xc;
+            y[1] = rotatedY + yc;
+
+            tempX = x2 - xc;
+            rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
+            rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
+            x[2] = rotatedX + xc;
+            y[2] = rotatedY + yc;
+
+            tempY = y1 - yc;
+            rotatedX = (float) (tempX*Math.cos(theta) - tempY*Math.sin(theta));
+            rotatedY = (float) (tempX*Math.sin(theta) + tempY*Math.cos(theta));
+            x[3] = rotatedX + xc;
+            y[3] = rotatedY + yc;
+
+            this.startX = Collections.min(Arrays.asList(x));
+            this.startY = Collections.min(Arrays.asList(y));
+            this.endX = Collections.max(Arrays.asList(x));
+            this.endY = Collections.max(Arrays.asList(y));
+        }
+    }
 }

@@ -9,10 +9,12 @@ import com.mygdx.game.components.gamecomponents.TestBazooka;
 import com.mygdx.game.components.gamecomponents.Weapon;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.Animation;
-import com.mygdx.game.sprites.PenguinAnimation;
+import com.mygdx.game.sprites.PlayerAnimation;
 
 public class PlayerActor extends Actor {
 
+    public static final int DEFAULT_WIDTH = 28;
+    public static final int DEFAULT_HEIGHT = 40;
     private Weapon weapon;          // The actors current held weapon.
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
@@ -22,27 +24,17 @@ public class PlayerActor extends Actor {
         super();
         this.weapon = initialWeapon;
         this.penguin = penguin;
-        collisionBox.setCollisionMode(CollisionBox.CollisionMode.ACTIVE);
-        setWidth(32);
-        setHeight(40);
+        collisionBox.setCollisionMode(CollisionBox.CollisionMode.PASSIVE);
+        setWidth(DEFAULT_WIDTH);
+        setHeight(DEFAULT_HEIGHT);
         health = 100;
-        if(penguin){
-            addSprite(new PenguinAnimation(100));
-        }
-        else{
-            // Sets the sprite to a gray rectangle.
-            Pixmap pixmap = new Pixmap(32,40, Pixmap.Format.RGB888);
-            pixmap.setColor(Color.GRAY);
-            pixmap.fill();
-            Animation sprite = new Animation(100);
-            sprite.addFrame(new Texture(pixmap));
-            pixmap.dispose();
-            addSprite(sprite);
-        }
+        addSprite(new PlayerAnimation(100, penguin));
         setRotatesOnMovement(false);
         bounces = true;
         holdingPoint = new Vector3(width/2, height/2, 0);
         setWeapon(new TestBazooka());
+        setElasticity(0.4f);
+        setBounceThreshold(10);
     }
 
     @Override
