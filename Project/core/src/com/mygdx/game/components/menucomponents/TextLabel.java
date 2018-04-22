@@ -32,6 +32,7 @@ public class TextLabel extends Component {
         this.text = text;
         glyphLayout.setText(font, text);
         this.width = glyphLayout.width;
+        this.height = glyphLayout.height;
     }
 
     @Override
