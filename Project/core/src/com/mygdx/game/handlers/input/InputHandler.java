@@ -1,17 +1,12 @@
 package com.mygdx.game.handlers.input;
 
 import com.mygdx.game.handlers.GameHandler;
-import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.GameState;
 import com.mygdx.game.states.GameStateManager;
 
-public class InputHandler extends Handler{
+public class InputHandler {
 
     private static InputHandler instance = new InputHandler();
-
-    private InputHandler(){
-        super();
-    }
 
     public static InputHandler getInstance(){
         return instance;

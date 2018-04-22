@@ -4,18 +4,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.projectiles.Projectile;
 import com.mygdx.game.components.stage.Stage;
-import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.State;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class CollisionHandler extends Handler {
+public class CollisionHandler {
 
     private State state;
 
     public CollisionHandler(State state){
-        super();
         this.state = state;
     }
 
