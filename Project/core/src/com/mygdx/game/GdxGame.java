@@ -14,13 +14,11 @@ public class GdxGame extends ApplicationAdapter {
 	public static final int HEIGHT = 360;
 
 	SpriteBatch batch;
-	Texture img;
 	GameStateManager gsm = GameStateManager.getInstance();
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
 		Gdx.input.setInputProcessor(new GameInputProcessor());
 		gsm.push(new MenuState());
 	}
@@ -38,6 +36,5 @@ public class GdxGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		gsm.dispose();
-		img.dispose();
 	}
 }
