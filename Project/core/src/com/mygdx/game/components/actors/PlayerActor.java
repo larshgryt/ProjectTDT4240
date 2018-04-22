@@ -126,4 +126,12 @@ public class PlayerActor extends Actor {
     public float getHealth(){
         return health;
     }
+    @Override
+    public boolean isMoving() {
+        return moving;
+    }
+    @Override
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
 }
