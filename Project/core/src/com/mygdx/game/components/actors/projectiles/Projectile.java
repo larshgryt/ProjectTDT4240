@@ -1,6 +1,5 @@
 package com.mygdx.game.components.actors.projectiles;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.actors.PlayerActor;
@@ -19,9 +18,9 @@ public abstract class Projectile extends Actor {
     protected float damage;
     protected PlayerActor source;
 
-    public Projectile(Texture texture){
+    public Projectile(String texturePath){
         Animation sprite = new Animation(100);
-        sprite.addFrame(texture);
+        sprite.addFrame(texturePath);
         sprites.add(sprite);
         this.width = sprite.getWidth();
         this.height = sprite.getHeight();

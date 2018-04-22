@@ -1,6 +1,5 @@
 package com.mygdx.game.components.actors.projectiles;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.gamecomponents.VisualEffect;
 import com.mygdx.game.sprites.ExplosionAnimation;
 
@@ -15,9 +14,8 @@ public class RocketProjectile extends Projectile {
     }
 
     public RocketProjectile(){
-        super(new Texture("rocket.png"));
+        super("rocket.png");
         setWidth(30);
         setHeight(14);
-        setDamage(10);
     }
 }
