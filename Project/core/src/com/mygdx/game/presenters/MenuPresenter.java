@@ -100,7 +100,7 @@ public class MenuPresenter extends Presenter {
         public void update(float dt){
             super.update(dt);
             label.setPosition(button.getPosition().x - label.getWidth() - 4,
-                    label.getPosition().y + button.getHeight()/2);
+                    button.getPosition().y + getHeight()/4);
         }
 
     }

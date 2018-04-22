@@ -10,7 +10,10 @@ import com.mygdx.game.states.GameStateManager;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class GameHandler {
+public class GameHandler{
+
+    private static GameHandler instance = new GameHandler();
+
     private ArrayList<PlayerActor> players;
     private Stack<PlayerActor> finishedPlayers;
     private PlayerActor activePlayer;
@@ -21,7 +24,7 @@ public class GameHandler {
     private boolean enabled;
     private Projectile activeProjectile;
 
-    public GameHandler() {
+    private GameHandler() {
         this.players = new ArrayList<PlayerActor>();
         this.finishedPlayers = new Stack<PlayerActor>();
         this.turnCount = 0;
@@ -30,6 +33,10 @@ public class GameHandler {
         dy = 0;
         enabled = true;
         activeProjectile = null;
+    }
+
+    public static GameHandler getInstance(){
+        return instance;
     }
 
     public ArrayList<PlayerActor> getPlayers() {

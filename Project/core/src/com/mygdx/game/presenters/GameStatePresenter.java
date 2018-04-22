@@ -2,21 +2,12 @@ package com.mygdx.game.presenters;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GdxGame;
-import com.mygdx.game.components.actors.PlayerActor;
-import com.mygdx.game.components.menucomponents.Grid;
 import com.mygdx.game.components.menucomponents.ImageButton;
-import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.input.InputEvent;
 import com.mygdx.game.handlers.input.InputHandler;
-import com.mygdx.game.listeners.EventListener;
-import com.mygdx.game.states.GameState;
-import com.mygdx.game.states.GameStateManager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.List;
 
 public class GameStatePresenter extends Presenter {
 
@@ -24,7 +15,6 @@ public class GameStatePresenter extends Presenter {
         super();
         addComponent(new RightButton());
         addComponent(new LeftButton());
-        addComponent(new WeaponButton());
     }
 
     private class RightButton extends ImageButton{

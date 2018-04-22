@@ -9,6 +9,7 @@ import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.collision.CollisionHandler;
 import com.mygdx.game.presenters.GameStatePresenter;
+import com.mygdx.game.presenters.PlayerListPresenter;
 import com.mygdx.game.presenters.WinPresenter;
 import com.mygdx.game.sprites.Line;
 
@@ -32,7 +33,7 @@ public class GameState extends State {
 
         stage = new Forest();
         collisionHandler = new CollisionHandler(this);
-        gameHandler = new GameHandler();
+        gameHandler = GameHandler.getInstance();
 
         boolean p = true;
         ArrayList<PlayerActor> players = new ArrayList<PlayerActor>();
@@ -42,6 +43,7 @@ public class GameState extends State {
             gameHandler.addPlayer(player);
             p = !p;
         }
+        addPresenter(new PlayerListPresenter(players));
         int penguins = 0;
         int snowmen = 1;
         for(PlayerActor player: players){
