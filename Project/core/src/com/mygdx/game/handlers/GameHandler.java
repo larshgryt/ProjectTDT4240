@@ -15,9 +15,10 @@ public class GameHandler extends Handler {
     private Stack<PlayerActor> finishedPlayers;
     private PlayerActor activePlayer;
     private int turnCount;
+    private int listPosition;
+    private boolean gameFinished;
     private float dx;
     private float dy;
-    private int listCounter;
     private boolean enabled;
     private Projectile activeProjectile;
 
@@ -25,6 +26,7 @@ public class GameHandler extends Handler {
         this.players = new ArrayList<PlayerActor>();
         this.finishedPlayers = new Stack<PlayerActor>();
         this.turnCount = 0;
+        this.gameFinished = false;
         dx = 0;
         dy = 0;
         enabled = true;
@@ -59,14 +61,14 @@ public class GameHandler extends Handler {
         if (this.players.size() == 1){
             // Victory stuff
             this.finishedPlayers.add(players.get(0));
-
+            this.gameFinished = true;
         }
         if (this.activePlayer == players.get(players.size() -1)){
             this.activePlayer = players.get(0);
-            this.listCounter = 0;
+            this.listPosition = 0;
             turnCount++;
         } else {
-            this.activePlayer = players.get(this.listCounter++);
+            this.activePlayer = players.get(this.listPosition++);
         }
         this.activePlayer.setShooting(false);
         enabled = true;
@@ -162,5 +164,11 @@ public class GameHandler extends Handler {
         }
     }
 
+    public boolean isGameFinished() {
+        return gameFinished;
+    }
 
+    public Stack<PlayerActor> getFinishedPlayers() {
+        return finishedPlayers;
+    }
 }

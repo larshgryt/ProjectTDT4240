@@ -12,6 +12,7 @@ public class PlayerActor extends Actor {
     public static final int DEFAULT_WIDTH = 28;
     public static final int DEFAULT_HEIGHT = 40;
     public int playerNumber;
+    private String username;
     private Weapon weapon;          // The actors current held weapon.
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
@@ -21,6 +22,7 @@ public class PlayerActor extends Actor {
 
     public PlayerActor(String username, float maxHealth, Weapon initialWeapon, boolean penguin){
         super();
+        setUsername(username);
         this.weapon = initialWeapon;
         this.penguin = penguin;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.PASSIVE);
@@ -156,5 +158,12 @@ public class PlayerActor extends Actor {
     @Override
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
