@@ -8,7 +8,7 @@ import com.mygdx.game.components.menucomponents.TextLabel;
 import java.util.Stack;
 
 public class WinPresenter extends Presenter {
-    
+
     private ComponentList playerList;
 
     public WinPresenter(Stack<PlayerActor> scoreList) {
