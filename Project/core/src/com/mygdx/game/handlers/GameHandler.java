@@ -70,18 +70,8 @@ public class GameHandler{
         }
         activePlayer = getPlayers().get(turnCount);
     }
-    public void damagePlayer(float damage, int number){
-        for (PlayerActor actor : players){
-            if (actor.playerNumber == number){
-                float pHealth = actor.getHealth();
-                if ((pHealth - damage) <= 0){
-                    this.finishedPlayers.add(actor);
-                    this.players.remove(actor);
-                }
-                else actor.setHealth(pHealth - damage);
-                break;
-            }
-        }
+    public void damagePlayer(float damage, PlayerActor player){
+        player.setHealth(player.getHealth() - damage);
     }
 
     public void setEnabled(boolean enabled){
