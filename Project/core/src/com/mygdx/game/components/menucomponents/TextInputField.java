@@ -110,7 +110,6 @@ public class TextInputField extends Component implements Input.TextInputListener
     @Override
     public void update(float dt) {
         if(Gdx.input.justTouched()){
-
             float x = Gdx.input.getX() * GdxGame.WIDTH / Gdx.app.getGraphics().getWidth();
             float y = (Gdx.app.getGraphics().getHeight() - Gdx.input.getY()) * GdxGame.HEIGHT / Gdx.app.getGraphics().getHeight();
             Vector3 touchPoint = new Vector3(x, y, 0);
