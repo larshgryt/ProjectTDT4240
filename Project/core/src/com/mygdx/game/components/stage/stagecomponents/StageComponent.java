@@ -1,14 +1,13 @@
 package com.mygdx.game.components.stage.stagecomponents;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.Animation;
+import com.mygdx.game.sprites.ColoredField;
 import com.mygdx.game.sprites.Sprite;
 
     /*
@@ -24,21 +23,15 @@ public class StageComponent extends Component implements Collidable {
 
     public StageComponent(int width, int height){
         super();
-
-        //Create a white background texture
-        Pixmap pixmap = new Pixmap(width,height, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        setTexture(new Texture(pixmap));
-        pixmap.dispose();
+        setSprite(new ColoredField(Color.WHITE));
         this.width = width;
         this.height = height;
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
         friction = 0.95f;
     }
 
-    public StageComponent(Texture texture){
-        setTexture(texture);
+    public StageComponent(String texturePath){
+        setTexture(texturePath);
         collisionBox = new CollisionBox(this, CollisionBox.CollisionMode.NEVER);
         friction = 0.95f;
     }
@@ -49,9 +42,9 @@ public class StageComponent extends Component implements Collidable {
         friction = 0.95f;
     }
 
-    public void setTexture(Texture texture){
+    public void setTexture(String path){
         Animation animation = new Animation(100);
-        animation.addFrame(texture);
+        animation.addFrame(path);
         setSprite(animation);
     }
   

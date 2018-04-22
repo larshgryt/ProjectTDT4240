@@ -63,6 +63,10 @@ public class Animation implements Sprite{
     }
 
     /* Adds the texture to the end of the frame array. */
+    public void addFrame(String texturePath){
+        this.frames.add(new Texture(texturePath));
+        frameCount ++;
+    }
     public void addFrame(Texture texture){
         this.frames.add(texture);
         frameCount ++;
