@@ -44,7 +44,7 @@ public class HealthBar extends Component {
         border.render(sb, position.x, position.y,
                 width + borderWidth*2, height + borderWidth*2, 0);
         background.render(sb, position.x + borderWidth, position.y + borderWidth,
-                width, height, 0);
+                fillWidth, height, 0);
     }
 
     public void dispose(){
