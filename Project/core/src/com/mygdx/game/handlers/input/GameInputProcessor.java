@@ -3,7 +3,7 @@ package com.mygdx.game.handlers.input;
 import com.badlogic.gdx.InputProcessor;
 
 public class GameInputProcessor implements InputProcessor {
-    InputHandler handler;
+
     public boolean keyDown (int keycode) {
         return false;
     }
@@ -22,7 +22,7 @@ public class GameInputProcessor implements InputProcessor {
     }
 
     public boolean touchUp (int x, int y, int pointer, int button) {
-        handler.stopMove();
+        //handler.stopMove();
         return true;
     }
 

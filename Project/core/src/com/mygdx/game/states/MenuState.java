@@ -1,5 +1,6 @@
 package com.mygdx.game.states;
 
+import com.mygdx.game.handlers.input.InputHandler;
 import com.mygdx.game.listeners.EventListener;
 import com.mygdx.game.presenters.MenuPresenter;
 

@@ -96,5 +96,4 @@ public class BoundingBox {
             this.endY = Collections.max(Arrays.asList(y));
         }
     }
-
 }

@@ -9,7 +9,6 @@ import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.collision.CollisionHandler;
 import com.mygdx.game.presenters.GameStatePresenter;
-
 import java.util.ArrayList;
 
 
@@ -25,9 +24,11 @@ public class GameState extends State {
 
         super();
         addPresenter(new GameStatePresenter());
+
         stage = new Forest();
         collisionHandler = new CollisionHandler(this);
         gameHandler = new GameHandler();
+
         boolean p = true;
         ArrayList<PlayerActor> players = new ArrayList<PlayerActor>();
         for(String user: usernames){
@@ -50,6 +51,8 @@ public class GameState extends State {
             }
             addComponent(player);
         }
+        // Set active player to start game
+        gameHandler.nextTurn();
     }
 
     @Override
@@ -84,5 +87,10 @@ public class GameState extends State {
     public void dispose() {
         stage.dispose();
         super.dispose();
+    }
+
+
+    public GameHandler getGameHandler() {
+        return gameHandler;
     }
 }

@@ -3,6 +3,8 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.handlers.Handler;
+import com.mygdx.game.handlers.input.InputHandler;
 import com.mygdx.game.presenters.Presenter;
 import java.util.ArrayList;
 
@@ -13,6 +15,7 @@ public abstract class State {
     protected ArrayList<Component> components;  // Components to be rendered.
     protected ArrayList<Presenter> presenters;  // Presenters (GUI) to be rendered.
     protected AudioService audioService = new AudioService();
+
 
     public State(){
         components = new ArrayList<Component>();
@@ -71,6 +74,10 @@ public abstract class State {
         for(Presenter presenter: presenters){
             presenter.dispose();
         }
+    }
+
+    public ArrayList<Presenter> getPresenters() {
+        return presenters;
     }
 
 }
