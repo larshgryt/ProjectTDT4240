@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.actors.Actor;
+import com.mygdx.game.components.stage.stagecomponents.Border;
 import com.mygdx.game.components.stage.stagecomponents.Snow;
 import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.collision.CollisionBox;
@@ -36,13 +37,13 @@ public abstract class Stage {
         this.height = height;
         this.gravity = DEFAULT_GRAVITY;
 
-        Snow borderBottom = new Snow((int)width, 1);
+        Border borderBottom = new Border((int)width, 1);
         borderBottom.setPosition(0, -1);
-        Snow borderTop = new Snow((int)width, 1);
+        Border borderTop = new Border((int)width, 1);
         borderTop.setPosition(0, height + 1);
-        Snow borderLeft = new Snow(1, (int) height);
+        Border borderLeft = new Border(1, (int) height);
         borderLeft.setPosition(-1, 0);
-        Snow borderRight = new Snow(1, (int) height);
+        Border borderRight = new Border(1, (int) height);
         borderRight.setPosition(width + 1, 0);
 
         addStageComponent(borderBottom);
