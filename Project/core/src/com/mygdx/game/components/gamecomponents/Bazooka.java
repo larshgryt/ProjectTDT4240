@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.actors.projectiles.RocketProjectile;
 import com.mygdx.game.sprites.Animation;
 
-public class TestBazooka extends Weapon {
+public class Bazooka extends Weapon {
 
-    public TestBazooka(){
+    public Bazooka(){
         super(40, 15, new RocketProjectile());
         Animation sprite = new Animation(100);
         sprite.addFrame(new Texture("Rocket_Launcher.png"));

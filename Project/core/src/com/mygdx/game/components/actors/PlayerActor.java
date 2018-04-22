@@ -2,7 +2,7 @@ package com.mygdx.game.components.actors;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.mygdx.game.components.gamecomponents.TestBazooka;
+import com.mygdx.game.components.gamecomponents.Bazooka;
 import com.mygdx.game.components.gamecomponents.Weapon;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.PlayerAnimation;
@@ -35,7 +35,7 @@ public class PlayerActor extends Actor {
         setRotatesOnMovement(false);
         bounces = true;
         holdingPoint = new Vector3(width/2, height/2, 0);
-        setWeapon(new TestBazooka());
+        setWeapon(new Bazooka());
         setElasticity(0.4f);
         setBounceThreshold(10);
         shooting = false;

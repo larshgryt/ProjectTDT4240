@@ -6,21 +6,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.listeners.EventListener;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.EventObject;
 
 public class ImageButton extends Component {
     private Texture image;
-    private String name;
     private ArrayList<EventListener> listeners;
 
-    public ImageButton(Texture texture, String name){
+    public ImageButton(Texture texture){
         super();
         image = texture;
-        this.name = name;
         listeners = new ArrayList<EventListener>();
         width = image.getWidth();
         height = image.getHeight();
@@ -45,7 +40,6 @@ public class ImageButton extends Component {
             float y = GdxGame.HEIGHT - Gdx.input.getY();
             if(x > position.x && x < position.x + width && y > position.y && y < position.y + height){
                 click();
-                System.out.println("Button clicked.");
             }
         }
     }
@@ -58,13 +52,6 @@ public class ImageButton extends Component {
         image = texture;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
 
     @Override
     public void dispose() {

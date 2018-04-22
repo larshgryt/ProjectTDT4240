@@ -18,7 +18,7 @@ public class GameStatePresenter extends Presenter {
 
     private class RightButton extends ImageButton{
         public RightButton(){
-            super(new Texture("right-button.png"), "rightButton");
+            super(new Texture("right-button.png"));
             setPosition(GdxGame.WIDTH-getWidth(), (GdxGame.HEIGHT-getHeight())/2);
             addEventListener(new EventListener() {
                 @Override
@@ -36,7 +36,7 @@ public class GameStatePresenter extends Presenter {
 
     private class LeftButton extends ImageButton{
         public LeftButton(){
-            super(new Texture("left-button.png"), "leftButton");
+            super(new Texture("left-button.png"));
             setPosition(0, (GdxGame.HEIGHT-getHeight())/2);
             addEventListener(new EventListener() {
                 @Override
