@@ -3,8 +3,6 @@ package com.mygdx.game.states;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.components.Component;
-import com.mygdx.game.handlers.Handler;
-import com.mygdx.game.handlers.input.InputHandler;
 import com.mygdx.game.presenters.Presenter;
 import java.util.ArrayList;
 

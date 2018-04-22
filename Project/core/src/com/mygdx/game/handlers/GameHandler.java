@@ -10,7 +10,7 @@ import com.mygdx.game.states.GameStateManager;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class GameHandler extends Handler {
+public class GameHandler{
 
     private static GameHandler instance = new GameHandler();
 
