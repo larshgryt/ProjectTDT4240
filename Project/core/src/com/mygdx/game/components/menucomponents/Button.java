@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.listeners.EventListener;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.EventObject;
 
 public class Button extends Component {
 
@@ -21,7 +21,7 @@ public class Button extends Component {
     private Texture borderTexture;
     private BitmapFont font;
     private float borderWidth;
-    private ArrayList<ActionListener> listeners;
+    private ArrayList<EventListener> listeners;
     private GlyphLayout glyphLayout;
 
     public Button(float width, float height){
@@ -29,7 +29,7 @@ public class Button extends Component {
         /* A standard button component with click functionality */
 
         super();
-        listeners = new ArrayList<ActionListener>();
+        listeners = new ArrayList<EventListener>();
         this.width = width;
         this.height = height;
         this.text = "";
@@ -37,15 +37,14 @@ public class Button extends Component {
         init();
     }
 
-    public void addActionListener(ActionListener listener){
+    public void addEventListener(EventListener listener){
         listeners.add(listener);
     }
 
     /* Notifies all listeners that the button has been clicked */
     public void click(){
-        for(ActionListener l: listeners){
-            l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                    "Button clicked"));
+        for(EventListener l: listeners){
+            l.notifyEvent(new EventObject(this));
         }
     }
 

@@ -22,6 +22,10 @@ public class InputHandler {
         }
     }
 
+    public void processButtonEvent(InputEvent e){
+        System.out.println("Button clicked!");
+    }
+
     public void processInputEvent(InputEvent e){
         String s = (String)e.getSource();
         if(GameStateManager.getInstance().getActiveState() instanceof GameState){

@@ -126,11 +126,15 @@ public class MenuPresenter extends Presenter {
             setFontColor(Color.WHITE);
             setBackgroundColor(Color.NAVY);
             setBorderColor(Color.BLUE);
-            addActionListener(new ActionListener(){
+            addEventListener(new EventListener() {
                 @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    System.out.println(playerListItem.getUsername()+" was removed.");
+                public void notifyEvent(EventObject e) {
                     joinedPlayerList.removeComponent(playerListItem);
+                }
+
+                @Override
+                public void notifyError(EventObject e, String message) {
+
                 }
             });
         }
@@ -154,10 +158,17 @@ public class MenuPresenter extends Presenter {
             setFontColor(Color.WHITE);
             setBackgroundColor(Color.NAVY);
             setBorderColor(Color.BLUE);
-            addActionListener(new ActionListener(){
+            addEventListener(new EventListener() {
                 @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    notifyEvent(new MenuState.AddPlayerEvent(input.getText()));
+                public void notifyEvent(EventObject e) {
+                    for(EventListener l: eventListeners){
+                        l.notifyEvent(new MenuState.AddPlayerEvent(input.getText()));
+                    }
+                }
+
+                @Override
+                public void notifyError(EventObject e, String message) {
+
                 }
             });
         }
@@ -181,16 +192,23 @@ public class MenuPresenter extends Presenter {
             setFontColor(Color.WHITE);
             setBackgroundColor(Color.NAVY);
             setBorderColor(Color.BLUE);
-            addActionListener(new ActionListener(){
+            addEventListener(new EventListener() {
                 @Override
-                public void actionPerformed(ActionEvent actionEvent) {
+                public void notifyEvent(EventObject e) {
                     ArrayList<String> usernames = new ArrayList<String>();
                     for(Component c: joinedPlayerList.getComponents()){
                         if(c instanceof PlayerListItem){
                             usernames.add(((PlayerListItem) c).getUsername());
                         }
                     }
-                    notifyEvent(new MenuState.PlayEvent(usernames));
+                    for(EventListener l: eventListeners){
+                        l.notifyEvent(new MenuState.PlayEvent(usernames));
+                    }
+                }
+
+                @Override
+                public void notifyError(EventObject e, String message) {
+
                 }
             });
         }

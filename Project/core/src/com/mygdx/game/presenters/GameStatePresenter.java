@@ -5,9 +5,8 @@ import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.menucomponents.ImageButton;
 import com.mygdx.game.handlers.input.InputEvent;
 import com.mygdx.game.handlers.input.InputHandler;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import com.mygdx.game.listeners.EventListener;
+import java.util.EventObject;
 
 public class GameStatePresenter extends Presenter {
 
@@ -21,10 +20,15 @@ public class GameStatePresenter extends Presenter {
         public RightButton(){
             super(new Texture("right-button.png"), "rightButton");
             setPosition(GdxGame.WIDTH-getWidth(), (GdxGame.HEIGHT-getHeight())/2);
-            addActionListener(new ActionListener() {
+            addEventListener(new EventListener() {
                 @Override
-                public void actionPerformed(ActionEvent actionEvent) {
+                public void notifyEvent(EventObject e) {
                     InputHandler.getInstance().processInputEvent(new InputEvent("right"));
+                }
+
+                @Override
+                public void notifyError(EventObject e, String message) {
+
                 }
             });
         }
@@ -34,23 +38,15 @@ public class GameStatePresenter extends Presenter {
         public LeftButton(){
             super(new Texture("left-button.png"), "leftButton");
             setPosition(0, (GdxGame.HEIGHT-getHeight())/2);
-            addActionListener(new ActionListener() {
+            addEventListener(new EventListener() {
                 @Override
-                public void actionPerformed(ActionEvent actionEvent) {
+                public void notifyEvent(EventObject e) {
                     InputHandler.getInstance().processInputEvent(new InputEvent("left"));
                 }
-            });
-        }
-    }
 
-    private class WeaponButton extends ImageButton{
-        public WeaponButton(){
-            super(new Texture("bazooka_temporary.png"), "weapon");
-            setPosition(5, (GdxGame.HEIGHT - getHeight()));
-            addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    InputHandler.getInstance().processInputEvent(new InputEvent("useWeapon"));
+                public void notifyError(EventObject e, String message) {
+
                 }
             });
         }
