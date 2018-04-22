@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.sprites.ColoredField;
@@ -101,6 +102,7 @@ public class TextInputField extends Component implements Input.TextInputListener
         setText(text);
     }
 
+
     @Override
     public void canceled() {
     }
@@ -108,9 +110,11 @@ public class TextInputField extends Component implements Input.TextInputListener
     @Override
     public void update(float dt) {
         if(Gdx.input.justTouched()){
-            float x = Gdx.input.getX();
-            float y = GdxGame.HEIGHT - Gdx.input.getY();
-            if(x > position.x && x < position.x + width && y > position.y && y < position.y + height){
+
+            float x = Gdx.input.getX() * GdxGame.WIDTH / Gdx.app.getGraphics().getWidth();
+            float y = (Gdx.app.getGraphics().getHeight() - Gdx.input.getY()) * GdxGame.HEIGHT / Gdx.app.getGraphics().getHeight();
+            Vector3 touchPoint = new Vector3(x, y, 0);
+            if(touchPoint.x > position.x && touchPoint.x < position.x + width && touchPoint.y > position.y && touchPoint.y < position.y + height){
                 Gdx.input.getTextInput(this, title, defaultText, hint);
             }
         }
