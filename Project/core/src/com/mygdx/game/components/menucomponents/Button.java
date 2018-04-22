@@ -5,10 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.listeners.EventListener;
 import com.mygdx.game.sprites.ColoredField;
+import com.mygdx.game.states.GameStateManager;
 
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -85,9 +88,10 @@ public class Button extends Component {
     public void update(float dt) {
         /* If input was a touch in the button area of the screen, call click method. */
         if(Gdx.input.justTouched()){
-            float x = Gdx.input.getX();
-            float y = GdxGame.HEIGHT - Gdx.input.getY();
-            if(x > position.x && x < position.x + width && y > position.y && y < position.y + height){
+            float x = Gdx.input.getX() * GdxGame.WIDTH / Gdx.app.getGraphics().getWidth();
+            float y = (Gdx.app.getGraphics().getHeight() - Gdx.input.getY()) * GdxGame.HEIGHT / Gdx.app.getGraphics().getHeight();
+            Vector3 touchPoint = new Vector3(x, y, 0);
+            if(touchPoint.x > position.x && touchPoint.x < position.x + width && touchPoint.y > position.y && touchPoint.y < position.y + height){
                 click();
             }
         }

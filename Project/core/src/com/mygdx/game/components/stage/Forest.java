@@ -9,7 +9,7 @@ import com.mygdx.game.components.stage.stagecomponents.Tree;
 public class Forest extends Stage {
 
     public Forest(){
-        super(GdxGame.WIDTH, 400);
+        super(GdxGame.WIDTH, GdxGame.HEIGHT);
         setBackgroundTexture(new Texture("forest.png"));
         Ground ground = new Ground((int)width);
         addStageComponent(ground);

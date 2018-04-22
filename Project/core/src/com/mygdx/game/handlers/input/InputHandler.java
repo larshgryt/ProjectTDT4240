@@ -15,7 +15,7 @@ public class InputHandler {
 
     public void processDragEvent(InputEvent e){
         if(GameStateManager.getInstance().getActiveState() instanceof GameState){
-            GameHandler gameHandler = ((GameState) GameStateManager.getInstance().getActiveState()).getGameHandler();
+            GameHandler gameHandler = GameHandler.getInstance();
             if(((String)e.getSource()).equalsIgnoreCase("drag")){
                 gameHandler.playerAim(e.getX(), e.getY());
             }
@@ -25,8 +25,7 @@ public class InputHandler {
     public void processInputEvent(InputEvent e){
         String s = (String)e.getSource();
         if(GameStateManager.getInstance().getActiveState() instanceof GameState){
-            GameState gameState = (GameState)GameStateManager.getInstance().getActiveState();
-            GameHandler gameHandler = gameState.getGameHandler();
+            GameHandler gameHandler = GameHandler.getInstance();
             if(s.equalsIgnoreCase("right")){
                 gameHandler.playerMove(true);
             }

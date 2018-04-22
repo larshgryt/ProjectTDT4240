@@ -1,6 +1,8 @@
 package com.mygdx.game.states;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.GdxGame;
 import com.mygdx.game.audio.AudioService;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.presenters.Presenter;
@@ -13,12 +15,14 @@ public abstract class State {
     protected ArrayList<Component> components;  // Components to be rendered.
     protected ArrayList<Presenter> presenters;  // Presenters (GUI) to be rendered.
     protected AudioService audioService = new AudioService();
-
+    protected OrthographicCamera cam;
 
     public State(){
         components = new ArrayList<Component>();
         presenters = new ArrayList<Presenter>();
         audioService.create();
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, GdxGame.WIDTH, GdxGame.HEIGHT);
     }
 
     protected void setMusic(String path){
@@ -58,6 +62,7 @@ public abstract class State {
         handleInput();
     }
     public void render(SpriteBatch sb){
+        sb.setProjectionMatrix(cam.combined);
         for(Component component: components){
             component.render(sb);
         }
@@ -77,5 +82,12 @@ public abstract class State {
     public ArrayList<Presenter> getPresenters() {
         return presenters;
     }
+
+
+    public OrthographicCamera getCam() {
+        return cam;
+    }
+
+
 
 }

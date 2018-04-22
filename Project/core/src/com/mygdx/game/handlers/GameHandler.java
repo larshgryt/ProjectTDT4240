@@ -113,7 +113,7 @@ public class GameHandler{
     }
 
     public void playerAim(float x, float y){
-        if(enabled){
+        if(enabled && !activePlayer.isMoving()){
             activePlayer.setShooting(true);
             if(x < activePlayer.getPosition().x + activePlayer.getWidth()/2){
                  dx = x - activePlayer.getPosition().x;
