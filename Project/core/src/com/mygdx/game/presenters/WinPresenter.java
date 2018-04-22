@@ -1,9 +1,5 @@
 package com.mygdx.game.presenters;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.actors.PlayerActor;
 import com.mygdx.game.components.menucomponents.ComponentList;
