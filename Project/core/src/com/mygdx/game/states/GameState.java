@@ -82,12 +82,15 @@ public class GameState extends State {
         }
         super.update(dt);
         collisionHandler.checkForCollisions(this, components, stage);
-        if (gameHandler.isGameFinished()) {
-            if (!this.scorePresented) {
-                addPresenter(new WinPresenter(this.gameHandler.getFinishedPlayers()));
-                this.scorePresented = true;
-                gameHandler.setEnabled(false);
-            }
+        if (gameHandler.getRemovedPlayer() != null){
+            removeComponent(gameHandler.getRemovedPlayer());
+            gameHandler.getRemovedPlayer().dispose();
+            gameHandler.refreshRemovedPlayer();
+        }
+        if (gameHandler.isGameFinished() && !scorePresented) {
+            addPresenter(new WinPresenter(this.gameHandler.getFinishedPlayers()));
+            this.scorePresented = true;
+            gameHandler.setEnabled(false);
         }
         if (gameHandler.getActiveProjectile() != null && !scorePresented) {
             if (containsComponent(gameHandler.getActiveProjectile())) {
@@ -96,11 +99,6 @@ public class GameState extends State {
                 gameHandler.setActiveProjectile(null);
                 gameHandler.nextTurn();
             }
-        }
-        if (gameHandler.getRemovedPlayer() != null){
-            removeComponent(gameHandler.getRemovedPlayer());
-            gameHandler.getRemovedPlayer().dispose();
-            gameHandler.refreshRemovedPlayer();
         }
     }
 

@@ -65,6 +65,7 @@ public class GameHandler{
             // Victory stuff
             this.finishedPlayers.push(players.get(0));
             this.gameFinished = true;
+            enabled = false;
         }
         if(turnCount >= players.size() - 1){
             turnCount = 0;

@@ -1,7 +1,9 @@
 package com.mygdx.game.presenters;
 
-
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.actors.PlayerActor;
 import com.mygdx.game.components.menucomponents.ComponentList;
@@ -16,16 +18,19 @@ public class WinPresenter extends Presenter {
 
     public WinPresenter(Stack<PlayerActor> scoreList) {
         super();
-
         this.players = scoreList;
         playerList = new PlayerList();
-
         int playerPlacement = 0;
         for (PlayerActor player : players){
-            playerPlacement++;
-            addComponent(new PlayerListItem(player.getUsername(), playerPlacement));
+            TextLabel label = new TextLabel(++playerPlacement + ": "+player.getUsername());
+            playerList.addComponent(label);
         }
         addComponent(playerList);
+
+        TextLabel gameOver = new TextLabel("Game is over");
+        gameOver.setPosition((GdxGame.WIDTH - gameOver.getWidth())/2,
+                GdxGame.HEIGHT/2 + gameOver.getHeight()*3);
+        addComponent(gameOver);
 
 
     }
@@ -35,26 +40,14 @@ public class WinPresenter extends Presenter {
         public PlayerList(){
             super();
             setySpacing(10);
+            setVertical(true);
             ScorePlayers = new TextLabel("Scoreboard:");
-            ScorePlayers.setColor(Color.WHITE);
-            ScorePlayers.setHeight(20);
-            setPosition(GdxGame.WIDTH/2 + 100, GdxGame.HEIGHT/2 + 100);
             addComponent(ScorePlayers);
         }
-    }
-
-    private class PlayerListItem extends ComponentList {
-
-        private String username;
-        private TextLabel label;
-
-        public PlayerListItem(String username, int placement) {
-            this.username = username;
-            setVertical(false);
-            setxSpacing(25);
-            label = new TextLabel(placement + ". Place: " + username);
-            label.setColor(Color.WHITE);
-            addComponent(label);
+        @Override
+        public void update(float dt){
+            super.update(dt);
+            setPosition((GdxGame.WIDTH - getWidth() )/2, (GdxGame.HEIGHT)/2);
         }
     }
 }
