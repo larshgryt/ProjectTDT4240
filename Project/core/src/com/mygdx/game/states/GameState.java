@@ -97,6 +97,11 @@ public class GameState extends State {
                 gameHandler.nextTurn();
             }
         }
+        if (gameHandler.getRemovedPlayer() != null){
+            removeComponent(gameHandler.getRemovedPlayer());
+            gameHandler.getRemovedPlayer().dispose();
+            gameHandler.refreshRemovedPlayer();
+        }
     }
 
     @Override

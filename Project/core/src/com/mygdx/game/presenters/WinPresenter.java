@@ -23,8 +23,10 @@ public class WinPresenter extends Presenter {
         int playerPlacement = 0;
         for (PlayerActor player : players){
             playerPlacement++;
-            playerList.addComponent(new PlayerListItem(player.getUsername(), playerPlacement));
+            addComponent(new PlayerListItem(player.getUsername(), playerPlacement));
         }
+        addComponent(playerList);
+
 
     }
 

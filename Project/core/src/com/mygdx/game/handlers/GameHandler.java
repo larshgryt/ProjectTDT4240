@@ -17,6 +17,7 @@ public class GameHandler{
     private ArrayList<PlayerActor> players;
     private Stack<PlayerActor> finishedPlayers;
     private PlayerActor activePlayer;
+    private PlayerActor removedPlayer;
     private int turnCount;
     private boolean gameFinished;
     private float dx;
@@ -29,6 +30,7 @@ public class GameHandler{
         this.finishedPlayers = new Stack<PlayerActor>();
         this.turnCount = 0;
         this.gameFinished = false;
+        this.removedPlayer = null;
         dx = 0;
         dy = 0;
         enabled = true;
@@ -53,13 +55,15 @@ public class GameHandler{
     }
     public void removePlayer(PlayerActor player){
         this.players.remove(player);
+        this.finishedPlayers.push(player);
         turnCount--;
+        this.removedPlayer = player;
     }
 
     public void nextTurn(){
         if (this.players.size() == 1){
             // Victory stuff
-            this.finishedPlayers.add(players.get(0));
+            this.finishedPlayers.push(players.get(0));
             this.gameFinished = true;
         }
         if(turnCount >= players.size() - 1){
@@ -72,6 +76,9 @@ public class GameHandler{
     }
     public void damagePlayer(float damage, PlayerActor player){
         player.setHealth(player.getHealth() - damage);
+        if (player.getHealth() <= 0){
+            removePlayer(player);
+        }
     }
 
     public void setEnabled(boolean enabled){
@@ -156,5 +163,13 @@ public class GameHandler{
 
     public Stack<PlayerActor> getFinishedPlayers() {
         return finishedPlayers;
+    }
+
+    public PlayerActor getRemovedPlayer() {
+        return removedPlayer;
+    }
+
+    public void refreshRemovedPlayer() {
+        this.removedPlayer = null;
     }
 }
