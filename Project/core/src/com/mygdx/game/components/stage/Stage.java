@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.stage.stagecomponents.Border;
-import com.mygdx.game.components.stage.stagecomponents.Snow;
 import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.collision.CollisionBox;
 
