@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.Actor;
+import com.mygdx.game.components.actors.PlayerActor;
 import com.mygdx.game.components.gamecomponents.VisualEffect;
+import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.collision.Collidable;
 import com.mygdx.game.handlers.collision.CollisionBox;
 import com.mygdx.game.sprites.Animation;
@@ -16,6 +18,7 @@ public abstract class Projectile extends Actor {
     // A generic white rectangle projectile.
 
     protected VisualEffect hitEffect;
+    protected float damage;
 
     public Projectile(int width, int height){
         Animation sprite = new Animation(100);
@@ -31,6 +34,7 @@ public abstract class Projectile extends Actor {
         rotatesOnMovement = true;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
         hitEffect = null;
+        damage = 10;
     }
 
     public Projectile(Texture texture){
@@ -41,6 +45,8 @@ public abstract class Projectile extends Actor {
         this.height = sprite.getHeight();
         rotatesOnMovement = true;
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
+        damage = 10;
+        hitEffect = null;
     }
 
     /* Returns a new instance of this class and shoots it from the given coordinates in the
@@ -61,6 +67,9 @@ public abstract class Projectile extends Actor {
     public void hit(State state, Collidable other){
         if(other instanceof Component){
             if(state.containsComponent(this) && state.containsComponent((Component)other)){
+                if(other instanceof PlayerActor){
+                    GameHandler.getInstance().damagePlayer(damage, (PlayerActor) other);
+                }
                 destroy(state);
             }
         }
