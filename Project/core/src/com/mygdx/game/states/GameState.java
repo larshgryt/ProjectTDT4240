@@ -73,17 +73,26 @@ public class GameState extends State {
     @Override
     public void update(float dt) {
         stage.update(dt);
-        for(Component c: components){
-            if(c instanceof Actor){
+        for (Component c : components) {
+            if (c instanceof Actor) {
                 stage.applyGravityToActor((Actor) c);
             }
         }
         super.update(dt);
         collisionHandler.checkForCollisions(components, stage);
-        if (gameHandler.isGameFinished()){
-            if (!this.scorePresented){
+        if (gameHandler.isGameFinished()) {
+            if (!this.scorePresented) {
                 addPresenter(new WinPresenter(this.gameHandler.getFinishedPlayers()));
                 this.scorePresented = true;
+                gameHandler.setEnabled(false);
+            }
+        }
+        if (gameHandler.getActiveProjectile() != null && !scorePresented) {
+            if (containsComponent(gameHandler.getActiveProjectile())) {
+                gameHandler.setEnabled(false);
+            } else {
+                gameHandler.setActiveProjectile(null);
+                gameHandler.nextTurn();
             }
         }
     }
