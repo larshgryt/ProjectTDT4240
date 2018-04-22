@@ -10,6 +10,7 @@ import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.collision.CollisionHandler;
 import com.mygdx.game.presenters.GameStatePresenter;
 import com.mygdx.game.presenters.WinPresenter;
+import com.mygdx.game.sprites.Line;
 
 import java.util.ArrayList;
 
@@ -91,8 +92,21 @@ public class GameState extends State {
     public void render(SpriteBatch sb) {
         stage.render(sb);
         super.render(sb);
+        PlayerActor player = gameHandler.getActivePlayer();
+        float dx = gameHandler.getDx();
+        float dy = gameHandler.getDy();
+        float len = (float)Math.sqrt(Math.pow(dx,2) + Math.pow(dy, 2));
+        float angle = player.getAimAngle();
+        if(player.isHorizontalFlip()){
+            angle = 180 - angle;
+        }
+        if(player.isShooting()){
+            (new Line()).render(sb,
+                    player.getPosition().x + player.getWidth()/2,
+                    player.getPosition().y + player.getHeight()/2,
+                    len, 1, angle);
+        }
     }
-
 
     public void dispose() {
         stage.dispose();

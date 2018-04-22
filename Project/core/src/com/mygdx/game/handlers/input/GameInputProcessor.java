@@ -22,13 +22,13 @@ public class GameInputProcessor implements InputProcessor {
     }
 
     public boolean touchUp (int x, int y, int pointer, int button) {
-        //handler.stopMove();
+        InputHandler.getInstance().processInputEvent(new InputEvent("release"));
         return true;
     }
 
     public boolean touchDragged (int x, int y, int pointer) {
-        // Aiming perhaps?
-        return false;
+        InputHandler.getInstance().processDragEvent(new InputEvent(x, y, "drag"));
+        return true;
     }
 
     public boolean mouseMoved (int x, int y) {

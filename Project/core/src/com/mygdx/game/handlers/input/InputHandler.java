@@ -1,13 +1,11 @@
 package com.mygdx.game.handlers.input;
 
-
-import com.badlogic.gdx.InputProcessor;
 import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.GameState;
 import com.mygdx.game.states.GameStateManager;
 
-public class InputHandler extends Handler implements InputProcessor{
+public class InputHandler extends Handler{
 
     private static InputHandler instance = new InputHandler();
 
@@ -19,24 +17,14 @@ public class InputHandler extends Handler implements InputProcessor{
         return instance;
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
 
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+    public void processDragEvent(InputEvent e){
+        if(GameStateManager.getInstance().getActiveState() instanceof GameState){
+            GameHandler gameHandler = ((GameState) GameStateManager.getInstance().getActiveState()).getGameHandler();
+            if(((String)e.getSource()).equalsIgnoreCase("drag")){
+                gameHandler.playerAim(e.getX(), e.getY());
+            }
+        }
     }
 
     public void processInputEvent(InputEvent e){
@@ -50,36 +38,11 @@ public class InputHandler extends Handler implements InputProcessor{
             if(s.equalsIgnoreCase("left")){
                 gameHandler.playerMove(false);
             }
-            if(s.equalsIgnoreCase("useWeapon")){
-                //TODO: Add functionality for shooting
+            if(s.equalsIgnoreCase("release")){
+                System.out.println("Released");
+                gameHandler.stopMove();
+                gameHandler.fireWeapon();
             }
         }
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(GameStateManager.getInstance().getActiveState() instanceof GameState){
-            GameState gameState = (GameState)GameStateManager.getInstance().getActiveState();
-            GameHandler gameHandler = gameState.getGameHandler();
-            if (gameHandler.getActivePlayer().isMoving()){
-                gameHandler.getActivePlayer().setMoving(false);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }
