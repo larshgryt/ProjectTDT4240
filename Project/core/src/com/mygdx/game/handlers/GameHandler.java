@@ -55,6 +55,7 @@ public class GameHandler extends Handler {
     }
     public void removePlayer(PlayerActor player){
         this.players.remove(player);
+        turnCount--;
     }
 
     public void nextTurn(){
@@ -63,16 +64,13 @@ public class GameHandler extends Handler {
             this.finishedPlayers.add(players.get(0));
             this.gameFinished = true;
         }
-        if (this.activePlayer == players.get(players.size() -1)){
-            this.activePlayer = players.get(0);
-            this.listPosition = 0;
-            turnCount++;
-        } else {
-            this.activePlayer = players.get(this.listPosition++);
+        if(turnCount >= players.size() - 1){
+            turnCount = 0;
         }
-        this.activePlayer.setShooting(false);
-        enabled = true;
-        turnCount++;
+        else{
+            turnCount++;
+        }
+        activePlayer = getPlayers().get(turnCount);
     }
     public void damagePlayer(float damage, int number){
         for (PlayerActor actor : players){
