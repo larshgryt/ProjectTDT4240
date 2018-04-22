@@ -3,13 +3,12 @@ package com.mygdx.game.components.menucomponents;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.sprites.ColoredField;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,13 +23,11 @@ public class TextInputField extends Component implements Input.TextInputListener
     private String defaultText;
     private String hint;
 
-    private Texture backgroundTexture;
-    private Texture borderTexture;
+    private ColoredField background;
+    private ColoredField border;
     private float borderWidth;
     private BitmapFont font;
     private GlyphLayout glyphLayout;
-
-    private ActionListener listener;
 
     public TextInputField(String title, String defaultText, String hint){
         super();
@@ -42,23 +39,13 @@ public class TextInputField extends Component implements Input.TextInputListener
         init();
     }
 
-    public void setActionListener(ActionListener listener){
-        this.listener = listener;
-    }
-
     public void setBackgroundColor(Color color){
-        backgroundTexture.dispose();
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        backgroundTexture = new Texture(pixmap);
+        background.dispose();
+        background = new ColoredField(color);
     }
     public void setBorderColor(Color color){
-        borderTexture.dispose();
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        borderTexture = new Texture(pixmap);
+        border.dispose();
+        border = new ColoredField(color);
     }
     public void setFontColor(Color color){
         font.setColor(color);
@@ -102,14 +89,8 @@ public class TextInputField extends Component implements Input.TextInputListener
     private void init(){
         font = new BitmapFont();
         font.setColor(Color.BLACK);
-        //Create a texture
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        backgroundTexture = new Texture(pixmap);
-        pixmap.setColor(Color.GRAY);
-        pixmap.fill();
-        borderTexture = new Texture(pixmap);
+        background = new ColoredField(Color.WHITE);
+        border = new ColoredField(Color.GRAY);
         glyphLayout = new GlyphLayout();
         glyphLayout.setText(font, text);
     }
@@ -118,9 +99,6 @@ public class TextInputField extends Component implements Input.TextInputListener
     public void input(String text) {
         /* Called whenever the input is changed. */
         setText(text);
-        if(listener != null){
-            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, text));
-        }
     }
 
     @Override
@@ -141,18 +119,18 @@ public class TextInputField extends Component implements Input.TextInputListener
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(borderTexture, position.x, position.y,
-                width + 2*borderWidth, height + 2*borderWidth);
-        sb.draw(backgroundTexture, position.x + borderWidth, position.y + borderWidth,
-                width - borderWidth, height - borderWidth);
+        border.render(sb, position.x, position.y,
+                width + 2*borderWidth, height + 2*borderWidth, 0);
+        background.render(sb, position.x + borderWidth, position.y + borderWidth,
+                width - borderWidth, height - borderWidth, 0);
         font.draw(sb, glyphLayout, position.x + (width - glyphLayout.width)/2 ,
                 position.y + (height + glyphLayout.height)/2);
     }
 
     @Override
     public void dispose() {
-        backgroundTexture.dispose();
-        borderTexture.dispose();
+        border.dispose();
+        background.dispose();
         font.dispose();
     }
 }

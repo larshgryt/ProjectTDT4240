@@ -2,14 +2,13 @@ package com.mygdx.game.components.menucomponents;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.listeners.EventListener;
+import com.mygdx.game.sprites.ColoredField;
 
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -17,8 +16,8 @@ import java.util.EventObject;
 public class Button extends Component {
 
     private String text;
-    private Texture backgroundTexture;
-    private Texture borderTexture;
+    private ColoredField background;
+    private ColoredField border;
     private BitmapFont font;
     private float borderWidth;
     private ArrayList<EventListener> listeners;
@@ -49,18 +48,10 @@ public class Button extends Component {
     }
 
     public void setBackgroundColor(Color color){
-        backgroundTexture.dispose();
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        backgroundTexture = new Texture(pixmap);
+        background = new ColoredField(color);
     }
     public void setBorderColor(Color color){
-        borderTexture.dispose();
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        borderTexture = new Texture(pixmap);
+        border = new ColoredField(color);
     }
     public void setFontColor(Color color){
         font.setColor(color);
@@ -84,17 +75,10 @@ public class Button extends Component {
     private void init(){
         font = new BitmapFont();
         font.setColor(Color.BLACK);
-        //Create a texture
-        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        backgroundTexture = new Texture(pixmap);
-        pixmap.setColor(Color.GRAY);
-        pixmap.fill();
-        borderTexture = new Texture(pixmap);
+        background = new ColoredField(Color.WHITE);
+        border = new ColoredField(Color.GRAY);
         glyphLayout = new GlyphLayout();
         glyphLayout.setText(font, text);
-        pixmap.dispose();
     }
 
     @Override
@@ -111,12 +95,10 @@ public class Button extends Component {
 
     @Override
     public void render(SpriteBatch sb) {
-        // Render border
-        sb.draw(borderTexture, position.x, position.y, width + borderWidth,
-                height + borderWidth);
-        // Background
-        sb.draw(backgroundTexture, position.x + borderWidth, position.y + borderWidth,
-                width - borderWidth, height - borderWidth);
+        border.render(sb, position.x, position.y,
+                width + borderWidth, height + borderWidth, 0);
+        background.render(sb, position.x + borderWidth, position.y + borderWidth,
+                width - borderWidth, height - borderWidth, 0);
         // Text
         font.draw(sb, glyphLayout, position.x + (width - glyphLayout.width)/2 ,
                 position.y + (height + glyphLayout.height)/2);
@@ -125,8 +107,8 @@ public class Button extends Component {
 
     @Override
     public void dispose() {
-        backgroundTexture.dispose();
-        borderTexture.dispose();
+        border.dispose();
+        background.dispose();
         font.dispose();
     }
 }

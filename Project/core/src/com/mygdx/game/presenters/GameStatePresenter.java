@@ -1,6 +1,5 @@
 package com.mygdx.game.presenters;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.menucomponents.ImageButton;
 import com.mygdx.game.handlers.input.InputEvent;
@@ -18,7 +17,7 @@ public class GameStatePresenter extends Presenter {
 
     private class RightButton extends ImageButton{
         public RightButton(){
-            super(new Texture("right-button.png"));
+            super("right-button.png");
             setPosition(GdxGame.WIDTH-getWidth(), (GdxGame.HEIGHT-getHeight())/2);
             addEventListener(new EventListener() {
                 @Override
@@ -36,7 +35,7 @@ public class GameStatePresenter extends Presenter {
 
     private class LeftButton extends ImageButton{
         public LeftButton(){
-            super(new Texture("left-button.png"));
+            super("left-button.png");
             setPosition(0, (GdxGame.HEIGHT-getHeight())/2);
             addEventListener(new EventListener() {
                 @Override

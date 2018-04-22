@@ -11,10 +11,21 @@ public class Tiles implements Sprite {
     private int width;
     private int height;
 
-    public Tiles(Texture texture, int width, int height){
-        this.td = new TiledDrawable(new TextureRegion(texture));
-        this.width = width;
-        this.height = height;
+    public Tiles(String texturePath, int width, int height){
+        Texture t = new Texture(texturePath);
+        this.td = new TiledDrawable(new TextureRegion(t));
+        if(width == 0){
+            this.width = t.getWidth();
+        }
+        else{
+            this.width = width;
+        }
+        if(height == 0){
+            this.height = t.getHeight();
+        }
+        else{
+            this.height = height;
+        }
     }
 
     @Override

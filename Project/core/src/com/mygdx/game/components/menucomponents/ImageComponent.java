@@ -3,35 +3,36 @@ package com.mygdx.game.components.menucomponents;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.sprites.Image;
 
 public class ImageComponent extends Component {
 
     /* A component that shows an image on the screen. */
 
-    Texture texture;
+    Image image;
 
-    public ImageComponent(Texture texture){
+    public ImageComponent(String texturePath){
         super();
-        this.texture = texture;
-        width = texture.getWidth();
-        height = texture.getHeight();
+        image = new Image(texturePath);
+        width = image.getWidth();
+        height = image.getHeight();
     }
 
-    public Texture getTexture() {
-        return texture;
+    public Image getImage() {
+        return image;
     }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
+    public void setImage(String texturePath) {
+        image = new Image(texturePath);
     }
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(texture, position.x, position.y, width, height);
+        image.render(sb, position.x, position.y, width, height, 0);
     }
 
     @Override
     public void dispose() {
-        texture.dispose();
+        image.dispose();
     }
 }

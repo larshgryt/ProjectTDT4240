@@ -1,7 +1,5 @@
 package com.mygdx.game.components.actors.projectiles;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.Actor;
@@ -51,7 +49,7 @@ public abstract class Projectile extends Actor {
         if(other instanceof Component){
             if(state.containsComponent(this) && state.containsComponent((Component)other)){
                 if(other instanceof PlayerActor){
-                    GameHandler.getInstance().damagePlayer(damage, (PlayerActor) other);
+                    GameHandler.getInstance().damagePlayer(getDamage(), (PlayerActor) other);
                 }
                 destroy(state);
             }
@@ -71,6 +69,13 @@ public abstract class Projectile extends Actor {
             destroy(state);
             other.destroy(state);
         }
+    }
+
+    public void setDamage(float damage){
+        this.damage = damage;
+    }
+    public float getDamage(){
+        return damage;
     }
 
     /* Code that will be ran when the projectile is destroyed (e.g explotion) */
