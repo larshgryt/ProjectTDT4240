@@ -1,6 +1,8 @@
 package com.mygdx.game.handlers.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.mygdx.game.GdxGame;
 
 public class GameInputProcessor implements InputProcessor {
 
@@ -27,7 +29,10 @@ public class GameInputProcessor implements InputProcessor {
     }
 
     public boolean touchDragged (int x, int y, int pointer) {
-        InputHandler.getInstance().processDragEvent(new InputEvent(x, y, "drag"));
+        InputHandler.getInstance().processDragEvent(new InputEvent(
+                x * GdxGame.WIDTH / Gdx.app.getGraphics().getWidth(),
+                y * GdxGame.HEIGHT / Gdx.app.getGraphics().getHeight(),
+                "drag"));
         return true;
     }
 
