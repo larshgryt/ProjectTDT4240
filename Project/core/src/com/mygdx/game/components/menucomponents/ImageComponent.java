@@ -26,11 +26,6 @@ public class ImageComponent extends Component {
     }
 
     @Override
-    public void update(float dt) {
-
-    }
-
-    @Override
     public void render(SpriteBatch sb) {
         sb.draw(texture, position.x, position.y, width, height);
     }

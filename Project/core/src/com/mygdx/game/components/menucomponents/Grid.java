@@ -1,7 +1,6 @@
 package com.mygdx.game.components.menucomponents;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
@@ -75,17 +74,6 @@ public class Grid extends Component{
             gridX += squareWidth;
         }
         }
-
-    public void update(){
-        if(Gdx.input.justTouched()){
-            float posX = Gdx.input.getX();
-            float posY = GdxGame.HEIGHT - Gdx.input.getY();
-
-            if(posX > position.x && posX < position.x + width && posY > position.y && posY < position.y + height){
-
-            }
-        }
-    }
 
     @Override
     public void render(SpriteBatch sb) {

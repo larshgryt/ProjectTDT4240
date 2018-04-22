@@ -5,10 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 
-/**
- * Created by An on 16.04.2018.
- */
-
 public class Tiles implements Sprite {
 
     private TiledDrawable td;

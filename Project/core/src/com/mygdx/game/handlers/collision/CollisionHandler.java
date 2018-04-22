@@ -11,16 +11,24 @@ import java.util.Collections;
 
 public class CollisionHandler {
 
+    public static CollisionHandler instance = new CollisionHandler();
+
     private State state;
 
-    public CollisionHandler(State state){
-        this.state = state;
+    private CollisionHandler(){
+        this.state = null;
+    }
+
+    public static CollisionHandler getInstance(){
+        return instance;
     }
 
 
     /* Uses sort and sweep algorithm to traverse through component array and check for possible
     collision. This is the broad phrase of collision detection. */
-    public void checkForCollisions(ArrayList<Collidable> collidables){
+    public void checkForCollisions(State state, ArrayList<Collidable> collidables){
+
+        this.state = state;
 
         /* These are all the x-positions of edges of bounding boxes. Used to check for overlapping
         bounding boxes on the x-axis, and sort them for a sort-and-sweep traversal.*/
@@ -64,14 +72,14 @@ public class CollisionHandler {
 
     }
 
-    public void checkForCollisions(ArrayList<Component> components, Stage stage){
+    public void checkForCollisions(State state, ArrayList<Component> components, Stage stage){
         ArrayList<Collidable> collidables = new ArrayList<Collidable>(stage.getStageComponents());
         for(Component c: components){
             if(c instanceof Collidable){
                 collidables.add((Collidable) c);
             }
         }
-        checkForCollisions(collidables);
+        checkForCollisions(state, collidables);
     }
 
     // Narrow phase of collision detection between two collidables.

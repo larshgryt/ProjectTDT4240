@@ -125,9 +125,7 @@ public class ComponentList extends Component {
                 x += c.getWidth() + xSpacing;
             }
         }
-        for(Component c: toBeRemoved){
-            components.remove(c);
-        }
+        components.removeAll(toBeRemoved);
     }
 
     @Override

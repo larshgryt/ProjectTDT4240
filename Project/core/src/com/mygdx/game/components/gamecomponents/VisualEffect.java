@@ -7,12 +7,12 @@ import com.mygdx.game.states.State;
 
 public class VisualEffect extends Component {
 
-    Animation animation;
-    boolean loops;
-    float maxFrameTime;
-    float time;
-    float maxTime;
-    State state;
+    private Animation animation;
+    private boolean loops;
+    private float maxFrameTime;
+    private float time;
+    private float maxTime;
+    private State state;
 
     public VisualEffect(State state, Animation animation, float maxFrameTime){
         super();
