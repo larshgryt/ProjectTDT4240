@@ -1,6 +1,7 @@
 package com.mygdx.game.handlers.input;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputProcessor;
 import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.Handler;
@@ -39,6 +40,15 @@ public class InputHandler extends Handler implements InputProcessor{
         return false;
     }
 
+    public void processDragEvent(InputEvent e){
+        if(GameStateManager.getInstance().getActiveState() instanceof GameState){
+            GameHandler gameHandler = ((GameState) GameStateManager.getInstance().getActiveState()).getGameHandler();
+            if(((String)e.getSource()).equalsIgnoreCase("drag")){
+                gameHandler.playerAim(e.getX(), e.getY());
+            }
+        }
+    }
+
     public void processInputEvent(InputEvent e){
         String s = (String)e.getSource();
         if(GameStateManager.getInstance().getActiveState() instanceof GameState){
@@ -50,8 +60,9 @@ public class InputHandler extends Handler implements InputProcessor{
             if(s.equalsIgnoreCase("left")){
                 gameHandler.playerMove(false);
             }
-            if(s.equalsIgnoreCase("useWeapon")){
-                //TODO: Add functionality for shooting
+            if(s.equalsIgnoreCase("release")){
+                System.out.println("Released");
+                gameHandler.fireWeapon();
             }
         }
     }
