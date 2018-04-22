@@ -16,7 +16,8 @@ public class PlayerActor extends Actor {
     private Weapon weapon;          // The actors current held weapon.
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
-    private float health;           // Health. Should not actually be here.
+    private float health;
+    private float maxHealth;
     private boolean shooting;
     private float aimAngle;
 
@@ -28,7 +29,8 @@ public class PlayerActor extends Actor {
         collisionBox.setCollisionMode(CollisionBox.CollisionMode.PASSIVE);
         setWidth(DEFAULT_WIDTH);
         setHeight(DEFAULT_HEIGHT);
-        health = 100;
+        health = maxHealth;
+        this.maxHealth = maxHealth;
         addSprite(new PlayerAnimation(100, penguin));
         setRotatesOnMovement(false);
         bounces = true;
@@ -51,6 +53,9 @@ public class PlayerActor extends Actor {
     }
     public float getAimAngle(){
         return aimAngle;
+    }
+    public float getMaxHealth(){
+        return maxHealth;
     }
 
     @Override
