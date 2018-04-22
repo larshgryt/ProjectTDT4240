@@ -4,15 +4,18 @@ package com.mygdx.game.handlers;
 import com.mygdx.game.components.actors.PlayerActor;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class GameHandler extends Handler {
     private ArrayList<PlayerActor> players;
+    private Stack<PlayerActor> finishedPlayers;
     private PlayerActor activePlayer;
-    private int playerNumber;
     private int turnCount;
+    private int listCounter;
 
     public GameHandler() {
         this.players = new ArrayList<PlayerActor>();
+        this.finishedPlayers = new Stack<PlayerActor>();
         this.turnCount = 0;
     }
 
@@ -25,7 +28,7 @@ public class GameHandler extends Handler {
     }
 
     public int getPlayerNumber() {
-        return playerNumber;
+        return this.activePlayer.playerNumber;
     }
 
     public int getTurnCount() {
@@ -33,6 +36,7 @@ public class GameHandler extends Handler {
     }
 
     public void addPlayer(PlayerActor player){
+        player.playerNumber = players.size();
         this.players.add(player);
     }
     public void removePlayer(PlayerActor player){
@@ -40,21 +44,30 @@ public class GameHandler extends Handler {
     }
 
     public void nextTurn(){
-        if ((getPlayerNumber() + 1) == players.size()){
-            this.activePlayer = players.get(0);
-            this.playerNumber = 0;
-        } else {
-            this.activePlayer = players.get(getPlayerNumber() + 1);
-            this.playerNumber = getPlayerNumber() + 1;
+        if (this.players.size() == 1){
+            // Victory stuff
+            this.finishedPlayers.add(players.get(0));
+
         }
-        turnCount++;
+        if (this.activePlayer == players.get(players.size() -1)){
+            this.activePlayer = players.get(0);
+            this.listCounter = 0;
+            turnCount++;
+        } else {
+            this.activePlayer = players.get(this.listCounter++);
+        }
     }
     public void damagePlayer(float damage, int number){
-        float pHealth = players.get(number).getHealth();
-        if ((pHealth - damage) <= 0){
-            this.players.remove(number);
+        for (PlayerActor actor : players){
+            if (actor.playerNumber == number){
+                float pHealth = actor.getHealth();
+                if ((pHealth - damage) <= 0){
+                    this.finishedPlayers.add(actor);
+                    this.players.remove(actor);
+                }
+                else actor.setHealth(pHealth - damage);
+            }
         }
-        else players.get(number).setHealth(pHealth - damage);
     }
 
     // Sets velocity on active player actor. Direction= true is right movement. False is left movement.

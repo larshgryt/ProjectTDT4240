@@ -15,6 +15,7 @@ public class PlayerActor extends Actor {
 
     public static final int DEFAULT_WIDTH = 28;
     public static final int DEFAULT_HEIGHT = 40;
+    public int playerNumber;
     private Weapon weapon;          // The actors current held weapon.
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
