@@ -1,9 +1,11 @@
 package com.mygdx.game.components.stage;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.stage.stagecomponents.Border;
 import com.mygdx.game.components.stage.stagecomponents.StageComponent;
@@ -36,14 +38,14 @@ public abstract class Stage {
         this.height = height;
         this.gravity = DEFAULT_GRAVITY;
 
-        Border borderBottom = new Border((int)width, 1);
-        borderBottom.setPosition(0, -1);
-        Border borderTop = new Border((int)width, 1);
-        borderTop.setPosition(0, height + 1);
-        Border borderLeft = new Border(1, (int) height);
-        borderLeft.setPosition(-1, 0);
-        Border borderRight = new Border(1, (int) height);
-        borderRight.setPosition(width + 1, 0);
+        Border borderBottom = new Border((int)width + 200, 100);
+        borderBottom.setPosition(-100, -100);
+        Border borderTop = new Border((int)width + 200, 100);
+        borderTop.setPosition(-100, height + 100);
+        Border borderLeft = new Border(100, (int) height + 200);
+        borderLeft.setPosition(-100, -100);
+        Border borderRight = new Border(100, (int) height + 200);
+        borderRight.setPosition(width, -100);
 
         addStageComponent(borderBottom);
         addStageComponent(borderLeft);
