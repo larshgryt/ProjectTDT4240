@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.actors.Actor;
+import com.mygdx.game.components.stage.stagecomponents.Border;
+import com.mygdx.game.components.stage.stagecomponents.Snow;
 import com.mygdx.game.components.stage.stagecomponents.StageComponent;
 import com.mygdx.game.handlers.collision.CollisionBox;
 
@@ -34,6 +36,20 @@ public abstract class Stage {
         this.width = width;
         this.height = height;
         this.gravity = DEFAULT_GRAVITY;
+
+        Border borderBottom = new Border((int)width, 1);
+        borderBottom.setPosition(0, -1);
+        Border borderTop = new Border((int)width, 1);
+        borderTop.setPosition(0, height + 1);
+        Border borderLeft = new Border(1, (int) height);
+        borderLeft.setPosition(-1, 0);
+        Border borderRight = new Border(1, (int) height);
+        borderRight.setPosition(width + 1, 0);
+
+        addStageComponent(borderBottom);
+        addStageComponent(borderLeft);
+        addStageComponent(borderRight);
+        addStageComponent(borderTop);
     }
 
     // Applies gravity to an actor unless it's standing on top of a solid stage component.
