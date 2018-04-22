@@ -8,12 +8,7 @@ import com.mygdx.game.components.stage.Forest;
 import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.collision.CollisionHandler;
-import com.mygdx.game.listeners.EventListener;
 import com.mygdx.game.presenters.GameStatePresenter;
-import com.mygdx.game.presenters.Presenter;
-
-import java.util.EventObject;
-
 import java.util.ArrayList;
 
 

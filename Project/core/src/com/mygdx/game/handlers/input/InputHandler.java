@@ -1,16 +1,11 @@
 package com.mygdx.game.handlers.input;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.components.Component;
 import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.Handler;
-import com.mygdx.game.presenters.Presenter;
 import com.mygdx.game.states.GameState;
 import com.mygdx.game.states.GameStateManager;
-import com.mygdx.game.states.State;
 
 public class InputHandler extends Handler implements InputProcessor{
 
@@ -41,20 +36,6 @@ public class InputHandler extends Handler implements InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        /*State activeState = GameStateManager.getInstance().getActiveState();
-        if(activeState instanceof GameState) {
-            GameHandler gameHandler = ((GameHandler)activeState.getMainHandler());
-            for(Presenter presenter : activeState.getPresenters()) {
-                for(Component component : presenter.getComponents()) {
-                    System.out.println(new Vector2(screenX,screenY));
-                    System.out.println(component.getBoundingBox().contains(new Vector2(screenX, screenY)));
-                    if(component.getBoundingBox().contains(new Vector2(screenX, screenY))) {
-                        gameHandler.playerMove(true);
-                        System.out.println("Active player moved");
-                    }
-                }
-            }
-        }*/
         return false;
     }
 

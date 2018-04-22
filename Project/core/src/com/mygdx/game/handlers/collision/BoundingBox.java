@@ -1,6 +1,5 @@
 package com.mygdx.game.handlers.collision;
 
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.components.Component;
 
 import java.util.Arrays;
@@ -97,9 +96,4 @@ public class BoundingBox {
             this.endY = Collections.max(Arrays.asList(y));
         }
     }
-
-    public boolean contains (Vector2 v) {
-        return startX <= v.x && startY <= v.y && endX >= v.x && endY >= v.y;
-    }
-
 }
