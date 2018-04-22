@@ -1,20 +1,17 @@
 package com.mygdx.game.components.actors;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.components.gamecomponents.TestBazooka;
 import com.mygdx.game.components.gamecomponents.Weapon;
 import com.mygdx.game.handlers.collision.CollisionBox;
-import com.mygdx.game.sprites.Animation;
 import com.mygdx.game.sprites.PlayerAnimation;
 
 public class PlayerActor extends Actor {
 
     public static final int DEFAULT_WIDTH = 28;
     public static final int DEFAULT_HEIGHT = 40;
+    public int playerNumber;
     private Weapon weapon;          // The actors current held weapon.
     private Vector3 holdingPoint;   // Weapon holding point relative to the player's coordinates.
     private boolean penguin;        // Whether the player actor is a penguin.
@@ -151,5 +148,13 @@ public class PlayerActor extends Actor {
     }
     public float getHealth(){
         return health;
+    }
+    @Override
+    public boolean isMoving() {
+        return moving;
+    }
+    @Override
+    public void setMoving(boolean moving) {
+        this.moving = moving;
     }
 }

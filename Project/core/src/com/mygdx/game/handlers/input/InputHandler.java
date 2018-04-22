@@ -1,14 +1,11 @@
 package com.mygdx.game.handlers.input;
 
-
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.InputProcessor;
 import com.mygdx.game.handlers.GameHandler;
 import com.mygdx.game.handlers.Handler;
 import com.mygdx.game.states.GameState;
 import com.mygdx.game.states.GameStateManager;
 
-public class InputHandler extends Handler implements InputProcessor{
+public class InputHandler extends Handler{
 
     private static InputHandler instance = new InputHandler();
 
@@ -20,25 +17,6 @@ public class InputHandler extends Handler implements InputProcessor{
         return instance;
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
 
     public void processDragEvent(InputEvent e){
         if(GameStateManager.getInstance().getActiveState() instanceof GameState){
@@ -62,28 +40,9 @@ public class InputHandler extends Handler implements InputProcessor{
             }
             if(s.equalsIgnoreCase("release")){
                 System.out.println("Released");
+                gameHandler.stopMove();
                 gameHandler.fireWeapon();
             }
         }
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }
