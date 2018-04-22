@@ -1,7 +1,6 @@
 package com.mygdx.game.presenters;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.menucomponents.Button;
@@ -11,9 +10,6 @@ import com.mygdx.game.components.menucomponents.TextInputField;
 import com.mygdx.game.components.menucomponents.TextLabel;
 import com.mygdx.game.listeners.EventListener;
 import com.mygdx.game.states.MenuState;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.EventObject;
 
@@ -176,7 +172,7 @@ public class MenuPresenter extends Presenter {
 
     private class Logo extends ImageComponent{
         public Logo(){
-            super(new Texture("logo.png"));
+            super("logo.png");
             setWidth(getWidth()/2);
             setHeight(getHeight()/2);
             setPosition((GdxGame.WIDTH-getWidth())/2, (GdxGame.HEIGHT - getHeight())*7/8);

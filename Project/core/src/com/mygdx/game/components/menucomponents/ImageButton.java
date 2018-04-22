@@ -1,21 +1,22 @@
 package com.mygdx.game.components.menucomponents;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.GdxGame;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.listeners.EventListener;
+import com.mygdx.game.sprites.Image;
+
 import java.util.ArrayList;
 import java.util.EventObject;
 
 public class ImageButton extends Component {
-    private Texture image;
+    private Image image;
     private ArrayList<EventListener> listeners;
 
-    public ImageButton(Texture texture){
+    public ImageButton(String texturePath){
         super();
-        image = texture;
+        image = new Image(texturePath);
         listeners = new ArrayList<EventListener>();
         width = image.getWidth();
         height = image.getHeight();
@@ -44,12 +45,12 @@ public class ImageButton extends Component {
         }
     }
 
-    public Texture getTexture(){
+    public Image getImage(){
         return image;
     }
 
-    public void setTexture(Texture texture){
-        image = texture;
+    public void setTexture(String texturePath){
+        image = new Image(texturePath);
     }
 
 
@@ -60,6 +61,6 @@ public class ImageButton extends Component {
 
     @Override
     public void render(SpriteBatch sb) {
-        sb.draw(image, position.x, position.y, width, height );
+        image.render(sb, position.x, position.y, image.getWidth(), image.getHeight(), 0);
     }
 }

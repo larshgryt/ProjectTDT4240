@@ -1,28 +1,24 @@
 package com.mygdx.game.components.menucomponents;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.components.Component;
+import com.mygdx.game.sprites.ColoredField;
 
 /*HealthBar component for showing how much health the player has*/
 
 public class HealthBar extends Component {
-    private ShapeRenderer shapeRenderer;
     private float fillWidth;
     private float totalFillWidth;
-    private Texture texture;
-    private Texture borderTexture;
+    private ColoredField background;
+    private ColoredField border;
     private int borderWidth;
 
 
     public HealthBar(float width, float height){
         super();
-        texture = null;
-        borderTexture = null;
-        shapeRenderer = new ShapeRenderer();
+        background = null;
+        border= null;
         this.width = width;
         this.height = height;
         fillWidth = width;
@@ -37,30 +33,23 @@ public class HealthBar extends Component {
     }
 
     public void setBorderColor(Color color){
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        borderTexture = new Texture(pixmap);
-        pixmap.dispose();
+        border = new ColoredField(color);
     }
 
     public void setColor(Color color){
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
-        pixmap.setColor(color);
-        pixmap.fill();
-        texture = new Texture(pixmap);
-        pixmap.dispose();
+        background = new ColoredField(color);
     }
 
     public void render(SpriteBatch sb){
-        sb.draw(borderTexture, position.x, position.y,
-                width + 2*borderWidth, height+2*borderWidth);
-        sb.draw(texture, position.x + borderWidth, position.y + borderWidth,
-                fillWidth, height);
+        border.render(sb, position.x, position.y,
+                width + borderWidth*2, height + borderWidth*2, 0);
+        background.render(sb, position.x + borderWidth, position.y + borderWidth,
+                width, height, 0);
     }
 
     public void dispose(){
-        shapeRenderer.dispose();
+        background.dispose();
+        border.dispose();
     }
 
 }
