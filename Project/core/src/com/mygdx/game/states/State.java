@@ -22,7 +22,7 @@ public abstract class State {
         presenters = new ArrayList<Presenter>();
         audioService.create();
         cam = new OrthographicCamera();
-        cam.setToOrtho(false, GdxGame.WIDTH, 400);
+        cam.setToOrtho(false, GdxGame.WIDTH, GdxGame.HEIGHT);
     }
 
     protected void setMusic(String path){
@@ -82,5 +82,12 @@ public abstract class State {
     public ArrayList<Presenter> getPresenters() {
         return presenters;
     }
+
+
+    public OrthographicCamera getCam() {
+        return cam;
+    }
+
+
 
 }

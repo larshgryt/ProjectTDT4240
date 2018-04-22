@@ -12,18 +12,16 @@ import com.mygdx.game.GdxGame;
 //simple OrthographicCamera that handles zooming and moves viewport based on key input given a stage (takes in Sprite)
 public class GameCamera {
 
-    static final int WORLD_WIDTH = 100;
-    static final int WORLD_HEIGHT = 100;
     private OrthographicCamera camera;
     private Sprite stage;
 
     public void GameCamera(Sprite stage){
         this.stage = stage;
-        stage.setSize(WORLD_WIDTH,WORLD_HEIGHT);
+        stage.setSize(GdxGame.WIDTH,GdxGame.HEIGHT);
         float w = GdxGame.WIDTH;
         float h = GdxGame.HEIGHT;
 
-        camera = new OrthographicCamera(30,30*(h/w));
+        camera = new OrthographicCamera(w,h);
         //can position camera in the bottom left corner (it is in the middle by default):
         //camera.position.set(camera.viewportHeight/2f, camera.viewportHeight/2f, 0);
         camera.update();
@@ -56,11 +54,14 @@ public class GameCamera {
         }
 
         //makes sure camera is not zoomed in too much or outside the stage
-        camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
+        //camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
+        camera.zoom = 100f;
         float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
         float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
-        camera.position.x = MathUtils.clamp(camera.position.x, effectiveViewportWidth / 2f, 100 - effectiveViewportWidth / 2f);
-        camera.position.y = MathUtils.clamp(camera.position.y, effectiveViewportHeight / 2f, 100 - effectiveViewportHeight / 2f);
+        //camera.position.x = MathUtils.clamp(camera.position.x, effectiveViewportWidth / 2f, 100 - effectiveViewportWidth / 2f);
+        //camera.position.y = MathUtils.clamp(camera.position.y, effectiveViewportHeight / 2f, 100 - effectiveViewportHeight / 2f);
+        camera.position.x = 0;
+        camera.position.y = 0;
     }
 
     //basic method for resizing when the display size changes, always shows 30 units in X-axis
