@@ -3,7 +3,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.components.Component;
 import com.mygdx.game.components.actors.Actor;
 import com.mygdx.game.components.actors.PlayerActor;
-import com.mygdx.game.components.gamecomponents.TestBazooka;
+import com.mygdx.game.components.gamecomponents.Bazooka;
 import com.mygdx.game.components.stage.Forest;
 import com.mygdx.game.components.stage.Stage;
 import com.mygdx.game.handlers.GameHandler;
@@ -32,13 +32,13 @@ public class GameState extends State {
         this.scorePresented = false;
 
         stage = new Forest();
-        collisionHandler = new CollisionHandler(this);
+        collisionHandler = CollisionHandler.getInstance();
         gameHandler = GameHandler.getInstance();
 
         boolean p = true;
         ArrayList<PlayerActor> players = new ArrayList<PlayerActor>();
         for(String user: usernames){
-            PlayerActor player = new PlayerActor(user,100, new TestBazooka(), p);
+            PlayerActor player = new PlayerActor(user,100, new Bazooka(), p);
             players.add(player);
             gameHandler.addPlayer(player);
             p = !p;
@@ -81,7 +81,7 @@ public class GameState extends State {
             }
         }
         super.update(dt);
-        collisionHandler.checkForCollisions(components, stage);
+        collisionHandler.checkForCollisions(this, components, stage);
         if (gameHandler.isGameFinished()) {
             if (!this.scorePresented) {
                 addPresenter(new WinPresenter(this.gameHandler.getFinishedPlayers()));

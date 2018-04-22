@@ -34,7 +34,6 @@ public class InputHandler {
                 gameHandler.playerMove(false);
             }
             if(s.equalsIgnoreCase("release")){
-                System.out.println("Released");
                 gameHandler.stopMove();
                 gameHandler.fireWeapon();
             }

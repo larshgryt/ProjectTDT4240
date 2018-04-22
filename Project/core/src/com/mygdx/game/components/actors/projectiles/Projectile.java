@@ -20,23 +20,6 @@ public abstract class Projectile extends Actor {
     protected VisualEffect hitEffect;
     protected float damage;
 
-    public Projectile(int width, int height){
-        Animation sprite = new Animation(100);
-        //Create a white background texture
-        Pixmap pixmap = new Pixmap(width,height, Pixmap.Format.RGB888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        sprite.addFrame(new Texture(pixmap));
-        pixmap.dispose();
-        sprites.add(sprite);
-        this.width = sprite.getWidth();
-        this.height = sprite.getHeight();
-        rotatesOnMovement = true;
-        collisionBox.setCollisionMode(CollisionBox.CollisionMode.LITE);
-        hitEffect = null;
-        damage = 10;
-    }
-
     public Projectile(Texture texture){
         Animation sprite = new Animation(100);
         sprite.addFrame(texture);
@@ -95,5 +78,4 @@ public abstract class Projectile extends Actor {
         state.removeComponent(this);
         this.dispose();
     }
-
 }

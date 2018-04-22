@@ -98,7 +98,6 @@ public class GameHandler{
             if(GameStateManager.getInstance().getActiveState() instanceof GameState){
                 GameState gameState = (GameState) GameStateManager.getInstance().getActiveState();
                 if(activePlayer.isShooting()){
-                    System.out.println("shooting...");
                     activePlayer.setShooting(false);
                     activeProjectile = activePlayer.getWeapon().shoot();
                     activeProjectile.setVelocity(dx * 2, dy * 2);
@@ -111,10 +110,8 @@ public class GameHandler{
     public void playerAim(float x, float y){
         if(enabled){
             activePlayer.setShooting(true);
-            System.out.println("x:"+x +" y:" + y);
             dx = x - activePlayer.getPosition().x;
             dy = (GdxGame.HEIGHT - y) - activePlayer.getPosition().y;
-            System.out.println("dx:"+dx+" dy:"+dy);
             float angle = (float)Math.toDegrees(Math.atan(dy/dx));
             if(dx < 0){
                 activePlayer.setHorizontalFlip(true);
@@ -124,8 +121,6 @@ public class GameHandler{
                 activePlayer.setHorizontalFlip(false);
             }
             activePlayer.setAimAngle(angle);
-            System.out.println(activePlayer.toString()+" x:"+activePlayer.getPosition().x+" y:"+
-                    activePlayer.getPosition().y+" angle:"+activePlayer.getAngle()+" aimAngle:"+activePlayer.getAimAngle());
         }
     }
 
